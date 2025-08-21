@@ -262,63 +262,41 @@
 
     <!-- HERO: full-screen dengan background image -->
     <header
-        class="relative bg-no-repeat bg-right bg-cover min-h-[calc(100vh-4rem)] reveal fade-up slow"
-        style="background-image: url('assets/background-3.jpeg'); background-size: 100%"
-        >
-
+        class="relative bg-cover bg-center sm:bg-right min-h-[calc(100vh-4rem)] reveal fade-up slow"
+        style="background-image: url('assets/background-3.jpeg')"
+    >
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="grid lg:grid-cols-2 h-full">
-            
-                <!-- LEFT: Text content -->
-                <div class="flex flex-col justify-center pt-10 md:pt-50 ml-5">
+                <!-- Tambahin justify-center biar vertikalnya tengah -->
+                <div class="flex flex-col justify-center lg:justify-start pt-24 sm:pt-32 lg:pt-50 ml-0 sm:ml-5">
                     <h1 class="leading-tight tracking-[-0.02em] text-black">
-                        <span class="block text-5xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
-                        <span class="block mt-2 text-3xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
+                        <span class="block text-4xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
+                        <span class="block mt-2 text-2xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
                     </h1>
-                
-                    <!-- CTA buttons -->
-                    <div class="mt-8 flex flex-wrap items-center gap-4">
-                        <!-- Primary -->
-                        <a href="#shop"
-                            class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
-                                    hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
-                            Shop Now
-                            <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+                        <!-- tombol -->
+                        <a href="#trending" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
+                        hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
+                        Shop Now
+                        <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                        </svg>
                         </a>
-                    
-                        <!-- Secondary (samain style dengan Shop Now) -->
-                        <a href="#learnmore"
-                            class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
-                                    hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
-                            Learn More
-                            <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <a href="#features" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
+                        hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
+                        Learn More
+                        <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                        </svg>
                         </a>
                     </div>
-                    
-                    <!-- Ratings -->
-                    <div class="mt-5 flex items-center gap-2 text-sm">
-                        <!-- 5 stars -->
-                        <div class="flex">
-                            <!-- ulangi 5x -->
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                        </div>
-                        <span class="text-gray-700">Reviews</span>
-                    </div>
+                    <div class="mt-4 sm:mt-5 flex items-center gap-2 text-sm">…</div>
                 </div>
-
-                <!-- RIGHT kosong (karena gambar sudah jadi background) -->
                 <div class="hidden lg:block"></div>
             </div>
         </div>
     </header>
+  
 
     <!-- ========== M4 SECTION ========== -->
     <section id="m4" class="relative overflow-hidden py-20 md:py-50 bg-white min-h-[500px]">

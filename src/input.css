@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Beri tahu Tailwind file mana yang harus discan */
-@source "./index.html";
-@source "./faq.html";
-@source "./src/**/*.{html,js,ts,jsx,tsx}";
+/* contoh custom class */
+.btn {
+  @apply px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700;
+}

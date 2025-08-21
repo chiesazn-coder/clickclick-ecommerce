@@ -1,2 +1,6 @@
 @import "tailwindcss";
-@source "./";
+
+/* Beri tahu Tailwind file mana yang harus discan */
+@source "./index.html";
+@source "./faq.html";
+@source "./src/**/*.{html,js,ts,jsx,tsx}";

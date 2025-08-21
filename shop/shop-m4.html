@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M4 — Shop Series</title>
+  <link rel="stylesheet" href="../dist/output.css?v=prod" />
+  <meta name="description" content="Belanja seri MagSafe: pilihan case glam dengan kompatibilitas magnetik dan perlindungan maksimal."/>
+</head>
+<body class="bg-white text-gray-900">
+  <!-- ===== NAVBAR KAMU DI SINI (include/paste dari index) ===== -->
+    <!-- Navbar copy dari index -->
+    <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-2">
+              <img src="../assets/logo.png" alt="Click Click Logo" class="h-10">
+          </a>
+          <!-- Menu -->
+          <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
+              <li><a class="hover:text-black" href="../index.html">Home</a></li>
+              <!-- Shop (dropdown slim) -->
+              <li class="relative group">
+                  <button
+                      class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                      >
+                      Shop
+                  </button>
+              
+                  <!-- panel -->
+                  <div
+                      class="absolute left-0 top-full mt-3 w-56 rounded-xl bg-white border border-black/10 shadow-xl
+                              opacity-0 scale-95 pointer-events-none transition
+                              group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                              group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                      >
+                      <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                          <li>
+                          <a href="/shop/shop-m4.html"
+                              class="block px-4 py-2 hover:bg-gray-50">M4 Series</a>
+                          </li>
+                          <li>
+                          <a href="/shop/t8d"
+                              class="block px-4 py-2 hover:bg-gray-50">T8D Series</a>
+                          </li>
+                          <li>
+                          <a href="/shop/t3b"
+                              class="block px-4 py-2 hover:bg-gray-50">T3B Series</a>
+                          </li>
+                          <!-- optional: Shop All -->
+                          <li>
+                          <a href="/shop"
+                              class="block px-4 py-2 font-semibold hover:bg-gray-50">Shop All</a>
+                          </li>
+                      </ul>
+                  </div>
+              </li>
+              <!-- Features (dropdown slim) -->
+              <li class="relative group">
+                  <button
+                      class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                      aria-haspopup="true" aria-expanded="false"
+                      >
+                      Features
+                  </button>
+              
+                  <!-- panel -->
+                  <div
+                      class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl
+                              opacity-0 scale-95 pointer-events-none transition
+                              group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                              group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                      >
+                      <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                          <li>
+                          <a href="#features"
+                              class="block px-4 py-2 hover:bg-gray-50">Overview</a>
+                          </li>
+                          <li>
+                          <a href="#feat-magsafe"
+                              class="block px-4 py-2 hover:bg-gray-50">Key Features</a>
+                          </li>
+                          <li>
+                          <a href="#feat-design"
+                              class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a>
+                          </li>
+                          <li>
+                          <a href="#feat-install"
+                              class="block px-4 py-2 hover:bg-gray-50">Support</a>
+                          </li>
+                          <li>
+                      </ul>
+                  </div>
+              </li>
+
+              <!-- FAQ (dropdown slim) -->
+              <li>
+                  <a href="faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">
+                  FAQ
+                  </a>
+              </li>
+              
+              <!-- Dropshipper (dropdown slim) -->
+              <li class="relative group">
+                  <button
+                      class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                      aria-haspopup="true" aria-expanded="false"
+                      >
+                      Dropshipper
+                  </button>
+              
+                  <!-- panel -->
+                  <div
+                      class="absolute left-0 top-full mt-3 w-72 rounded-xl bg-white border border-black/10 shadow-xl
+                              opacity-0 scale-95 pointer-events-none transition
+                              group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                              group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                      >
+                      <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                          <li><a href="#ds-why"     class="block px-4 py-2 hover:bg-gray-50">Kenapa Gabung?</a></li>
+                          <li><a href="#ds-pricing" class="block px-4 py-2 hover:bg-gray-50">Tier Harga & Komisi</a></li>
+                          <li><a href="#ds-join"    class="block px-4 py-2 hover:bg-gray-50">Cara Daftar</a></li>
+                          <li><a href="#ds-sop"     class="block px-4 py-2 hover:bg-gray-50">SOP Order & Fulfillment</a></li>
+                          <li><a href="#ds-stock"   class="block px-4 py-2 hover:bg-gray-50">Stok & Lead Time</a></li>
+                          <li><a href="#ds-assets"  class="block px-4 py-2 hover:bg-gray-50">Aset Marketing</a></li>
+                          <li><a href="#ds-returns" class="block px-4 py-2 hover:bg-gray-50">After-sales & Retur</a></li>
+                          <li>
+                          <a href="/dropshipper/apply"
+                              class="block px-4 py-2 font-semibold hover:bg-gray-50">Daftar Sekarang / Login</a>
+                          </li>
+                      </ul>
+                  </div>
+              </li>
+          </ul>
+
+          <!-- Icons -->
+          <div class="flex items-center gap-4">
+              <!-- Search -->
+              <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+                  <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+              </button>
+              <!-- Cart -->
+              <button aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <circle cx="9" cy="19" r="1.8"></circle>
+                  <circle cx="17" cy="19" r="1.8"></circle>
+              </svg>
+              </button>
+          </div>
+      </div>
+  </nav>
+
+  
+    <!-- HERO -->
+    <section class="relative h-[44vh] md:h-[56vh] w-full overflow-hidden">
+        <!-- Ganti URL gambar hero sesuai seri -->
+        <img src="../assets/hero-m4.jpg"
+             alt="M4 series hero"
+             class="absolute inset-0 h-full w-full object-cover" />
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
+      
+        <!-- Container -->
+        <div class="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
+          <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow text-center mb-55">
+            M4 Series
+          </h1>
+        </div>
+    </section>
+
+  <!-- TOOLBAR -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
+      <!-- Breadcrumbs sederhana -->
+      <nav class="text-sm text-gray-500">
+        <ol class="flex items-center gap-2">
+          <li><a href="index.html" class="hover:text-gray-700">Home</a></li>
+          <li>/</li>
+          <li><a href="shop.html" class="hover:text-gray-700">Shop</a></li>
+          <li>/</li>
+          <li class="text-gray-800 font-medium">M4 Series</li>
+        </ol>
+      </nav>
+
+      <!-- Sort dropdown -->
+      <div class="relative" x-data="{open:false}">
+        <button id="sortBtn"
+                class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm hover:bg-gray-50"
+                onclick="document.getElementById('sortMenu').classList.toggle('hidden')">
+          FEATURED
+          <svg class="h-4 w-4 opacity-70" viewBox="0 0 20 20" fill="currentColor"><path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.42z"/></svg>
+        </button>
+        <div id="sortMenu"
+             class="absolute right-0 mt-2 hidden w-44 overflow-hidden rounded-xl border border-black/10 bg-white shadow-xl">
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50">Featured</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50">Best selling</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50">Price: low to high</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50">Price: high to low</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50">Newest</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID PRODUK -->
+  <section class="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+    <!-- tips: ganti ke grid-cols-2/3/4 sesuai kebutuhan -->
+    <div class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <!-- ====== CARD PRODUK (duplikasi) ====== -->
+      <!-- Contoh 1 -->
+      <article class="group">
+        <a href="product-mg-01.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+          <div class="relative aspect-[4/5] overflow-hidden bg-gray-50">
+            <img src="../assets/prod-m4.png" alt="MagSafe Glitter Case Purple"
+                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+            <span class="absolute left-2 top-2 rounded-full bg-black/80 px-2 py-1 text-xs font-medium text-white">New</span>
+          </div>
+          <div class="space-y-2 p-3 sm:p-4">
+            <h3 class="line-clamp-2 text-sm font-medium text-gray-900">M4 Selfie Screen</h3>
+            <div class="flex items-center gap-2">
+              <span class="text-base font-semibold">IDR 1.850.000</span>
+              <span class="text-sm text-gray-400 line-through">IDR 1.999.000</span>
+            </div>
+            <!-- color dots -->
+            <div class="flex items-center gap-2">
+              <span aria-label="Black" class="h-4 w-4 rounded-full border border-black/10 bg-black"></span>
+            </div>
+            <button class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold hover:bg-gray-50">
+              Add to cart
+            </button>
+          </div>
+        </a>
+    </article>
+
+  <!-- FOOTER KAMU DI SINI -->
+
+  <!-- Klik di luar untuk nutup sort menu -->
+  <script>
+    document.addEventListener('click', (e) => {
+      const btn = document.getElementById('sortBtn');
+      const menu = document.getElementById('sortMenu');
+      if (!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>

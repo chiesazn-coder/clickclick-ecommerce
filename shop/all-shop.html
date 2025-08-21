@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop — Click Click</title>
+  <link rel="stylesheet" href="../dist/output.css?v=prod" />
+</head>
+<body class="bg-white text-gray-900">
+  <!-- Navbar copy dari index -->
+    <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2">
+                <img src="../assets/logo.png" alt="Click Click Logo" class="h-10">
+            </a>
+            <!-- Menu -->
+            <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
+                <li><a class="hover:text-black" href="index.html">Home</a></li>
+                <!-- Shop (dropdown slim) -->
+                <li class="relative group">
+                    <button
+                        class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                        >
+                        Shop
+                    </button>
+                
+                    <!-- panel -->
+                    <div
+                        class="absolute left-0 top-full mt-3 w-56 rounded-xl bg-white border border-black/10 shadow-xl
+                                opacity-0 scale-95 pointer-events-none transition
+                                group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                                group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                        >
+                        <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                            <li>
+                            <a href="/shop/shop-m4.html"
+                                class="block px-4 py-2 hover:bg-gray-50">M4 Series</a>
+                            </li>
+                            <li>
+                            <a href="/shop/t8d"
+                                class="block px-4 py-2 hover:bg-gray-50">T8D Series</a>
+                            </li>
+                            <li>
+                            <a href="/shop/t3b"
+                                class="block px-4 py-2 hover:bg-gray-50">T3B Series</a>
+                            </li>
+                            <!-- optional: Shop All -->
+                            <li>
+                            <a href="/shop"
+                                class="block px-4 py-2 font-semibold hover:bg-gray-50">Shop All</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- Features (dropdown slim) -->
+                <li class="relative group">
+                    <button
+                        class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                        aria-haspopup="true" aria-expanded="false"
+                        >
+                        Features
+                    </button>
+                
+                    <!-- panel -->
+                    <div
+                        class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl
+                                opacity-0 scale-95 pointer-events-none transition
+                                group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                                group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                        >
+                        <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                            <li>
+                            <a href="#features"
+                                class="block px-4 py-2 hover:bg-gray-50">Overview</a>
+                            </li>
+                            <li>
+                            <a href="#feat-magsafe"
+                                class="block px-4 py-2 hover:bg-gray-50">Key Features</a>
+                            </li>
+                            <li>
+                            <a href="#feat-design"
+                                class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a>
+                            </li>
+                            <li>
+                            <a href="#feat-install"
+                                class="block px-4 py-2 hover:bg-gray-50">Support</a>
+                            </li>
+                            <li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- FAQ (dropdown slim) -->
+                <li>
+                    <a href="faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">
+                    FAQ
+                    </a>
+                </li>
+                
+                <!-- Dropshipper (dropdown slim) -->
+                <li class="relative group">
+                    <button
+                        class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                        aria-haspopup="true" aria-expanded="false"
+                        >
+                        Dropshipper
+                    </button>
+                
+                    <!-- panel -->
+                    <div
+                        class="absolute left-0 top-full mt-3 w-72 rounded-xl bg-white border border-black/10 shadow-xl
+                                opacity-0 scale-95 pointer-events-none transition
+                                group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                                group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                        >
+                        <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                            <li><a href="#ds-why"     class="block px-4 py-2 hover:bg-gray-50">Kenapa Gabung?</a></li>
+                            <li><a href="#ds-pricing" class="block px-4 py-2 hover:bg-gray-50">Tier Harga & Komisi</a></li>
+                            <li><a href="#ds-join"    class="block px-4 py-2 hover:bg-gray-50">Cara Daftar</a></li>
+                            <li><a href="#ds-sop"     class="block px-4 py-2 hover:bg-gray-50">SOP Order & Fulfillment</a></li>
+                            <li><a href="#ds-stock"   class="block px-4 py-2 hover:bg-gray-50">Stok & Lead Time</a></li>
+                            <li><a href="#ds-assets"  class="block px-4 py-2 hover:bg-gray-50">Aset Marketing</a></li>
+                            <li><a href="#ds-returns" class="block px-4 py-2 hover:bg-gray-50">After-sales & Retur</a></li>
+                            <li>
+                            <a href="/dropshipper/apply"
+                                class="block px-4 py-2 font-semibold hover:bg-gray-50">Daftar Sekarang / Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="flex items-center gap-4">
+                <!-- Search -->
+                <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+                    <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                </button>
+                <!-- Cart -->
+                <button aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <circle cx="9" cy="19" r="1.8"></circle>
+                    <circle cx="17" cy="19" r="1.8"></circle>
+                </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+    <header class="mb-8 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold">All Products</h1>
+      <p class="mt-2 text-gray-600">Temukan semua produk Click Click dalam satu halaman.</p>
+    </header>
+
+    <!-- grid produk -->
+    <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+      <!-- card produk -->
+      <article class="group">
+        <a href="product-m4.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+          <div class="relative aspect-[4/5] bg-gray-50">
+            <img src="../assets/prod-m4.png" alt="M4 Selfie Screen"
+                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+            <span class="absolute left-2 top-2 rounded-full bg-black/80 px-2 py-1 text-xs font-medium text-white">New</span>
+          </div>
+          <div class="p-4 space-y-1">
+            <h3 class="text-sm font-medium">M4 Selfie Screen</h3>
+            <p class="text-base font-semibold">IDR 1.850.000 <span class="text-gray-400 line-through text-sm">IDR 1.999.000</span></p>
+          </div>
+        </a>
+      </article>
+
+      <!-- contoh produk lain -->
+      <article class="group">
+        <a href="product-t8d.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+          <div class="relative aspect-[4/5] bg-gray-50">
+            <img src="../assets/prod-t8d.png" alt="T8D Selfie Screen"
+                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+          </div>
+          <div class="p-4 space-y-1">
+            <h3 class="text-sm font-medium">T8D Selfie Screen</h3>
+            <p class="text-base font-semibold">IDR 1.650.000</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="group">
+        <a href="product-t8d.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+          <div class="relative aspect-[4/5] bg-gray-50">
+            <img src="../assets/prod-t1m.png" alt="T8D Selfie Screen"
+                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+          </div>
+          <div class="p-4 space-y-1">
+            <h3 class="text-sm font-medium">T8D Selfie Screen</h3>
+            <p class="text-base font-semibold">IDR 1.650.000</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="group">
+        <a href="product-t8d.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+          <div class="relative aspect-[4/5] bg-gray-50">
+            <img src="../assets/prod-t3b.png" alt="T8D Selfie Screen"
+                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+          </div>
+          <div class="p-4 space-y-1">
+            <h3 class="text-sm font-medium">T8D Selfie Screen</h3>
+            <p class="text-base font-semibold">IDR 1.650.000</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- tambahkan produk lainnya -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+</body>
+</html>

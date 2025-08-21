@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Click Click</title>
+  <!-- Hubungkan ke hasil build Tailwind -->
+  <link rel="stylesheet" href="./dist/output.css?v=prod" />
+
+    <style>
+        /* Basis: kondisi awal (sembunyi) */
+        .reveal {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0);
+        transition: opacity .7s ease, transform .7s ease;
+        will-change: opacity, transform;
+        }
+        /* Saat terlihat di viewport */
+        .reveal.show { opacity: 1; transform: none; }
+    
+        /* Variasi arah */
+        .fade-up   { transform: translate3d(0, 24px, 0); }
+        .fade-down { transform: translate3d(0, -24px, 0); }
+        .fade-left { transform: translate3d(24px, 0, 0); }
+        .fade-right{ transform: translate3d(-24px, 0, 0); }
+    
+        /* Variasi zoom */
+        .zoom-in   { transform: scale(.96); }
+        /* Durasi opsional lewat kelas */
+        .slow   { transition-duration: 1s; }
+        .slower { transition-duration: 1.25s; }
+    </style>
+
+    <style>
+        /* Container */
+        .promo-marquee{
+        --speed: 18s;             /* durasi scroll (lebih kecil = lebih cepat) */
+        background:#E04A82; color:#fff;
+        overflow:hidden; position:relative;
+        }
+        /* Track yg bergerak */
+        .promo-track{
+        display:flex; width:200%;
+        animation: promo-scroll var(--speed) linear infinite;
+        will-change: transform;
+        }
+        /* Dua konten identik, masing2 lebar 50% */
+        .promo-chunk{
+        flex:0 0 50%;
+        display:flex; align-items:center; justify-content:center;
+        gap:2rem; padding:.75rem 0;           /* tinggi bar */
+        white-space:nowrap; font-weight:600;  /* teks tebal */
+        }
+        /* Pause saat hover */
+        .promo-marquee:hover .promo-track{ animation-play-state: paused; }
+    
+        /* Arah reverse? tinggal tambahkan .reverse ke .promo-track */
+        .promo-track.reverse{ animation-direction: reverse; }
+    
+        @keyframes promo-scroll{
+        from{ transform: translateX(0); }
+        to  { transform: translateX(-50%); } /* geser setengah lebar karena ada 2 chunk */
+        }
+    
+        /* Prefer-reduced-motion: matikan animasi */
+        @media (prefers-reduced-motion: reduce){
+        .promo-track{ animation:none; transform:none; }
+        }
+    
+        /* Bedakan kecepatan mobile/desktop (opsional) */
+        @media (max-width: 767px){ .promo-marquee{ --speed: 22s; } }
+    </style>
+  
+  
+</head>
+
+<body class="font-sans bg-gray-50">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2">
+            <img src="assets/logo.png" alt="Click Click Logo" class="h-10">
+        </a>
+        <!-- Menu -->
+        <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
+            <li><a class="hover:text-black" href="#">Home</a></li>
+            <!-- Shop (dropdown slim) -->
+            <li class="relative group">
+                <button
+                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                    >
+                    Shop
+                </button>
+            
+                <!-- panel -->
+                <div
+                    class="absolute left-0 top-full mt-3 w-56 rounded-xl bg-white border border-black/10 shadow-xl
+                            opacity-0 scale-95 pointer-events-none transition
+                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                    >
+                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                        <li>
+                        <a href="/shop/m4"
+                            class="block px-4 py-2 hover:bg-gray-50">M4 Series</a>
+                        </li>
+                        <li>
+                        <a href="/shop/t8d"
+                            class="block px-4 py-2 hover:bg-gray-50">T8D Series</a>
+                        </li>
+                        <li>
+                        <a href="/shop/t3b"
+                            class="block px-4 py-2 hover:bg-gray-50">T3B Series</a>
+                        </li>
+                        <!-- optional: Shop All -->
+                        <li>
+                        <a href="/shop"
+                            class="block px-4 py-2 font-semibold hover:bg-gray-50">Shop All</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Features (dropdown slim) -->
+            <li class="relative group">
+                <button
+                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                    aria-haspopup="true" aria-expanded="false"
+                    >
+                    Features
+                </button>
+            
+                <!-- panel -->
+                <div
+                    class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl
+                            opacity-0 scale-95 pointer-events-none transition
+                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                    >
+                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                        <li>
+                        <a href="#features"
+                            class="block px-4 py-2 hover:bg-gray-50">Overview</a>
+                        </li>
+                        <li>
+                        <a href="#feat-magsafe"
+                            class="block px-4 py-2 hover:bg-gray-50">MagSafe Compatibility</a>
+                        </li>
+                        <li>
+                        <a href="#feat-design"
+                            class="block px-4 py-2 hover:bg-gray-50">Desain Tipis & Stylish</a>
+                        </li>
+                        <li>
+                        <a href="#feat-install"
+                            class="block px-4 py-2 hover:bg-gray-50">Instalasi Cepat (30 detik)</a>
+                        </li>
+                        <li>
+                        <a href="#feat-specs"
+                            class="block px-4 py-2 hover:bg-gray-50">Spesifikasi Teknis</a>
+                        </li>
+                        <li>
+                        <a href="#feat-compare"
+                            class="block px-4 py-2 hover:bg-gray-50">Perbandingan Model</a>
+                        </li>
+                        <li>
+                        <a href="#reviews"
+                            class="block px-4 py-2 hover:bg-gray-50">Ulasan Pengguna</a>
+                        </li>
+                        <li>
+                        <a href="#warranty"
+                            class="block px-4 py-2 font-semibold hover:bg-gray-50">Garansi & Dukungan</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- FAQ (dropdown slim) -->
+            <li class="relative group">
+                <button
+                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                    aria-haspopup="true" aria-expanded="false"
+                    >
+                FAQ
+                </button>
+            
+                <!-- panel -->
+                <div
+                    class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl
+                            opacity-0 scale-95 pointer-events-none transition
+                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                    >
+                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                        <li><a href="#faq-shipping" class="block px-4 py-2 hover:bg-gray-50">Shipping & Delivery</a></li>
+                        <li><a href="#faq-returns"  class="block px-4 py-2 hover:bg-gray-50">Returns & Exchanges</a></li>
+                        <li><a href="#faq-compat"   class="block px-4 py-2 hover:bg-gray-50">Device Compatibility</a></li>
+                        <li><a href="#faq-install"  class="block px-4 py-2 hover:bg-gray-50">Cara Pasang & Perawatan</a></li>
+                        <li><a href="#faq-orders"   class="block px-4 py-2 hover:bg-gray-50">Order & Pembayaran</a></li>
+                        <li><a href="#faq-warranty" class="block px-4 py-2 hover:bg-gray-50">Garansi & Klaim</a></li>
+                        <li><a href="#faq-trouble"  class="block px-4 py-2 hover:bg-gray-50">Troubleshooting</a></li>
+                        <li><a href="#faq-contact"  class="block px-4 py-2 font-semibold hover:bg-gray-50">Hubungi Support</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            <!-- Dropshipper (dropdown slim) -->
+            <li class="relative group">
+                <button
+                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
+                    aria-haspopup="true" aria-expanded="false"
+                    >
+                    Dropshipper
+                </button>
+            
+                <!-- panel -->
+                <div
+                    class="absolute left-0 top-full mt-3 w-72 rounded-xl bg-white border border-black/10 shadow-xl
+                            opacity-0 scale-95 pointer-events-none transition
+                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
+                    >
+                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+                        <li><a href="#ds-why"     class="block px-4 py-2 hover:bg-gray-50">Kenapa Gabung?</a></li>
+                        <li><a href="#ds-pricing" class="block px-4 py-2 hover:bg-gray-50">Tier Harga & Komisi</a></li>
+                        <li><a href="#ds-join"    class="block px-4 py-2 hover:bg-gray-50">Cara Daftar</a></li>
+                        <li><a href="#ds-sop"     class="block px-4 py-2 hover:bg-gray-50">SOP Order & Fulfillment</a></li>
+                        <li><a href="#ds-stock"   class="block px-4 py-2 hover:bg-gray-50">Stok & Lead Time</a></li>
+                        <li><a href="#ds-assets"  class="block px-4 py-2 hover:bg-gray-50">Aset Marketing</a></li>
+                        <li><a href="#ds-returns" class="block px-4 py-2 hover:bg-gray-50">After-sales & Retur</a></li>
+                        <li>
+                        <a href="/dropshipper/apply"
+                            class="block px-4 py-2 font-semibold hover:bg-gray-50">Daftar Sekarang / Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Icons -->
+        <div class="flex items-center gap-4">
+            <!-- Search -->
+            <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+                <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            </button>
+            <!-- Cart -->
+            <button aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="9" cy="19" r="1.8"></circle>
+                <circle cx="17" cy="19" r="1.8"></circle>
+            </svg>
+            </button>
+        </div>
+        </div>
+    </nav>
+
+
+    <!-- HERO: full-screen dengan background image -->
+    <header
+        class="relative bg-no-repeat bg-right bg-cover min-h-[calc(100vh-4rem)] reveal fade-up slow"
+        style="background-image: url('assets/background-3.jpeg'); background-size: 100%"
+        >
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="grid lg:grid-cols-2 h-full">
+            
+                <!-- LEFT: Text content -->
+                <div class="flex flex-col justify-center pt-10 md:pt-50 ml-5">
+                    <h1 class="leading-tight tracking-[-0.02em] text-black">
+                        <span class="block text-5xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
+                        <span class="block mt-2 text-3xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
+                    </h1>
+                
+                    <!-- CTA buttons -->
+                    <div class="mt-8 flex flex-wrap items-center gap-4">
+                        <!-- Primary -->
+                        <a href="#shop"
+                            class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
+                                    hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
+                            Shop Now
+                            <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    
+                        <!-- Secondary (samain style dengan Shop Now) -->
+                        <a href="#learnmore"
+                            class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
+                                    hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
+                            Learn More
+                            <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <!-- Ratings -->
+                    <div class="mt-5 flex items-center gap-2 text-sm">
+                        <!-- 5 stars -->
+                        <div class="flex">
+                            <!-- ulangi 5x -->
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        </div>
+                        <span class="text-gray-700">Reviews</span>
+                    </div>
+                </div>
+
+                <!-- RIGHT kosong (karena gambar sudah jadi background) -->
+                <div class="hidden lg:block"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== M4 SECTION ========== -->
+    <section id="m4" class="relative overflow-hidden py-20 md:py-50 bg-white min-h-[500px]">
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90"></div>
+    
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="grid grid-cols-2 items-center">
+                <div class="flex flex-col justify-center pb-20 md:pb-24">
+                    <p class="text-lg text-gray-700/80">New Arrival</p>
+                    <div class="leading-none">
+                        <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light text-gray-400/40 select-none">
+                            M4
+                        </span>
+                    </div>
+                </div>
+        
+                <div class="relative text-right pt-10 md:pt-30">
+                    <div class="leading-none">
+                        <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light tracking-wide text-gray-400/30 select-none">
+                            SLIM
+                        </span>
+                    </div>
+                    <p class="text-3xl sm:text-4xl font-light text-gray-900 mt-2">Stylist</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="absolute right-[0%] top-[-2%] w-[80%] sm:w-[75%] lg:w-[70%] xl:w-[65%] reveal fade-left slow">
+            <img src="assets/m4-top.png" alt="M4 top view" class="w-full h-auto drop-shadow-2xl select-none" />
+        </div>
+        <div class="absolute left-[0%] bottom-[-5%] w-[65%] sm:w-[80%] lg:w-[75%] xl:w-[70%] reveal fade-right slow">
+            <img src="assets/m4-bottom.png" alt="M4 bottom view" class="w-full h-auto drop-shadow-2xl select-none" />
+        </div>
+    </section>
+
+    <div class="promo-marquee mt-10">
+        <div class="promo-track">
+          <!-- CHUNK 1 -->
+          <div class="promo-chunk">
+            <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
+            <span>•</span>
+            <span>Gratis ongkir Jabodetabek</span>
+            <span>•</span>
+            <span>Stok terbatas</span>
+          </div>
+          <!-- CHUNK 2 (identik, untuk loop mulus) -->
+          <div class="promo-chunk" aria-hidden="true">
+            <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
+            <span>•</span>
+            <span>Gratis ongkir Jabodetabek</span>
+            <span>•</span>
+            <span>Stok terbatas</span>
+          </div>
+        </div>
+    </div>
+      
+
+    <!-- ========== TRENDING PRODUCTS (no card) ========== -->
+    <section id="trending" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal fade-up slow">
+            <!-- Title -->
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">TRENDING</h2>
+                <a href="#shop" class="inline-flex items-center gap-2 mt-4 rounded-lg border-2 border-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition">
+                Shop Now
+                </a>
+            </div>
+    
+            <!-- Grid -->
+            <div class="grid md:grid-cols-4 gap-10">
+                <!-- ITEM 1 -->
+                <figure class="group">
+                    <div class="relative inline-block w-full">
+                      <img src="assets/prod-t3b.png" alt="T3B Magnetic Safe Mirror Selfie Screen"
+                           class="w-full h-auto select-none pointer-events-none" />
+                  
+                      <!-- Rectangle Quick View bar -->
+                      <button
+                        class="absolute left-0 right-0 bottom-0
+                               bg-gray-200/95 backdrop-blur text-gray-900
+                               px-6 py-3 text-base font-medium border-t border-black/10
+                               md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0
+                               transition"
+                        data-name="T3B Magnetic Safe Mirror Selfie Screen"
+                        data-price="2.990.000"
+                        data-image="assets/prod-t3b.png"
+                        onclick="openQuickView(this)"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  
+                    <figcaption class="mt-4">
+                      <h3 class="font-medium text-gray-900">T3B Magnetic Safe Mirror Selfie Screen</h3>
+                      <p class="text-gray-700">1.990.000</p>
+                    </figcaption>
+                </figure>
+        
+                <!-- ITEM 2 -->
+                <figure class="group">
+                    <div class="relative inline-block w-full">
+                      <img src="assets/prod-t8d.png" alt="T3B Magnetic Safe Mirror Selfie Screen"
+                           class="w-full h-auto select-none pointer-events-none" />
+                  
+                      <!-- Rectangle Quick View bar -->
+                      <button
+                        class="absolute left-0 right-0 bottom-0
+                               bg-gray-200/95 backdrop-blur text-gray-900
+                               px-6 py-3 text-base font-medium border-t border-black/10
+                               md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0
+                               transition"
+                        data-name="T3B Magnetic Safe Mirror Selfie Screen"
+                        data-price="2.990.000"
+                        data-image="assets/prod-t3b.png"
+                        onclick="openQuickView(this)"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  
+                    <figcaption class="mt-4">
+                      <h3 class="font-medium text-gray-900">T3B Magnetic Safe Mirror Selfie Screen</h3>
+                      <p class="text-gray-700">1.990.000</p>
+                    </figcaption>
+                </figure>
+        
+                <!-- ITEM 3 -->
+                <figure class="group">
+                    <div class="relative inline-block w-full">
+                      <img src="assets/prod-m4.png" alt="T3B Magnetic Safe Mirror Selfie Screen"
+                           class="w-full h-auto select-none pointer-events-none" />
+                  
+                      <!-- Rectangle Quick View bar -->
+                      <button
+                        class="absolute left-0 right-0 bottom-0
+                               bg-gray-200/95 backdrop-blur text-gray-900
+                               px-6 py-3 text-base font-medium border-t border-black/10
+                               md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0
+                               transition"
+                        data-name="T3B Magnetic Safe Mirror Selfie Screen"
+                        data-price="2.990.000"
+                        data-image="assets/prod-t3b.png"
+                        onclick="openQuickView(this)"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  
+                    <figcaption class="mt-4">
+                      <h3 class="font-medium text-gray-900">T3B Magnetic Safe Mirror Selfie Screen</h3>
+                      <p class="text-gray-700">1.990.000</p>
+                    </figcaption>
+                </figure>
+                
+                <!-- ITEM 4 -->
+                <figure class="group">
+                    <div class="relative inline-block w-full">
+                      <img src="assets/prod-t1m.png" alt="T3B Magnetic Safe Mirror Selfie Screen"
+                           class="w-full h-auto select-none pointer-events-none" />
+                  
+                      <!-- Rectangle Quick View bar -->
+                      <button
+                        class="absolute left-0 right-0 bottom-0
+                               bg-gray-200/95 backdrop-blur text-gray-900
+                               px-6 py-3 text-base font-medium border-t border-black/10
+                               md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0
+                               transition"
+                        data-name="T3B Magnetic Safe Mirror Selfie Screen"
+                        data-price="2.990.000"
+                        data-image="assets/prod-t3b.png"
+                        onclick="openQuickView(this)"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  
+                    <figcaption class="mt-4">
+                      <h3 class="font-medium text-gray-900">T3B Magnetic Safe Mirror Selfie Screen</h3>
+                      <p class="text-gray-700">1.990.000</p>
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+    </section>
+  
+    <!-- ===== Quick View Modal (reusable) ===== -->
+    <div id="quickview-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
+        <button class="absolute inset-0 bg-black/50" onclick="closeQuickView()" aria-label="Close"></button>
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-xl w-full overflow-hidden">
+            <button class="absolute top-3 right-3 rounded-full p-2 hover:bg-gray-100" onclick="closeQuickView()" aria-label="Close">✕</button>
+            <div class="grid md:grid-cols-2 gap-6 p-6">
+                <div class="bg-gray-50 rounded-lg aspect-square flex items-center justify-center">
+                    <img id="qv-image" src="" alt="Product image" class="max-h-full">
+                </div>
+                <div>
+                    <h3 id="qv-name" class="text-xl font-semibold"></h3>
+                    <p id="qv-price" class="mt-1 text-lg text-gray-800"></p>
+                    <p class="mt-4 text-sm text-gray-600">Magnetic-safe mirror screen with premium coating. Compatible with most phones.</p>
+                    <div class="mt-6 flex items-center gap-3">
+                        <button class="inline-flex items-center justify-center rounded-lg bg-black text-white px-5 py-2 font-semibold hover:opacity-90">Add to Cart</button>
+                        <button class="inline-flex items-center justify-center rounded-lg border border-gray-300 px-5 py-2 font-semibold hover:bg-gray-50" onclick="closeQuickView()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <script>
+        function openQuickView(btn) {
+        const modal = document.getElementById('quickview-modal');
+        document.getElementById('qv-name').textContent  = btn.dataset.name || '';
+        document.getElementById('qv-price').textContent = btn.dataset.price || '';
+        const img = document.getElementById('qv-image');
+        img.src = btn.dataset.image || '';
+        img.alt = btn.dataset.name || 'Product image';
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        }
+        function closeQuickView() {
+        const modal = document.getElementById('quickview-modal');
+        modal.classList.add('hidden'); modal.classList.remove('flex');
+        document.body.style.overflow = '';
+        }
+    </script>
+    
+    <!-- ===== FEATURES SECTION ===== -->
+    <section id="features" class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center reveal fade-up slow">
+      
+          <div class="relative">
+            <img src="assets/feature-magsafe.png" alt="Click Click MagSafe"
+                 class="w-full max-w-2xl mx-auto object-contain" />
+          </div>
+      
+          <div class="space-y-10">
+            <!-- point 1 -->
+            <div id="feat-magsafe" class="max-w-xl scroll-mt-28">
+              <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2 shadow-[0_2px_0_rgb(0_0_0_/_0.08)]">
+                MagSafe Compatibility
+              </span>
+              <p class="mt-4 text-gray-800 leading-8 text-lg">
+                MagSafe yang menempel sempurna di belakang handphone, sehingga stabil digunakan kapan saja.
+              </p>
+            </div>
+      
+            <!-- point 2 -->
+            <div id="feat-design" class="max-w-xl scroll-mt-28">
+              <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2 shadow-[0_2px_0_rgb(0_0_0_/_0.08)]">
+                Desain Tipis & Stylish
+              </span>
+              <p class="mt-4 text-gray-800 leading-8 text-lg">
+                Desain slim yang ringan, mudah dibawa ke mana saja tanpa menambah beban di ponselmu.
+              </p>
+            </div>
+          </div>
+        </div>
+    </section>
+  
+    <!-- ===== PINK SECTION ===== -->
+
+    <section id="product-series" class="py-16 md:py-10 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 reveal fade-up slow">
+
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <img src="assets/m4-series-promo.png" alt="M4 Series Image" class="w-full h-auto object-cover max-h-[500px]" />
+            </div>
+
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <img src="assets/t8d-series-promo.png" alt="T8D Series Image" class="w-full h-auto object-cover max-h-[500px]" />
+            </div>
+
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <img src="assets/click-click-mirror-screen-promo.png" alt="Click Click Mirror Screen Image" class="w-full h-auto object-cover max-h-[500px]" />
+            </div>
+
+            <div class="rounded-lg overflow-hidden shadow-lg">
+                <img src="assets/feeds.jpg" alt="Click Click Mirror Screen Image" class="w-full h-auto object-cover max-h-[500px]" />
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ======= FOOTER ======= -->
+    <footer class="bg-white border-t border-black/5">
+        <!-- Top -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+        
+                <!-- Col 1 -->
+                <div>
+                    <h4 class="text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
+                    <ul class="mt-6 space-y-4 text-gray-800">
+                        <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
+                        <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
+                        <li><a href="#" class="hover:opacity-80">FAQ</a></li>
+                        <li><a href="#" class="hover:opacity-80">Contact</a></li>
+                        <li><a href="#" class="hover:opacity-80">Gallery</a></li>
+                    </ul>
+                </div>
+        
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
+                    <ul class="mt-6 space-y-4 text-gray-800">
+                        <li><a href="#" class="hover:opacity-80">Our Story</a></li>
+                        <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
+                        <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
+                    </ul>
+                </div>
+        
+                <!-- Col 3: Social -->
+                <div>
+                    <h4 class="text-lg font-semibold tracking-wide text-gray-900 uppercase">Stay Connected</h4>
+                    <ul class="mt-6 space-y-4 text-gray-800">
+                        <li class="flex items-center gap-3">
+                        <!-- Facebook -->
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.57 9.9v-7H7.9v-2.9h2.53V9.62c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.86h2.77l-.44 2.9h-2.33v7A10 10 0 0 0 22 12z"/></svg>
+                        <a href="#" class="hover:opacity-80">Facebook</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                        <!-- Instagram -->
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2.5A3 3 0 1 0 15 13a3 3 0 0 0-3-3zm5.25-3.25a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.25 6.75z"/></svg>
+                        <a href="#" class="hover:opacity-80">Instagram</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                        <!-- Pinterest -->
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.53 19.37c-.05-.82-.09-2.08.02-2.98.1-.72.64-4.59.64-4.59s-.16-.33-.16-.83c0-.78.45-1.36 1-1.36.47 0 .7.35.7.77 0 .47-.3 1.17-.45 1.82-.13.56.28 1.01.83 1.01 1 0 1.76-1.06 1.76-2.59 0-1.36-.98-2.31-2.38-2.31-1.62 0-2.57 1.22-2.57 2.48 0 .49.19 1.01.43 1.29a.17.17 0 0 1 .04.16c-.05.17-.16.56-.18.64-.03.1-.1.13-.23.08-.84-.39-1.37-1.6-1.37-2.57 0-2.09 1.52-4.01 4.38-4.01 2.3 0 4.09 1.64 4.09 3.83 0 2.28-1.44 4.12-3.45 4.12-.67 0-1.3-.35-1.52-.76l-.41 1.56c-.15.56-.55 1.25-.82 1.67A9.99 9.99 0 1 0 12 2z"/></svg>
+                        <a href="#" class="hover:opacity-80">Pinterest</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                        <!-- TikTok -->
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.5 1.7 1.9 3.1 3.6 3.7v3.1a7.7 7.7 0 0 1-3.6-1v6.7a6.5 6.5 0 1 1-6.6-6.5c.3 0 .6 0 .8.1v3.1c-.2-.1-.5-.1-.8-.1a3.4 3.4 0 1 0 3.4 3.4V3h3.2z"/></svg>
+                        <a href="#" class="hover:opacity-80">TikTok</a>
+                        </li>
+                    </ul>
+                </div>
+        
+                <!-- Col 4: Description -->
+                <div class="text-gray-800">
+                    <p class="text-lg leading-8">
+                        Welcome to <span class="font-semibold">Clickclick</span> — Designed for creators, built for every moment
+                    </p>
+                </div>
+            </div>
+    
+            <!-- Payments row -->
+            <div class="mt-12 flex flex-wrap items-center justify-center md:justify-end gap-3">
+                <!-- Ganti span berikut dengan <img src="assets/payments/xxx.svg" class="h-9"> jika punya file logo -->
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">AMEX</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">Apple&nbsp;Pay</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">Diners</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">Discover</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">G&nbsp;Pay</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">Mastercard</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">PayPal</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">Shop&nbsp;Pay</span>
+                <span class="px-3 py-2 rounded-md bg-white shadow text-sm">VISA</span>
+            </div>
+        </div>
+    
+        <!-- Bottom -->
+        <div class="border-t border-black/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center gap-4 md:gap-6 justify-between text-sm text-gray-700">
+                <p>© 2025 Clickclick, All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Observe semua elemen .reveal
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+      
+            const el = entry.target;
+      
+            // Stagger anak (jika ada data-stagger)
+            const sel = el.getAttribute('data-stagger');
+            if (sel) {
+              const kids = el.querySelectorAll(sel);
+              kids.forEach((k, i) => {
+                k.style.transitionDelay = (i * 90) + 'ms'; // 90ms antar item
+                k.classList.add('show');
+              });
+            }
+      
+            el.classList.add('show');
+            obs.unobserve(el);
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+      
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+  
+</body>
+</html>

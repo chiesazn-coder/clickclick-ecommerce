@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shop — Click Click</title>
   <link rel="stylesheet" href="../dist/output.css?v=prod" />
+  <style>
+    .opt { @apply rounded-lg border px-3 py-2 text-sm hover:bg-gray-50; }
+    .opt.disabled { @apply opacity-50 cursor-not-allowed bg-gray-50; }
+    .no-scroll { overflow: hidden; }
+  </style>
 </head>
 <body class="bg-white text-gray-900">
   <!-- Navbar copy dari index -->
@@ -134,15 +139,14 @@
     <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
       <!-- card produk -->
       <article class="group">
-        <a href="product-m4.html" class="block overflow-hidden rounded-2xl border border-gray-100">
+        <a href="#" class="block overflow-hidden rounded-2xl border border-gray-100 js-open-sheet">
           <div class="relative aspect-[4/5] bg-gray-50">
-            <img src="../assets/prod-m4.png" alt="M4 Selfie Screen"
+            <img src="../assets/prod-m4.png" alt="T8D Selfie Screen"
                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
-            <span class="absolute left-2 top-2 rounded-full bg-black/80 px-2 py-1 text-xs font-medium text-white">New</span>
           </div>
           <div class="p-4 space-y-1">
-            <h3 class="text-sm font-medium">M4 Selfie Screen</h3>
-            <p class="text-base font-semibold">IDR 1.850.000 <span class="text-gray-400 line-through text-sm">IDR 1.999.000</span></p>
+            <h3 class="text-sm font-medium">T8D Selfie Screen</h3>
+            <p class="text-base font-semibold">IDR 1.650.000</p>
           </div>
         </a>
       </article>
@@ -190,7 +194,164 @@
       <!-- tambahkan produk lainnya -->
     </div>
   </section>
+  <!-- Overlay -->
+    <div id="sheet-overlay"
+    class="fixed inset-0 z-[80] bg-black/50 opacity-0 pointer-events-none transition-opacity"></div>
 
+    <!-- Drawer -->
+    <aside id="sheet"
+        class="fixed right-0 top-0 z-[90] h-dvh w-full max-w-[720px] translate-x-full bg-white shadow-2xl transition-transform
+                md:max-w-[680px]">
+        <!-- Header -->
+        <header class="sticky top-0 flex items-center justify-between border-b border-gray-100 bg-white/80 px-5 py-4 backdrop-blur">
+        <h2 id="sheet-title" class="text-xl font-bold tracking-tight">Select Options</h2>
+        <button id="sheet-close" class="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-gray-50"
+            aria-label="Close panel">
+        ✕
+        </button>
+        </header>
+
+
+        <!-- Content scroll -->
+        <div class="sheet-body grid h-[calc(100dvh-64px)] grid-cols-1 gap-0 overflow-y-auto md:grid-cols-2">
+            <!-- Gallery -->
+            <div class="p-5">
+                <div class="aspect-[3/4] overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
+                <img id="sheet-image" src="../assets/prod-m4.png" alt="" class="h-full w-full object-contain">
+                </div>
+                <!-- thumbnails (opsional) -->
+                <div class="mt-3 grid grid-cols-4 gap-2">
+                <button class="thumb border rounded-lg overflow-hidden">
+                    <img src="../assets/product/M4 SLIDE 2.png" class="w-full h-16 object-cover" alt="">
+                </button>
+                <button class="thumb border rounded-lg overflow-hidden">
+                    <img src="../assets/product/M4 SLIDE 3.png" class="w-full h-16 object-cover" alt="">
+                </button>
+                <button class="thumb border rounded-lg overflow-hidden">
+                    <img src="../assets/product/M4 SLIDE 4.png" class="w-full h-16 object-cover" alt="">
+                </button>
+                <button class="thumb border rounded-lg overflow-hidden">
+                    <img src="../assets/product/M4 SLIDE 5.png" class="w-full h-16 object-cover" alt="">
+                </button>
+                </div>
+                </div>
+
+                <!-- Info & Options -->
+                <div class="flex flex-col p-5">
+                <div>
+                <h3 id="sheet-name" class="text-2xl font-extrabold leading-tight">M4 Selfie Screen</h3>
+                <div class="mt-2 text-xl font-semibold">IDR 1.850.000
+                    <span class="ml-2 text-gray-400 line-through text-base">IDR 1.999.000</span>
+                </div>
+                <a href="#shipping" class="mt-1 inline-block text-sm underline text-gray-500">Shipping calculated at checkout</a>
+                </div>
+
+                <!-- Size / Model -->
+                <div class="mt-5">
+                <p class="mb-2 text-sm font-semibold text-gray-700">SIZE / MODEL</p>
+                <div class="flex flex-wrap gap-2">
+                    <!-- contoh opsi -->
+                    <button class="opt">iPhone 16</button>
+                    <button class="opt">iPhone 16 Plus</button>
+                    <button class="opt">iPhone 15 Pro</button>
+                    <button class="opt">iPhone 14</button>
+                    <button class="opt disabled" disabled>iPhone 12 (sold out)</button>
+                </div>
+                </div>
+
+                <!-- Qty -->
+                <div class="mt-5 flex items-center gap-3">
+                <div class="inline-flex items-center rounded-full border">
+                    <button class="qty-btn px-3 py-2" data-delta="-1">−</button>
+                    <input id="qty" value="1" class="w-10 border-x text-center outline-none" />
+                    <button class="qty-btn px-3 py-2" data-delta="1">＋</button>
+                </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-5 grid grid-cols-1 gap-3">
+                <button class="h-11 rounded-xl border border-gray-900 bg-gray-900 text-white font-semibold hover:opacity-90">
+                    ADD TO CART
+                </button>
+                <button class="h-11 rounded-xl border font-semibold hover:bg-gray-50">
+                    More payment options
+                </button>
+                </div>
+
+                <!-- Detail ringkas -->
+                <div class="mt-6 space-y-3 text-sm text-gray-600">
+                <p>• Kompatibel MagSafe • Instalasi < 30 detik • 12 bulan garansi</p>
+                <p class="text-gray-500">By clicking “Add to cart”, you agree to our Terms & Returns policy.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        const sheet = document.getElementById('sheet');
+        const overlay = document.getElementById('sheet-overlay');
+        const closeBtn = document.getElementById('sheet-close');
+      
+        function openSheet(data = {}) {
+          // Optional: isi konten dinamis dari data-product
+          if (data.name) document.getElementById('sheet-name').textContent = data.name;
+          if (data.image) document.getElementById('sheet-image').src = data.image;
+      
+          sheet.classList.remove('translate-x-full');
+          overlay.classList.remove('pointer-events-none');
+          overlay.classList.add('opacity-100');
+          document.documentElement.classList.add('no-scroll');
+        }
+      
+        function closeSheet() {
+          sheet.classList.add('translate-x-full');
+          overlay.classList.add('pointer-events-none');
+          overlay.classList.remove('opacity-100');
+          document.documentElement.classList.remove('no-scroll');
+        }
+      
+        // Open from cards
+        document.querySelectorAll('.js-open-sheet').forEach(el => {
+          el.addEventListener('click', e => {
+            e.preventDefault();
+            const pid = el.getAttribute('data-product');
+            // contoh mapping produk sederhana
+            const map = {
+              'm4-selfie-screen': {
+                name: 'M4 Selfie Screen',
+                image: './assets/products/m4.jpg'
+              },
+              't8d-selfie-screen': {
+                name: 'T8D Selfie Screen',
+                image: './assets/products/t8d.jpg'
+              }
+            };
+            openSheet(map[pid] || {});
+          });
+        });
+      
+        // Close handlers
+        overlay.addEventListener('click', closeSheet);
+        closeBtn.addEventListener('click', closeSheet);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+      
+        // Qty
+        document.querySelectorAll('.qty-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const input = document.getElementById('qty');
+            const v = Math.max(1, (parseInt(input.value || '1', 10) + Number(btn.dataset.delta)));
+            input.value = v;
+          });
+        });
+      
+        // Thumbnail preview (opsional)
+        document.querySelectorAll('.thumb img').forEach(img => {
+          img.addEventListener('click', () => {
+            document.getElementById('sheet-image').src = img.src;
+          });
+        });
+      </script>
+      
   <!-- Footer -->
 </body>
 </html>

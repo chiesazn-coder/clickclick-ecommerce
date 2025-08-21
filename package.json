@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tailwindcss -i src/input.css -o dist/output.css --watch",
+    "vercel-build": "tailwindcss -i src/input.css -o dist/output.css --minify",
     "build": "tailwindcss -i src/input.css -o dist/output.css --minify",
+    "dev": "tailwindcss -i src/input.css -o dist/output.css --watch",
     "preview": "serve -s ."
   },
   "devDependencies": {

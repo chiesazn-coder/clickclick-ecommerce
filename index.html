@@ -433,11 +433,13 @@
                 </div>
         
                 <div class="mt-5 flex items-center gap-3">
-                    <!-- qty stepper -->
-                    <div class="inline-flex items-center border rounded-xl">
-                    <button class="px-3 py-2" data-qv-dec aria-label="Decrease">−</button>
-                    <input id="qv-qty" class="w-12 text-center outline-none" type="number" value="1" min="1">
-                    <button class="px-3 py-2" data-qv-inc aria-label="Increase">+</button>
+                    <!-- Qty Stepper -->
+                    <div class="inline-flex items-center rounded-2xl border h-12" role="group" aria-label="Quantity">
+                        <button type="button" class="w-10 h-12 text-xl" data-qv-dec aria-label="Decrease">−</button>
+                        <input id="qv-qty"
+                            class="w-12 h-12 text-center outline-none text-base"
+                            type="number" inputmode="numeric" value="1" min="1">
+                        <button type="button" class="w-10 h-12 text-xl" data-qv-inc aria-label="Increase">+</button>
                     </div>
         
                     <button id="qv-add" class="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 font-semibold hover:opacity-90">
@@ -458,6 +460,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <script>
         (function(){

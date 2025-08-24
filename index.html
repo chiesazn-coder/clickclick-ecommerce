@@ -5,971 +5,642 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Click Click</title>
-  <!-- Hubungkan ke hasil build Tailwind -->
+  <!-- Tailwind build kamu -->
   <link rel="stylesheet" href="./dist/output.css?v=prod" />
 
-    <style>
-        /* Basis: kondisi awal (sembunyi) */
-        .reveal {
-        opacity: 0;
-        transform: translate3d(0, 12px, 0);
-        transition: opacity .7s ease, transform .7s ease;
-        will-change: opacity, transform;
-        }
-        /* Saat terlihat di viewport */
-        .reveal.show { opacity: 1; transform: none; }
-    
-        /* Variasi arah */
-        .fade-up   { transform: translate3d(0, 24px, 0); }
-        .fade-down { transform: translate3d(0, -24px, 0); }
-        .fade-left { transform: translate3d(24px, 0, 0); }
-        .fade-right{ transform: translate3d(-24px, 0, 0); }
-    
-        /* Variasi zoom */
-        .zoom-in   { transform: scale(.96); }
-        /* Durasi opsional lewat kelas */
-        .slow   { transition-duration: 1s; }
-        .slower { transition-duration: 1.25s; }
-    </style>
+  <!-- Anim reveal -->
+  <style>
+    .reveal{opacity:0;transform:translate3d(0,12px,0);transition:opacity .7s ease,transform .7s ease;will-change:opacity,transform}
+    .reveal.show{opacity:1;transform:none}
+    .fade-up{transform:translate3d(0,24px,0)} .fade-down{transform:translate3d(0,-24px,0)}
+    .fade-left{transform:translate3d(24px,0,0)} .fade-right{transform:translate3d(-24px,0,0)}
+    .zoom-in{transform:scale(.96)} .slow{transition-duration:1s} .slower{transition-duration:1.25s}
+  </style>
 
-    <style>
-        /* Container */
-        .promo-marquee{
-        --speed: 18s;             /* durasi scroll (lebih kecil = lebih cepat) */
-        background:#E04A82; color:#fff;
-        overflow:hidden; position:relative;
-        }
-        /* Track yg bergerak */
-        .promo-track{
-        display:flex; width:200%;
-        animation: promo-scroll var(--speed) linear infinite;
-        will-change: transform;
-        }
-        /* Dua konten identik, masing2 lebar 50% */
-        .promo-chunk{
-        flex:0 0 50%;
-        display:flex; align-items:center; justify-content:center;
-        gap:2rem; padding:.75rem 0;           /* tinggi bar */
-        white-space:nowrap; font-weight:600;  /* teks tebal */
-        }
-        /* Pause saat hover */
-        .promo-marquee:hover .promo-track{ animation-play-state: paused; }
-    
-        /* Arah reverse? tinggal tambahkan .reverse ke .promo-track */
-        .promo-track.reverse{ animation-direction: reverse; }
-    
-        @keyframes promo-scroll{
-        from{ transform: translateX(0); }
-        to  { transform: translateX(-50%); } /* geser setengah lebar karena ada 2 chunk */
-        }
-    
-        /* Prefer-reduced-motion: matikan animasi */
-        @media (prefers-reduced-motion: reduce){
-        .promo-track{ animation:none; transform:none; }
-        }
-    
-        /* Bedakan kecepatan mobile/desktop (opsional) */
-        @media (max-width: 767px){ .promo-marquee{ --speed: 22s; } }
-    </style>
-  
-  
+  <!-- Promo marquee -->
+  <style>
+    .promo-marquee{--speed:18s;background:#E04A82;color:#fff;overflow:hidden;position:relative}
+    .promo-track{display:flex;width:200%;animation:promo-scroll var(--speed) linear infinite;will-change:transform}
+    .promo-chunk{flex:0 0 50%;display:flex;align-items:center;justify-content:center;gap:2rem;padding:.75rem 0;white-space:nowrap;font-weight:600}
+    .promo-marquee:hover .promo-track{animation-play-state:paused}
+    .promo-track.reverse{animation-direction:reverse}
+    @keyframes promo-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @media (prefers-reduced-motion:reduce){.promo-track{animation:none;transform:none}}
+    @media (max-width:767px){.promo-marquee{--speed:22s}}
+  </style>
 </head>
 
 <body class="font-sans bg-gray-50">
 
-    <!-- NAVBAR -->
-    <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <!-- Logo -->
-        <a href="/" class="flex items-center gap-2">
-            <img src="assets/logo.png" alt="Click Click Logo" class="h-10">
-        </a>
-        <!-- Menu -->
-        <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
-            <li><a class="hover:text-black" href="#">Home</a></li>
-            <!-- Shop (dropdown slim) -->
-            <li>
-                <a href="./shop/all-shop.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">
-                  Shop
-                </a>
-            </li>
-            <!-- Features (dropdown slim) -->
-            <li class="relative group">
-                <button
-                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
-                    aria-haspopup="true" aria-expanded="false"
-                    >
-                    Features
-                </button>
-            
-                <!-- panel -->
-                <div
-                    class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl
-                            opacity-0 scale-95 pointer-events-none transition
-                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
-                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
-                    >
-                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
-                        <li>
-                        <a href="#features"
-                            class="block px-4 py-2 hover:bg-gray-50">Overview</a>
-                        </li>
-                        <li>
-                        <a href="#feat-magsafe"
-                            class="block px-4 py-2 hover:bg-gray-50">Key Features</a>
-                        </li>
-                        <li>
-                        <a href="#feat-design"
-                            class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a>
-                        </li>
-                        <li>
-                        <a href="#feat-install"
-                            class="block px-4 py-2 hover:bg-gray-50">Support</a>
-                        </li>
-                        <li>
-                    </ul>
-                </div>
-            </li>
-            
-            <!-- Dropshipper (dropdown slim) -->
-            <li class="relative group">
-                <button
-                    class="px-4 py-2 font-medium text-gray-700 hover:text-black focus:outline-none"
-                    aria-haspopup="true" aria-expanded="false"
-                    >
-                    Dropshipper
-                </button>
-            
-                <!-- panel -->
-                <div
-                    class="absolute left-0 top-full mt-3 w-72 rounded-xl bg-white border border-black/10 shadow-xl
-                            opacity-0 scale-95 pointer-events-none transition
-                            group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
-                            group-focus-within:opacity-100 group-focus-within:scale-100 z-50"
-                    >
-                    <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
-                        <li><a href="#ds-why"     class="block px-4 py-2 hover:bg-gray-50">Kenapa Gabung?</a></li>
-                        <li><a href="#ds-pricing" class="block px-4 py-2 hover:bg-gray-50">Tier Harga & Komisi</a></li>
-                        <li><a href="#ds-join"    class="block px-4 py-2 hover:bg-gray-50">Cara Daftar</a></li>
-                        <li><a href="#ds-sop"     class="block px-4 py-2 hover:bg-gray-50">SOP Order & Fulfillment</a></li>
-                        <li><a href="#ds-stock"   class="block px-4 py-2 hover:bg-gray-50">Stok & Lead Time</a></li>
-                        <li><a href="#ds-assets"  class="block px-4 py-2 hover:bg-gray-50">Aset Marketing</a></li>
-                        <li><a href="#ds-returns" class="block px-4 py-2 hover:bg-gray-50">After-sales & Retur</a></li>
-                        <li>
-                        <a href="/dropshipper/apply"
-                            class="block px-4 py-2 font-semibold hover:bg-gray-50">Daftar Sekarang / Login</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+  <!-- NAVBAR -->
+  <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="Click Click Logo" class="h-10">
+      </a>
 
-            <!-- FAQ (dropdown slim) -->
-            <li>
-                <a href="faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">
-                  FAQ
-                </a>
-            </li>
-        </ul>
+      <!-- Menu -->
+      <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
+        <li><a class="hover:text-black" href="#">Home</a></li>
+        <li><a href="./shop/all-shop.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">Shop</a></li>
+        <li class="relative group">
+          <button class="px-4 py-2 font-medium text-gray-700 hover:text-black">Features</button>
+          <div class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl opacity-0 scale-95 pointer-events-none transition group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto z-50">
+            <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+              <li><a href="#features" class="block px-4 py-2 hover:bg-gray-50">Overview</a></li>
+              <li><a href="#feat-magsafe" class="block px-4 py-2 hover:bg-gray-50">Key Features</a></li>
+              <li><a href="#feat-design" class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a></li>
+              <li><a href="#feat-install" class="block px-4 py-2 hover:bg-gray-50">Support</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">FAQ</a></li>
+      </ul>
 
-        <!-- Icons -->
-        <div class="flex items-center gap-4">
-            <!-- Search -->
-            <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
-                <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
-            </svg>
+      <!-- Icons -->
+      <div class="flex items-center gap-4">
+        <!-- Search -->
+        <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+            <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </button>
+        <!-- Cart + Badge -->
+        <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="9" cy="19" r="1.8"></circle>
+            <circle cx="17" cy="19" r="1.8"></circle>
+          </svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="relative bg-cover bg-center sm:bg-right min-h-[calc(100vh-4rem)] reveal fade-up slow" style="background-image:url('assets/background-3.jpeg')">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+      <div class="grid lg:grid-cols-2 h-full">
+        <div class="flex flex-col justify-center lg:justify-start pt-24 sm:pt-32 lg:pt-50 ml-0 sm:ml-5">
+          <h1 class="leading-tight tracking-[-0.02em] text-black">
+            <span class="block text-4xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
+            <span class="block mt-2 text-2xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
+          </h1>
+          <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+            <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
+            <a href="#features" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition">Learn More</a>
+          </div>
+        </div>
+        <div class="hidden lg:block"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION M4 -->
+  <section id="m4" class="relative overflow-hidden py-20 md:py-50 bg-white min-h-[500px]">
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+      <div class="grid grid-cols-2 items-center">
+        <div class="flex flex-col justify-center pb-20 md:pb-24">
+          <p class="text-lg text-gray-700/80">New Arrival</p>
+          <div class="leading-none">
+            <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light text-gray-400/40 select-none">M4</span>
+          </div>
+        </div>
+        <div class="relative text-right pt-10 md:pt-30">
+          <div class="leading-none">
+            <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light tracking-wide text-gray-400/30 select-none">SLIM</span>
+          </div>
+          <p class="text-3xl sm:text-4xl font-light text-gray-900 mt-2">Stylist</p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute right-[0%] top-[-2%] w-[80%] sm:w-[75%] lg:w-[70%] xl:w-[65%] reveal fade-left slow">
+      <img src="assets/m4-top.png" alt="M4 top view" class="w-full h-auto drop-shadow-2xl select-none" />
+    </div>
+    <div class="absolute left-[0%] bottom-[-5%] w-[65%] sm:w-[80%] lg:w-[75%] xl:w-[70%] reveal fade-right slow">
+      <img src="assets/m4-bottom.png" alt="M4 bottom view" class="w-full h-auto drop-shadow-2xl select-none" />
+    </div>
+  </section>
+
+  <div class="promo-marquee mt-10">
+    <div class="promo-track">
+      <div class="promo-chunk">
+        <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
+        <span>•</span><span>Gratis ongkir Jabodetabek</span><span>•</span><span>Stok terbatas</span>
+      </div>
+      <div class="promo-chunk" aria-hidden="true">
+        <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
+        <span>•</span><span>Gratis ongkir Jabodetabek</span><span>•</span><span>Stok terbatas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRENDING -->
+  <section id="trending" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal fade-up slow">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">TRENDING</h2>
+        <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 mt-4 rounded-lg border-2 border-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-10">
+        <!-- ITEM 1 -->
+        <figure class="group">
+          <div class="relative inline-block w-full">
+            <img src="assets/prod-m4.png" alt="T3B Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+            <button
+              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              data-product='{
+                "id":"m4",
+                "title":"MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone",
+                "price":1990000,
+                "compareAt":2990000,
+                "images":["assets/prod-m4.png","./assets/product/M4 SLIDE 2.png","./assets/product/M4 SLIDE 3.png","./assets/product/M4 SLIDE 4.png"]
+              }'>Quick View</button>
+          </div>
+          <figcaption class="mt-4">
+            <h3 class="font-medium text-gray-900">MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone</h3>
+            <p class="text-gray-700">1.990.000</p>
+          </figcaption>
+        </figure>
+
+        <!-- ITEM 2 -->
+        <figure class="group">
+          <div class="relative inline-block w-full">
+            <img src="assets/prod-t8d.png" alt="T8D Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+            <button
+              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              data-product='{
+                "id":"t8d",
+                "title":"T8D Magnetic Safe Mirror Selfie Screen",
+                "price":1850000,
+                "compareAt":1999000,
+                "images":["assets/prod-t8d.png","./assets/product/T8D SLIDE 2.png","./assets/product/T8D SLIDE 3.png","./assets/product/T8D SLIDE 5.png"]
+              }'>Quick View</button>
+          </div>
+          <figcaption class="mt-4">
+            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
+            <p class="text-gray-700">1.850.000</p>
+          </figcaption>
+        </figure>
+
+        <!-- ITEM 3 -->
+        <figure class="group">
+          <div class="relative inline-block w-full">
+            <img src="assets/prod-t3b.png" alt="T3B Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+            <button
+              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              data-product='{
+                "id":"t3b",
+                "title":"T3B Magnetic Safe Mirror Selfie Screen",
+                "price":1850000,
+                "compareAt":1999000,
+                "images":["assets/prod-t3b.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
+              }'>Quick View</button>
+          </div>
+          <figcaption class="mt-4">
+            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
+            <p class="text-gray-700">1.850.000</p>
+          </figcaption>
+        </figure>
+
+        <!-- ITEM 4 -->
+        <figure class="group">
+          <div class="relative inline-block w-full">
+            <img src="assets/prod-t1m.png" alt="T1M Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+            <button
+              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              data-product='{
+                "id":"t1m",
+                "title":"T1M Magnetic Safe Mirror Selfie Screen",
+                "price":1850000,
+                "compareAt":1999000,
+                "images":["assets/prod-t1m.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
+              }'>Quick View</button>
+          </div>
+          <figcaption class="mt-4">
+            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
+            <p class="text-gray-700">1.850.000</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK VIEW MODAL -->
+  <div id="qv" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
+    <button class="absolute inset-0 bg-black/50" data-qv-close aria-label="Close"></button>
+    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden outline-none" role="dialog" aria-modal="true" aria-labelledby="qv-title">
+      <button class="absolute top-3 right-3 rounded-full p-2 hover:bg-gray-100" data-qv-close aria-label="Close">✕</button>
+      <div class="grid md:grid-cols-2 gap-6 px-6 pt-10 pb-6 md:px-10 md:pt-14">
+        <!-- LEFT: gallery -->
+        <div>
+          <div class="bg-gray-50 rounded-xl aspect-square flex items-center justify-center">
+            <img id="qv-hero" src="" alt="" class="max-h-full object-contain">
+          </div>
+          <div id="qv-thumbs" class="mt-3 flex gap-2 overflow-x-auto"></div>
+        </div>
+
+        <!-- RIGHT: details -->
+        <div class="flex flex-col justify-start md:pt-6 lg:pt-10">
+          <h3 id="qv-title" class="text-2xl font-semibold"></h3>
+          <div class="mt-2 flex items-baseline gap-3">
+            <span id="qv-price" class="text-xl font-bold"></span>
+            <span id="qv-compare" class="text-gray-400 line-through"></span>
+          </div>
+
+          <div class="mt-5">
+            <p id="qv-optname" class="text-xs font-semibold tracking-wider text-gray-600"></p>
+            <div id="qv-options" class="mt-2 flex flex-wrap gap-2"></div>
+          </div>
+
+          <div class="mt-5 flex items-center gap-3">
+            <div class="inline-flex items-center rounded-2xl border h-12" role="group" aria-label="Quantity">
+              <button type="button" class="w-10 h-12 text-xl" data-qv-dec aria-label="Decrease">−</button>
+              <input id="qv-qty" class="w-12 h-12 text-center outline-none text-base" type="number" inputmode="numeric" value="1" min="1">
+              <button type="button" class="w-10 h-12 text-xl" data-qv-inc aria-label="Increase">+</button>
+            </div>
+
+            <button id="qv-add" class="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 font-semibold hover:opacity-90">
+              ADD TO CART
             </button>
-            <!-- Cart -->
-            <button id="open-cart" aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                <circle cx="9" cy="19" r="1.8"></circle>
-                <circle cx="17" cy="19" r="1.8"></circle>
-            </svg>
+          </div>
+
+          <button class="mt-3 w-full rounded-xl border px-6 py-3 font-semibold hover:bg-gray-50">
+            More payment options
+          </button>
+
+          <ul class="mt-5 text-sm text-gray-600 space-y-1">
+            <li>• Kompatibel MagSafe</li>
+            <li>• Instalasi &lt; 30 detik</li>
+            <li>• 12 bulan garansi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES (singkat) -->
+  <section id="features" class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center reveal fade-up slow">
+      <div class="relative">
+        <img src="assets/feature-magsafe.png" alt="Click Click MagSafe" class="w-full max-w-2xl mx-auto object-contain" />
+      </div>
+      <div class="space-y-10">
+        <div id="feat-magsafe" class="max-w-xl scroll-mt-28">
+          <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2">MagSafe Compatibility</span>
+          <p class="mt-4 text-gray-800 leading-8 text-lg">MagSafe yang menempel sempurna di belakang handphone, sehingga stabil digunakan kapan saja.</p>
+        </div>
+        <div id="feat-design" class="max-w-xl scroll-mt-28">
+          <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2">Desain Tipis & Stylish</span>
+          <p class="mt-4 text-gray-800 leading-8 text-lg">Desain slim yang ringan, mudah dibawa ke mana saja tanpa menambah beban di ponselmu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (diringkas) -->
+  <footer class="bg-white border-t border-black/5 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
+          <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
+            <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
+            <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
+            <li><a href="#" class="hover:opacity-80">FAQ</a></li>
+            <li><a href="#" class="hover:opacity-80">Contact</a></li>
+            <li><a href="#" class="hover:opacity-80">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
+          <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
+            <li><a href="#" class="hover:opacity-80">Our Story</a></li>
+            <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
+            <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
+            <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="text-gray-800">
+          <p class="leading-7 md:leading-8 text-sm md:text-base">Welcome to <span class="font-semibold">Clickclick</span> — Designed for creators, built for every moment</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <img src="assets/payments/spay-logo.png" class="h-9">
+          <img src="assets/payments/MasterCard_Logo.png" class="h-9">
+          <img src="assets/payments/bca.png" class="h-9">
+          <img src="assets/payments/bni.png" class="h-6">
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-black/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between text-xs sm:text-sm text-gray-700">
+        <p>© 2025 Clickclick, All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== CART DRAWER ===== -->
+  <div id="cart-drawer" class="fixed inset-0 z-[70] hidden">
+    <!-- backdrop -->
+    <button class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300" data-cart-close></button>
+    <!-- panel -->
+    <aside id="cart-panel" class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-300 will-change-transform flex flex-col">
+      <div class="flex items-center justify-between px-5 py-4 border-b">
+        <h3 class="text-lg font-semibold tracking-wide">CART</h3>
+        <button class="p-2 rounded-full hover:bg-gray-100" data-cart-close aria-label="Close">✕</button>
+      </div>
+      <div class="px-5 py-4 border-b space-y-2">
+        <p id="fs-text" class="text-sm text-gray-700">Spend IDR 0 more for FREE shipping.</p>
+        <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+          <div id="fs-bar" class="h-full bg-black w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+      <div id="cart-items" class="flex-1 overflow-y-auto px-5 divide-y"></div>
+      <div class="border-t p-5 space-y-3">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-600">Subtotal</span>
+          <strong id="cart-subtotal">IDR 0</strong>
+        </div>
+        <p class="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
+        <button class="w-full h-12 rounded-full bg-black text-white font-semibold hover:opacity-90">
+          CHECKOUT • <span id="cart-total">IDR 0</span>
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ================== SCRIPTS DI PALING BAWAH ================== -->
+
+  <!-- Reveal on scroll -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const sel = el.getAttribute('data-stagger');
+          if (sel) {
+            const kids = el.querySelectorAll(sel);
+            kids.forEach((k, i) => { k.style.transitionDelay = (i * 90)+'ms'; k.classList.add('show'); });
+          }
+          el.classList.add('show'); obs.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+  </script>
+
+  <!-- Quick View logic (EXPOSE ke global) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const $ = (sel, root=document)=>root.querySelector(sel);
+      const $$ = (sel, root=document)=>[...root.querySelectorAll(sel)];
+      const modal = $('#qv');
+      const hero  = $('#qv-hero');
+      const thumbs= $('#qv-thumbs');
+      const title = $('#qv-title');
+      const price = $('#qv-price');
+      const compare = $('#qv-compare');
+      const optName = $('#qv-optname');
+      const optWrap = $('#qv-options');
+      const qtyInput= $('#qv-qty');
+      let currentProduct = null;
+      let chosenOption = null;
+      let lastFocus = null;
+
+      const fIDR = n => new Intl.NumberFormat('id-ID').format(n);
+
+      $$('.js-open-qv').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          try { openQuickView(JSON.parse(btn.dataset.product)); }
+          catch(e){ console.error('Invalid data-product JSON', e); }
+        });
+      });
+
+      function openQuickView(p){
+        currentProduct = p;
+        window.currentProduct = currentProduct;   // EXPOSE
+        window.chosenOption   = chosenOption;     // EXPOSE
+        lastFocus = document.activeElement;
+
+        title.textContent = p.title || '';
+        price.textContent = p.price ? `IDR ${fIDR(p.price)}` : '';
+        compare.textContent = p.compareAt && p.compareAt>p.price ? `IDR ${fIDR(p.compareAt)}` : '';
+
+        const imgs = Array.isArray(p.images) && p.images.length ? p.images : ['assets/placeholder.png'];
+        hero.src = imgs[0]; hero.alt = p.title || 'Product image';
+        thumbs.innerHTML = '';
+        imgs.forEach((src,i)=>{
+          const b = document.createElement('button');
+          b.className = 'w-16 h-16 rounded-lg overflow-hidden border hover:opacity-80';
+          b.innerHTML = `<img src="${src}" alt="" class="w-full h-full object-cover">`;
+          b.addEventListener('click', ()=>{ hero.src = src; });
+          thumbs.appendChild(b);
+          if(i===0) b.setAttribute('aria-current','true');
+        });
+
+        optName.textContent = p.optionName || '';
+        optWrap.innerHTML = '';
+        (p.options||[]).forEach(opt=>{
+          const disabled = (p.disabled||[]).includes(opt);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = opt;
+          btn.disabled = disabled;
+          btn.className = `px-3 py-2 rounded-full border text-sm ${disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-50'}`;
+          btn.addEventListener('click', ()=>{
+            chosenOption = opt;
+            window.chosenOption = chosenOption; // EXPOSE change
+            $$('.is-active', optWrap).forEach(el=>el.classList.remove('is-active','ring-2','ring-black'));
+            btn.classList.add('is-active','ring-2','ring-black');
+          });
+          optWrap.appendChild(btn);
+        });
+        const firstEnabled = $$('#qv-options button:not([disabled])')[0];
+        if(firstEnabled){ firstEnabled.click(); }
+
+        qtyInput.value = 1;
+
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        $('[data-qv-close]', modal).focus();
+      }
+
+      function closeQuickView(){
+        modal.classList.add('hidden'); modal.classList.remove('flex');
+        document.body.style.overflow = '';
+        if(lastFocus) lastFocus.focus();
+      }
+      window.closeQuickView = closeQuickView; // EXPOSE
+
+      $$('[data-qv-close]', modal).forEach(el=>el.addEventListener('click', closeQuickView));
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeQuickView();
+        if(e.key === 'Tab' && !modal.classList.contains('hidden')) {
+          const focusables = $$('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])', modal).filter(el=>!el.disabled);
+          if(!focusables.length) return;
+          const first = focusables[0], last = focusables[focusables.length-1];
+          if(e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
+          else if(!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
+        }
+      });
+
+      $('[data-qv-inc]', modal).addEventListener('click', ()=> qtyInput.value = Math.max(1, (parseInt(qtyInput.value)||1) + 1));
+      $('[data-qv-dec]', modal).addEventListener('click', ()=> qtyInput.value = Math.max(1, (parseInt(qtyInput.value)||1) - 1));
+      // NOTE: tidak ada handler add-to-cart di sini — dihook dari script Cart
+    });
+  </script>
+
+  <!-- Cart Drawer + state -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const CART_KEY = 'cc_cart_v1';
+      const FREE_SHIP_THRESHOLD = 1000000;
+
+      let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+      const $  = (s,r=document)=>r.querySelector(s);
+      const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+      const fIDR = n => 'IDR ' + new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
+
+      const drawer = $('#cart-drawer');
+      const panel  = $('#cart-panel');
+      const backdrop = $('[data-cart-close]', drawer);
+      const itemsEl = $('#cart-items');
+      const subEl   = $('#cart-subtotal');
+      const totalEl = $('#cart-total');
+      const fsText  = $('#fs-text');
+      const fsBar   = $('#fs-bar');
+      const badge   = $('#cart-badge');
+
+      function save(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+      function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
+      function cartCount(){ return cart.reduce((s,i)=>s + i.qty, 0); }
+
+      function openCart(){
+        drawer.classList.remove('hidden');
+        requestAnimationFrame(()=>{ backdrop.style.opacity = '1'; panel.classList.remove('translate-x-full'); });
+        document.body.style.overflow = 'hidden';
+      }
+      function closeCart(){
+        backdrop.style.opacity = '0';
+        panel.classList.add('translate-x-full');
+        setTimeout(()=>drawer.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+      }
+
+      function updateFreeShipping(sb){
+        const remain = Math.max(0, FREE_SHIP_THRESHOLD - sb);
+        fsText.textContent = remain > 0 ? `Spend ${fIDR(remain)} more for FREE shipping.` : `You're qualified for FREE shipping!`;
+        fsBar.style.width = Math.min(100, (sb / FREE_SHIP_THRESHOLD) * 100) + '%';
+      }
+
+      function render(){
+        itemsEl.innerHTML = cart.length ? '' : `<div class="py-8 text-sm text-gray-500 text-center">Your cart is empty.</div>`;
+        cart.forEach(it=>{
+          const row = document.createElement('div');
+          row.className = 'py-4 flex items-center gap-3';
+          row.dataset.key = it.key;
+          row.innerHTML = `
+            <img src="${it.image}" alt="" class="w-16 h-16 rounded-md object-cover bg-gray-50">
+            <div class="flex-1">
+              <div class="text-sm font-medium leading-tight">${it.title}</div>
+              ${it.option ? `<div class="text-xs text-gray-500 mt-0.5">${it.option}</div>` : ''}
+              <div class="mt-2 inline-flex items-center rounded-full border">
+                <button class="w-8 h-8" data-dec aria-label="Decrease">−</button>
+                <span class="w-8 text-center select-none" data-qty>${it.qty}</span>
+                <button class="w-8 h-8" data-inc aria-label="Increase">+</button>
+              </div>
+            </div>
+            <div class="text-sm font-medium">${fIDR(it.price * it.qty)}</div>
+            <button class="p-2 text-gray-500 hover:text-black" data-remove aria-label="Remove">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 7v8h2v-8h-2Zm4 0v8h2v-8h-2ZM6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/></svg>
             </button>
-        </div>
-        </div>
-    </nav>
-
-
-    <!-- HERO: full-screen dengan background image -->
-    <header
-        class="relative bg-cover bg-center sm:bg-right min-h-[calc(100vh-4rem)] reveal fade-up slow"
-        style="background-image: url('assets/background-3.jpeg')"
-    >
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div class="grid lg:grid-cols-2 h-full">
-                <!-- Tambahin justify-center biar vertikalnya tengah -->
-                <div class="flex flex-col justify-center lg:justify-start pt-24 sm:pt-32 lg:pt-50 ml-0 sm:ml-5">
-                    <h1 class="leading-tight tracking-[-0.02em] text-black">
-                        <span class="block text-4xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
-                        <span class="block mt-2 text-2xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
-                    </h1>
-                    <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-                        <!-- tombol -->
-                        <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
-                        hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
-                        Shop Now
-                        <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </a>
-                        <a href="#features" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold
-                        hover:bg-black hover:text-white transition focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20">
-                        Learn More
-                        <svg class="w-5 h-5 transition -translate-x-1 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </a>
-                    </div> 
-                </div>
-                <div class="hidden lg:block"></div>
-            </div>
-        </div>
-    </header>
-  
-
-    <!-- ========== M4 SECTION ========== -->
-    <section id="m4" class="relative overflow-hidden py-20 md:py-50 bg-white min-h-[500px]">
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90"></div>
-    
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div class="grid grid-cols-2 items-center">
-                <div class="flex flex-col justify-center pb-20 md:pb-24">
-                    <p class="text-lg text-gray-700/80">New Arrival</p>
-                    <div class="leading-none">
-                        <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light text-gray-400/40 select-none">
-                            M4
-                        </span>
-                    </div>
-                </div>
-        
-                <div class="relative text-right pt-10 md:pt-30">
-                    <div class="leading-none">
-                        <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light tracking-wide text-gray-400/30 select-none">
-                            SLIM
-                        </span>
-                    </div>
-                    <p class="text-3xl sm:text-4xl font-light text-gray-900 mt-2">Stylist</p>
-                </div>
-            </div>
-        </div>
-    
-        <div class="absolute right-[0%] top-[-2%] w-[80%] sm:w-[75%] lg:w-[70%] xl:w-[65%] reveal fade-left slow">
-            <img src="assets/m4-top.png" alt="M4 top view" class="w-full h-auto drop-shadow-2xl select-none" />
-        </div>
-        <div class="absolute left-[0%] bottom-[-5%] w-[65%] sm:w-[80%] lg:w-[75%] xl:w-[70%] reveal fade-right slow">
-            <img src="assets/m4-bottom.png" alt="M4 bottom view" class="w-full h-auto drop-shadow-2xl select-none" />
-        </div>
-    </section>
-
-    <div class="promo-marquee mt-10">
-        <div class="promo-track">
-          <!-- CHUNK 1 -->
-          <div class="promo-chunk">
-            <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
-            <span>•</span>
-            <span>Gratis ongkir Jabodetabek</span>
-            <span>•</span>
-            <span>Stok terbatas</span>
-          </div>
-          <!-- CHUNK 2 (identik, untuk loop mulus) -->
-          <div class="promo-chunk" aria-hidden="true">
-            <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
-            <span>•</span>
-            <span>Gratis ongkir Jabodetabek</span>
-            <span>•</span>
-            <span>Stok terbatas</span>
-          </div>
-        </div>
-    </div>
-      
-
-    <!-- ========== TRENDING PRODUCTS (no card) ========== -->
-    <section id="trending" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal fade-up slow">
-            <!-- Title -->
-            <div class="text-center mb-10">
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">TRENDING</h2>
-                <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 mt-4 rounded-lg border-2 border-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition">
-                Shop Now
-                </a>
-            </div>
-    
-            <!-- Grid -->
-            <div class="grid md:grid-cols-4 gap-10">
-                <!-- ITEM 1 -->
-                <figure class="group">
-                    <div class="relative inline-block w-full">
-                      <img src="assets/prod-m4.png" alt="T3B Magnetic Safe Mirror Selfie Screen"
-                           class="w-full h-auto select-none pointer-events-none" />
-                  
-                      <button
-                        class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900
-                               px-6 py-3 text-base font-medium border-t border-black/10
-                               md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
-                        data-product='{
-                          "id":"m4",
-                          "title":"MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone",
-                          "price":1990000,
-                          "compareAt":2990000,
-                          "images":["assets/prod-m4.png","./assets/product/M4 SLIDE 2.png","./assets/product/M4 SLIDE 3.png","./assets/product/M4 SLIDE 4.png"]
-                        }'
-                      >Quick View</button>
-                    </div>
-                    <figcaption class="mt-4">
-                      <h3 class="font-medium text-gray-900">MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone</h3>
-                      <p class="text-gray-700">1.990.000</p>
-                    </figcaption>
-                </figure>
-        
-                <!-- ITEM 2 -->
-                <figure class="group">
-                    <div class="relative inline-block w-full">
-                    <img src="assets/prod-t8d.png" alt="T8D Magnetic Safe Mirror Selfie Screen"
-                        class="w-full h-auto select-none pointer-events-none" />
-                    <button
-                        class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900
-                            px-6 py-3 text-base font-medium border-t border-black/10
-                            md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
-                        data-product='{
-                        "id":"t8d",
-                        "title":"T8D Magnetic Safe Mirror Selfie Screen",
-                        "price":1850000,
-                        "compareAt":1999000,
-                        "images":["assets/prod-t8d.png","./assets/product/T8D SLIDE 2.png","./assets/product/T8D SLIDE 3.png","./assets/product/T8D SLIDE 5.png"]
-                        }'
-                    >Quick View</button>
-                    </div>
-                    <figcaption class="mt-4">
-                        <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-                        <p class="text-gray-700">1.850.000</p>
-                    </figcaption>
-                </figure>
-        
-                <!-- ITEM 3 -->
-                <figure class="group">
-                    <div class="relative inline-block w-full">
-                    <img src="assets/prod-t3b.png" alt="T8D Magnetic Safe Mirror Selfie Screen"
-                        class="w-full h-auto select-none pointer-events-none" />
-                    <button
-                        class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900
-                            px-6 py-3 text-base font-medium border-t border-black/10
-                            md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
-                        data-product='{
-                        "id":"t8d",
-                        "title":"T8D Magnetic Safe Mirror Selfie Screen",
-                        "price":1850000,
-                        "compareAt":1999000,
-                        "images":["assets/prod-t3b.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
-                        }'
-                    >Quick View</button>
-                    </div>
-                    <figcaption class="mt-4">
-                        <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-                        <p class="text-gray-700">1.850.000</p>
-                    </figcaption>
-                </figure>
-                
-                <!-- ITEM 4 -->
-                <figure class="group">
-                    <div class="relative inline-block w-full">
-                    <img src="assets/prod-t1m.png" alt="T8D Magnetic Safe Mirror Selfie Screen"
-                        class="w-full h-auto select-none pointer-events-none" />
-                    <button
-                        class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900
-                            px-6 py-3 text-base font-medium border-t border-black/10
-                            md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
-                        data-product='{
-                        "id":"t3b",
-                        "title":"T3B Magnetic Safe Mirror Selfie Screen",
-                        "price":1850000,
-                        "compareAt":1999000,
-                        "images":["assets/prod-t1m.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
-                        }'
-                    >Quick View</button>
-                    </div>
-                    <figcaption class="mt-4">
-                        <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-                        <p class="text-gray-700">1.850.000</p>
-                    </figcaption>
-                </figure>
-            </div>
-        </div>
-    </section>
-  
-    <!-- ===== Quick View Modal (reusable) ===== -->
-    <div id="qv" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
-        <!-- Backdrop -->
-        <button class="absolute inset-0 bg-black/50" data-qv-close aria-label="Close"></button>
-    
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden outline-none"
-            role="dialog" aria-modal="true" aria-labelledby="qv-title">
-            <!-- Close -->
-            <button class="absolute top-3 right-3 rounded-full p-2 hover:bg-gray-100" data-qv-close aria-label="Close">✕</button>
-        
-            <div class="grid md:grid-cols-2 gap-6 px-6 pt-10 pb-6 md:px-10 md:pt-14">
-                <!-- LEFT: gallery -->
-                <div>
-                <div class="bg-gray-50 rounded-xl aspect-square flex items-center justify-center">
-                    <img id="qv-hero" src="" alt="" class="max-h-full object-contain">
-                </div>
-                <div id="qv-thumbs" class="mt-3 flex gap-2 overflow-x-auto"></div>
-                </div>
-        
-                <!-- RIGHT: details -->
-                <div class="flex flex-col justify-start md:pt-6 lg:pt-10">
-                <h3 id="qv-title" class="text-2xl font-semibold"></h3>
-        
-                <div class="mt-2 flex items-baseline gap-3">
-                    <span id="qv-price" class="text-xl font-bold"></span>
-                    <span id="qv-compare" class="text-gray-400 line-through"></span>
-                </div>
-        
-                <div class="mt-5">
-                    <p id="qv-optname" class="text-xs font-semibold tracking-wider text-gray-600"></p>
-                    <div id="qv-options" class="mt-2 flex flex-wrap gap-2"></div>
-                </div>
-        
-                <div class="mt-5 flex items-center gap-3">
-                    <!-- Qty Stepper -->
-                    <div class="inline-flex items-center rounded-2xl border h-12" role="group" aria-label="Quantity">
-                        <button type="button" class="w-10 h-12 text-xl" data-qv-dec aria-label="Decrease">−</button>
-                        <input id="qv-qty"
-                            class="w-12 h-12 text-center outline-none text-base"
-                            type="number" inputmode="numeric" value="1" min="1">
-                        <button type="button" class="w-10 h-12 text-xl" data-qv-inc aria-label="Increase">+</button>
-                    </div>
-        
-                    <button id="qv-add" class="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 font-semibold hover:opacity-90">
-                        ADD TO CART
-                    </button>
-                </div>
-        
-                <button class="mt-3 w-full rounded-xl border px-6 py-3 font-semibold hover:bg-gray-50">
-                    More payment options
-                </button>
-        
-                <ul class="mt-5 text-sm text-gray-600 space-y-1">
-                    <li>• Kompatibel MagSafe</li>
-                    <li>• Instalasi &lt; 30 detik</li>
-                    <li>• 12 bulan garansi</li>
-                </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-
-    <script>
-        (function(){
-          const $ = (sel, root=document)=>root.querySelector(sel);
-          const $$ = (sel, root=document)=>[...root.querySelectorAll(sel)];
-          const modal = $('#qv');
-          const hero  = $('#qv-hero');
-          const thumbs= $('#qv-thumbs');
-          const title = $('#qv-title');
-          const price = $('#qv-price');
-          const compare = $('#qv-compare');
-          const optName = $('#qv-optname');
-          const optWrap = $('#qv-options');
-          const qtyInput= $('#qv-qty');
-          let currentProduct = null;
-          let chosenOption = null;
-          let lastFocus = null;
-        
-          // Currency helper (IDR no decimals)
-          const fIDR = n => new Intl.NumberFormat('id-ID').format(n);
-        
-          // Openers
-          $$('.js-open-qv').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-              try {
-                const data = JSON.parse(btn.dataset.product);
-                openQuickView(data);
-              } catch(e){
-                console.error('Invalid data-product JSON', e);
-              }
-            });
-          });
-        
-          function openQuickView(p){
-            currentProduct = p;
-            lastFocus = document.activeElement;
-        
-            // title & price
-            title.textContent = p.title || '';
-            price.textContent = p.price ? `IDR ${fIDR(p.price)}` : '';
-            compare.textContent = p.compareAt && p.compareAt>p.price ? `IDR ${fIDR(p.compareAt)}` : '';
-        
-            // gallery
-            const imgs = Array.isArray(p.images) && p.images.length ? p.images : ['assets/placeholder.png'];
-            hero.src = imgs[0]; hero.alt = p.title || 'Product image';
-            thumbs.innerHTML = '';
-            imgs.forEach((src,i)=>{
-              const b = document.createElement('button');
-              b.className = 'w-16 h-16 rounded-lg overflow-hidden border hover:opacity-80';
-              b.innerHTML = `<img src="${src}" alt="" class="w-full h-full object-cover">`;
-              b.addEventListener('click', ()=>{ hero.src = src; });
-              thumbs.appendChild(b);
-              if(i===0) b.setAttribute('aria-current','true');
-            });
-        
-            // options
-            optName.textContent = p.optionName || '';
-            optWrap.innerHTML = '';
-            (p.options||[]).forEach(opt=>{
-              const disabled = (p.disabled||[]).includes(opt);
-              const btn = document.createElement('button');
-              btn.type = 'button';
-              btn.textContent = opt;
-              btn.disabled = disabled;
-              btn.className = `
-                px-3 py-2 rounded-full border text-sm
-                ${disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-50'}
-              `;
-              btn.addEventListener('click', ()=>{
-                chosenOption = opt;
-                // toggle active
-                $$('.is-active', optWrap).forEach(el=>el.classList.remove('is-active','ring-2','ring-black'));
-                btn.classList.add('is-active','ring-2','ring-black');
-              });
-              optWrap.appendChild(btn);
-            });
-            // default choose first enabled
-            const firstEnabled = $$('#qv-options button:not([disabled])')[0];
-            if(firstEnabled){ firstEnabled.click(); }
-        
-            qtyInput.value = 1;
-        
-            // show modal
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
-            // focus trap: focus close button
-            $('[data-qv-close]', modal).focus();
-          }
-        
-          function closeQuickView(){
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-            document.body.style.overflow = '';
-            if(lastFocus) lastFocus.focus();
-          }
-        
-          // Close actions
-          $$('[data-qv-close]', modal).forEach(el=>el.addEventListener('click', closeQuickView));
-          document.addEventListener('keydown', (e)=>{
-            if(e.key === 'Escape' && !modal.classList.contains('hidden')) closeQuickView();
-            if(e.key === 'Tab' && !modal.classList.contains('hidden')) trapFocus(e);
-          });
-        
-          // Qty
-          $('[data-qv-inc]', modal).addEventListener('click', ()=> qtyInput.value = Math.max(1, (parseInt(qtyInput.value)||1) + 1));
-          $('[data-qv-dec]', modal).addEventListener('click', ()=> qtyInput.value = Math.max(1, (parseInt(qtyInput.value)||1) - 1));
-        
-          // Add to cart (demo)
-          $('#qv-add').addEventListener('click', ()=>{
-            const qty = Math.max(1, parseInt(qtyInput.value)||1);
-            console.log('ADD TO CART ->', { id: currentProduct?.id, option: chosenOption, qty });
-            // TODO: sambungkan ke cart logic / backend
-            closeQuickView();
-          });
-        
-          // Simple focus trap
-          function trapFocus(e){
-            const focusables = $$(
-              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-              modal
-            ).filter(el=>!el.hasAttribute('disabled'));
-            if(!focusables.length) return;
-            const first = focusables[0], last = focusables[focusables.length-1];
-            if(e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
-            else if(!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
-          }
-        })();
-    </script>
-
-    <script>
-        (function(){
-        const CART_KEY = 'cc_cart_v1';
-        const FREE_SHIP_THRESHOLD = 1000000; // ubah sesuai kebijakanmu
-        
-        // ==== state & helpers ====
-        let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-        
-        const $  = (s,r=document)=>r.querySelector(s);
-        const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
-        const fIDR = n => 'IDR ' + new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
-        
-        const drawer = $('#cart-drawer');
-        const panel  = $('#cart-panel');
-        const backdrop = $('[data-cart-close]', drawer);
-        const itemsEl = $('#cart-items');
-        const subEl   = $('#cart-subtotal');
-        const totalEl = $('#cart-total');
-        const fsText  = $('#fs-text');
-        const fsBar   = $('#fs-bar');
-        
-        function save(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
-        function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
-        
-        function openCart(){
-            drawer.classList.remove('hidden');
-            requestAnimationFrame(()=>{
-            backdrop.style.opacity = '1';
-            panel.classList.remove('translate-x-full');
-            });
-            document.body.style.overflow = 'hidden';
-        }
-        function closeCart(){
-            backdrop.style.opacity = '0';
-            panel.classList.add('translate-x-full');
-            setTimeout(()=>drawer.classList.add('hidden'), 300);
-            document.body.style.overflow = '';
-        }
-        
-        function updateFreeShipping(sb){
-            const remain = Math.max(0, FREE_SHIP_THRESHOLD - sb);
-            fsText.textContent = remain > 0
-            ? `Spend ${fIDR(remain)} more for FREE shipping.`
-            : `You're qualified for FREE shipping!`;
-            const pct = Math.min(100, (sb / FREE_SHIP_THRESHOLD) * 100);
-            fsBar.style.width = pct + '%';
-        }
-        
-        function render(){
-            itemsEl.innerHTML = cart.length ? '' :
-            `<div class="py-8 text-sm text-gray-500 text-center">Your cart is empty.</div>`;
-        
-            cart.forEach(it=>{
-            const row = document.createElement('div');
-            row.className = 'py-4 flex items-center gap-3';
-            row.dataset.key = it.key;
-        
-            row.innerHTML = `
-                <img src="${it.image}" alt="" class="w-16 h-16 rounded-md object-cover bg-gray-50">
-                <div class="flex-1">
-                <div class="text-sm font-medium leading-tight">${it.title}</div>
-                ${it.option ? `<div class="text-xs text-gray-500 mt-0.5">${it.option}</div>` : ''}
-                <div class="mt-2 inline-flex items-center rounded-full border">
-                    <button class="w-8 h-8" data-dec aria-label="Decrease">−</button>
-                    <span class="w-8 text-center select-none" data-qty>${it.qty}</span>
-                    <button class="w-8 h-8" data-inc aria-label="Increase">+</button>
-                </div>
-                </div>
-                <div class="text-sm font-medium">${fIDR(it.price * it.qty)}</div>
-                <button class="p-2 text-gray-500 hover:text-black" data-remove aria-label="Remove">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
-                    <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 7v8h2v-8h-2Zm4 0v8h2v-8h-2ZM6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/>
-                </svg>
-                </button>
-            `;
-            itemsEl.appendChild(row);
-            });
-        
-            const sb = subtotal();
-            subEl.textContent  = fIDR(sb);
-            totalEl.textContent= fIDR(sb);
-            updateFreeShipping(sb);
-        }
-        
-        function addToCart({id,title,price,option,image,qty}){
-            const key = id + '|' + (option || '');
-            const exist = cart.find(i => i.key === key);
-            if(exist){ exist.qty += qty; }
-            else { cart.push({key,id,title,price,option,image,qty}); }
-            save(); render();
-        }
-        
-        // === events in drawer ===
-        drawer.addEventListener('click', (e)=>{
-            const row = e.target.closest('[data-key]');
-            if(e.target.closest('[data-cart-close]')) return closeCart();
-        
-            if(row){
-            const key = row.dataset.key;
-            const item = cart.find(i=>i.key===key);
-            if(!item) return;
-        
-            if(e.target.closest('[data-inc]')){ item.qty++; }
-            if(e.target.closest('[data-dec]')){ item.qty = Math.max(1, item.qty-1); }
-            if(e.target.closest('[data-remove]')){
-                cart = cart.filter(i=>i.key!==key);
-            }
-            save(); render();
-            }
+          `;
+          itemsEl.appendChild(row);
         });
-        
-        // open/close triggers
-        $('#open-cart')?.addEventListener('click', openCart);
-        $$('[data-cart-close]').forEach(b=>b.addEventListener('click', closeCart));
-        document.addEventListener('keydown', e=>{
-            if(e.key==='Escape' && !drawer.classList.contains('hidden')) closeCart();
-        });
-        
-        // === hook ke Quick View: ganti handler ADD TO CART ===
-        // Pastikan di script Quick View kamu, tombolnya punya id="qv-add",
-        // dan tersedia variabel: currentProduct, chosenOption, hero (img besar), getQty()
-        const qvAdd = document.getElementById('qv-add');
-        if(qvAdd){
-            qvAdd.addEventListener('click', ()=>{
-            try{
-                // Ambil qty (kalau pakai input id="qv-qty")
-                const qtyInput = document.getElementById('qv-qty');
-                const qty = Math.max(1, parseInt(qtyInput?.value || qtyInput?.textContent || '1', 10));
-        
-                // Ambil data dari QV (pastikan variabel-variabel ini ada di script QV-mu)
-                const p = window.currentProduct || window.__currentProduct || {};  // fallback global kalau kamu expose
-                const opt = window.chosenOption || null;
-                const imgEl = document.getElementById('qv-hero');
-                const img = imgEl?.src || (p.images?.[0]) || 'assets/placeholder.png';
-        
-                addToCart({
-                id: p.id || 'unknown',
-                title: p.title || p.name || 'Product',
-                price: Number(p.price) || 0,
-                option: opt,
-                image: img,
-                qty
-                });
-        
-                // Tutup Quick View jika ada, lalu buka drawer
-                (window.closeQuickView && typeof window.closeQuickView==='function') && window.closeQuickView();
-                openCart();
-            }catch(err){
-                console.error('ADD TO CART failed:', err);
-            }
-            }, { once:false });
+
+        const sb = subtotal();
+        subEl.textContent  = fIDR(sb);
+        totalEl.textContent= fIDR(sb);
+        updateFreeShipping(sb);
+
+        const count = cartCount();
+        if (badge){
+          if (count > 0){ badge.textContent = count; badge.classList.remove('hidden'); }
+          else { badge.classList.add('hidden'); }
         }
-        
-        // render awal
-        render();
-        })();
-    </script>
-    
-        
-  
-    
-    <!-- ===== FEATURES SECTION ===== -->
-    <section id="features" class="bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center reveal fade-up slow">
-      
-          <div class="relative">
-            <img src="assets/feature-magsafe.png" alt="Click Click MagSafe"
-                 class="w-full max-w-2xl mx-auto object-contain" />
-          </div>
-      
-          <div class="space-y-10">
-            <!-- point 1 -->
-            <div id="feat-magsafe" class="max-w-xl scroll-mt-28">
-              <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2 shadow-[0_2px_0_rgb(0_0_0_/_0.08)]">
-                MagSafe Compatibility
-              </span>
-              <p class="mt-4 text-gray-800 leading-8 text-lg">
-                MagSafe yang menempel sempurna di belakang handphone, sehingga stabil digunakan kapan saja.
-              </p>
-            </div>
-      
-            <!-- point 2 -->
-            <div id="feat-design" class="max-w-xl scroll-mt-28">
-              <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2 shadow-[0_2px_0_rgb(0_0_0_/_0.08)]">
-                Desain Tipis & Stylish
-              </span>
-              <p class="mt-4 text-gray-800 leading-8 text-lg">
-                Desain slim yang ringan, mudah dibawa ke mana saja tanpa menambah beban di ponselmu.
-              </p>
-            </div>
-          </div>
-        </div>
-    </section>
-  
-    <!-- ===== PINK SECTION ===== -->
+      }
 
-    <section id="product-series" class="py-16 md:py-10 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 reveal fade-up slow">
+      function addToCart({id,title,price,option,image,qty}){
+        const key = id + '|' + (option || '');
+        const exist = cart.find(i => i.key === key);
+        if(exist){ exist.qty += qty; }
+        else { cart.push({key,id,title,price,option,image,qty}); }
+        save(); render();
+      }
 
-            <div class="rounded-lg overflow-hidden shadow-lg">
-                <img src="assets/m4-series-promo.png" alt="M4 Series Image" class="w-full h-auto object-cover max-h-[500px]" />
-            </div>
+      // Drawer events
+      drawer.addEventListener('click', (e)=>{
+        const row = e.target.closest('[data-key]');
+        if(e.target.closest('[data-cart-close]')) return closeCart();
 
-            <div class="rounded-lg overflow-hidden shadow-lg">
-                <img src="assets/t8d-series-promo.png" alt="T8D Series Image" class="w-full h-auto object-cover max-h-[500px]" />
-            </div>
+        if(row){
+          const key = row.dataset.key;
+          const item = cart.find(i=>i.key===key);
+          if(!item) return;
 
-            <div class="rounded-lg overflow-hidden shadow-lg">
-                <img src="assets/click-click-mirror-screen-promo.png" alt="Click Click Mirror Screen Image" class="w-full h-auto object-cover max-h-[500px]" />
-            </div>
+          if(e.target.closest('[data-inc]')){ item.qty++; }
+          if(e.target.closest('[data-dec]')){ item.qty = Math.max(1, item.qty-1); }
+          if(e.target.closest('[data-remove]')){ cart = cart.filter(i=>i.key!==key); }
+          save(); render();
+        }
+      });
 
-            <div class="rounded-lg overflow-hidden shadow-lg">
-                <img src="assets/feeds.jpg" alt="Click Click Mirror Screen Image" class="w-full h-auto object-cover max-h-[500px]" />
-            </div>
+      // Open/close triggers
+      $('#open-cart')?.addEventListener('click', openCart);
+      $$('[data-cart-close]').forEach(b=>b.addEventListener('click', closeCart));
+      document.addEventListener('keydown', e=>{
+        if(e.key==='Escape' && !drawer.classList.contains('hidden')) closeCart();
+      });
 
-        </div>
-    </section>
+      // HOOK tombol ADD TO CART di Quick View
+      const qvAdd = document.getElementById('qv-add');
+      if(qvAdd){
+        qvAdd.addEventListener('click', ()=>{
+          try{
+            const qtyInput = document.getElementById('qv-qty');
+            const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
 
+            const p = window.currentProduct || {};
+            const opt = window.chosenOption || null;
+            const imgEl = document.getElementById('qv-hero');
+            const img = imgEl?.src || (p.images?.[0]) || 'assets/placeholder.png';
 
-    <!-- ======= FOOTER ======= -->
-    <footer class="bg-white border-t border-black/5 text-sm">
-        <!-- Top -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-10">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-            <!-- Col 1 -->
-            <div>
-              <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
-              <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
-                <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
-                <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
-                <li><a href="#" class="hover:opacity-80">FAQ</a></li>
-                <li><a href="#" class="hover:opacity-80">Contact</a></li>
-                <li><a href="#" class="hover:opacity-80">Gallery</a></li>
-              </ul>
-            </div>
-      
-            <!-- Col 2 -->
-            <div>
-              <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
-              <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
-                <li><a href="#" class="hover:opacity-80">Our Story</a></li>
-                <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
-                <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
-                <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
-              </ul>
-            </div>
-      
-            <!-- Col 3 -->
-            <div>
-              <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Stay Connected</h4>
-              <ul class="mt-3 md:mt-4 space-y-3 text-gray-800">
-                <ul class="mt-3 md:mt-4 space-y-3 text-gray-800">
-                    <!-- Facebook -->
-                    <li>
-                      <a href="#" target="_blank" rel="noopener" class="group flex items-center gap-2 md:gap-3 hover:opacity-80">
-                        <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-700 group-hover:text-black" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <path d="M22 12a10 10 0 1 0-11.57 9.9v-7H7.9v-2.9h2.53V9.62c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.86h2.77l-.44 2.9h-2.33v7A10 10 0 0 0 22 12z"/>
-                        </svg>
-                        <span>Facebook</span>
-                      </a>
-                    </li>
-                  
-                    <!-- Instagram -->
-                    <li>
-                      <a href="https://www.instagram.com/clickclickofficial.id/" target="_blank" rel="noopener" class="group flex items-center gap-2 md:gap-3 hover:opacity-80">
-                        <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-700 group-hover:text-black" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2.5A3 3 0 1 0 15 13a3 3 0 0 0-3-3zm5.25-3.25a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.25 6.75z"/>
-                        </svg>
-                        <span>Instagram</span>
-                      </a>
-                    </li>
-                  
-                    <!-- TikTok -->
-                    <li>
-                      <a href="https://www.tiktok.com/@clickclick.id?_t=ZS-8z5D7Nw4SqV&_r=1" target="_blank" rel="noopener" class="group flex items-center gap-2 md:gap-3 hover:opacity-80">
-                        <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-700 group-hover:text-black" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <path d="M16.6 3c.5 1.7 1.9 3.1 3.6 3.7v3.1a7.7 7.7 0 0 1-3.6-1v6.7a6.5 6.5 0 1 1-6.6-6.5c.3 0 .6 0 .8.1v3.1c-.2-.1-.5-.1-.8-.1a3.4 3.4 0 1 0 3.4 3.4V3h3.2z"/>
-                        </svg>
-                        <span>TikTok</span>
-                      </a>
-                    </li>
-                  </ul>                  
-              </ul>
-            </div>
-      
-            <!-- Col 4 -->
-            <div class="text-gray-800">
-              <p class="leading-7 md:leading-8 text-sm md:text-base">
-                Welcome to <span class="font-semibold">Clickclick</span> — Designed for creators, built for every moment
-              </p>
-            </div>
-          </div>
-      
-        <!-- Payments row -->
-        <div class="mt-12 flex flex-wrap items-center justify-center md:justify-end gap-3">
-            <!-- Ganti span berikut dengan <img src="assets/payments/xxx.svg" class="h-9"> jika punya file logo -->
-            <img src="assets/payments/spay-logo.png" class="h-15">
-            <img src="assets/payments/MasterCard_Logo.png" class="h-10">
-            <img src="assets/payments/bca.png" class="h-15">
-            <img src="assets/payments/bni.png" class="h-5">
-        </div>
-      
-        <!-- Bottom -->
-        <div class="border-t border-black/5">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4
-                      flex flex-col md:flex-row items-center gap-2 md:gap-4 justify-between
-                      text-xs sm:text-sm text-gray-700">
-            <p>© 2025 Clickclick, All rights reserved.</p>
-          </div>
-        </div>
-    </footer>
-      
+            addToCart({
+              id: p.id || 'unknown',
+              title: p.title || 'Product',
+              price: Number(p.price) || 0,
+              option: opt,
+              image: img,
+              qty
+            });
 
-    <script>
-        // Observe semua elemen .reveal
-        const observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-      
-            const el = entry.target;
-      
-            // Stagger anak (jika ada data-stagger)
-            const sel = el.getAttribute('data-stagger');
-            if (sel) {
-              const kids = el.querySelectorAll(sel);
-              kids.forEach((k, i) => {
-                k.style.transitionDelay = (i * 90) + 'ms'; // 90ms antar item
-                k.classList.add('show');
-              });
-            }
-      
-            el.classList.add('show');
-            obs.unobserve(el);
-          });
-        }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
-      
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+            window.closeQuickView && window.closeQuickView();
+            openCart();
+          }catch(err){ console.error('ADD TO CART failed:', err); }
+        });
+      }
 
-    <!-- ===== CART DRAWER ===== -->
-    <div id="cart-drawer" class="fixed inset-0 z-[70] hidden">
-        <!-- backdrop -->
-        <button class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300" data-cart-close></button>
-    
-        <!-- panel -->
-        <aside id="cart-panel"
-            class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl
-                    translate-x-full transition-transform duration-300 will-change-transform
-                    flex flex-col">
-            <!-- header -->
-            <div class="flex items-center justify-between px-5 py-4 border-b">
-                <h3 class="text-lg font-semibold tracking-wide">CART</h3>
-                <button class="p-2 rounded-full hover:bg-gray-100" data-cart-close aria-label="Close">✕</button>
-            </div>
-        
-            <!-- free shipping notice -->
-            <div class="px-5 py-4 border-b space-y-2">
-                <p id="fs-text" class="text-sm text-gray-700">Spend IDR 0 more for FREE shipping.</p>
-                <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                <div id="fs-bar" class="h-full bg-black w-0 transition-all duration-300"></div>
-                </div>
-            </div>
-        
-            <!-- items -->
-            <div id="cart-items" class="flex-1 overflow-y-auto px-5 divide-y"></div>
-        
-            <!-- footer -->
-            <div class="border-t p-5 space-y-3">
-                <div class="flex items-center justify-between text-sm">
-                    <span class="text-gray-600">Subtotal</span>
-                    <strong id="cart-subtotal">IDR 0</strong>
-                </div>
-                <p class="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
-                <button class="w-full h-12 rounded-full bg-black text-white font-semibold hover:opacity-90">
-                CHECKOUT • <span id="cart-total">IDR 0</span>
-                </button>
-            </div>
-        </aside>
-    </div>
-  
-  
+      // initial render
+      render();
+    });
+  </script>
+
 </body>
 </html>

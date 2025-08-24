@@ -181,7 +181,7 @@
             </svg>
             </button>
             <!-- Cart -->
-            <button aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
+            <button id="open-cart" aria-label="Cart" class="p-2 hover:bg-gray-100 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 <circle cx="9" cy="19" r="1.8"></circle>
@@ -443,7 +443,7 @@
                     </div>
         
                     <button id="qv-add" class="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 font-semibold hover:opacity-90">
-                    ADD TO CART
+                        ADD TO CART
                     </button>
                 </div>
         
@@ -589,6 +589,165 @@
           }
         })();
     </script>
+
+    <script>
+        (function(){
+        const CART_KEY = 'cc_cart_v1';
+        const FREE_SHIP_THRESHOLD = 1000000; // ubah sesuai kebijakanmu
+        
+        // ==== state & helpers ====
+        let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+        
+        const $  = (s,r=document)=>r.querySelector(s);
+        const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+        const fIDR = n => 'IDR ' + new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
+        
+        const drawer = $('#cart-drawer');
+        const panel  = $('#cart-panel');
+        const backdrop = $('[data-cart-close]', drawer);
+        const itemsEl = $('#cart-items');
+        const subEl   = $('#cart-subtotal');
+        const totalEl = $('#cart-total');
+        const fsText  = $('#fs-text');
+        const fsBar   = $('#fs-bar');
+        
+        function save(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+        function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
+        
+        function openCart(){
+            drawer.classList.remove('hidden');
+            requestAnimationFrame(()=>{
+            backdrop.style.opacity = '1';
+            panel.classList.remove('translate-x-full');
+            });
+            document.body.style.overflow = 'hidden';
+        }
+        function closeCart(){
+            backdrop.style.opacity = '0';
+            panel.classList.add('translate-x-full');
+            setTimeout(()=>drawer.classList.add('hidden'), 300);
+            document.body.style.overflow = '';
+        }
+        
+        function updateFreeShipping(sb){
+            const remain = Math.max(0, FREE_SHIP_THRESHOLD - sb);
+            fsText.textContent = remain > 0
+            ? `Spend ${fIDR(remain)} more for FREE shipping.`
+            : `You're qualified for FREE shipping!`;
+            const pct = Math.min(100, (sb / FREE_SHIP_THRESHOLD) * 100);
+            fsBar.style.width = pct + '%';
+        }
+        
+        function render(){
+            itemsEl.innerHTML = cart.length ? '' :
+            `<div class="py-8 text-sm text-gray-500 text-center">Your cart is empty.</div>`;
+        
+            cart.forEach(it=>{
+            const row = document.createElement('div');
+            row.className = 'py-4 flex items-center gap-3';
+            row.dataset.key = it.key;
+        
+            row.innerHTML = `
+                <img src="${it.image}" alt="" class="w-16 h-16 rounded-md object-cover bg-gray-50">
+                <div class="flex-1">
+                <div class="text-sm font-medium leading-tight">${it.title}</div>
+                ${it.option ? `<div class="text-xs text-gray-500 mt-0.5">${it.option}</div>` : ''}
+                <div class="mt-2 inline-flex items-center rounded-full border">
+                    <button class="w-8 h-8" data-dec aria-label="Decrease">−</button>
+                    <span class="w-8 text-center select-none" data-qty>${it.qty}</span>
+                    <button class="w-8 h-8" data-inc aria-label="Increase">+</button>
+                </div>
+                </div>
+                <div class="text-sm font-medium">${fIDR(it.price * it.qty)}</div>
+                <button class="p-2 text-gray-500 hover:text-black" data-remove aria-label="Remove">
+                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
+                    <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 7v8h2v-8h-2Zm4 0v8h2v-8h-2ZM6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/>
+                </svg>
+                </button>
+            `;
+            itemsEl.appendChild(row);
+            });
+        
+            const sb = subtotal();
+            subEl.textContent  = fIDR(sb);
+            totalEl.textContent= fIDR(sb);
+            updateFreeShipping(sb);
+        }
+        
+        function addToCart({id,title,price,option,image,qty}){
+            const key = id + '|' + (option || '');
+            const exist = cart.find(i => i.key === key);
+            if(exist){ exist.qty += qty; }
+            else { cart.push({key,id,title,price,option,image,qty}); }
+            save(); render();
+        }
+        
+        // === events in drawer ===
+        drawer.addEventListener('click', (e)=>{
+            const row = e.target.closest('[data-key]');
+            if(e.target.closest('[data-cart-close]')) return closeCart();
+        
+            if(row){
+            const key = row.dataset.key;
+            const item = cart.find(i=>i.key===key);
+            if(!item) return;
+        
+            if(e.target.closest('[data-inc]')){ item.qty++; }
+            if(e.target.closest('[data-dec]')){ item.qty = Math.max(1, item.qty-1); }
+            if(e.target.closest('[data-remove]')){
+                cart = cart.filter(i=>i.key!==key);
+            }
+            save(); render();
+            }
+        });
+        
+        // open/close triggers
+        $('#open-cart')?.addEventListener('click', openCart);
+        $$('[data-cart-close]').forEach(b=>b.addEventListener('click', closeCart));
+        document.addEventListener('keydown', e=>{
+            if(e.key==='Escape' && !drawer.classList.contains('hidden')) closeCart();
+        });
+        
+        // === hook ke Quick View: ganti handler ADD TO CART ===
+        // Pastikan di script Quick View kamu, tombolnya punya id="qv-add",
+        // dan tersedia variabel: currentProduct, chosenOption, hero (img besar), getQty()
+        const qvAdd = document.getElementById('qv-add');
+        if(qvAdd){
+            qvAdd.addEventListener('click', ()=>{
+            try{
+                // Ambil qty (kalau pakai input id="qv-qty")
+                const qtyInput = document.getElementById('qv-qty');
+                const qty = Math.max(1, parseInt(qtyInput?.value || qtyInput?.textContent || '1', 10));
+        
+                // Ambil data dari QV (pastikan variabel-variabel ini ada di script QV-mu)
+                const p = window.currentProduct || window.__currentProduct || {};  // fallback global kalau kamu expose
+                const opt = window.chosenOption || null;
+                const imgEl = document.getElementById('qv-hero');
+                const img = imgEl?.src || (p.images?.[0]) || 'assets/placeholder.png';
+        
+                addToCart({
+                id: p.id || 'unknown',
+                title: p.title || p.name || 'Product',
+                price: Number(p.price) || 0,
+                option: opt,
+                image: img,
+                qty
+                });
+        
+                // Tutup Quick View jika ada, lalu buka drawer
+                (window.closeQuickView && typeof window.closeQuickView==='function') && window.closeQuickView();
+                openCart();
+            }catch(err){
+                console.error('ADD TO CART failed:', err);
+            }
+            }, { once:false });
+        }
+        
+        // render awal
+        render();
+        })();
+    </script>
+    
         
   
     
@@ -769,6 +928,48 @@
       
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
+
+    <!-- ===== CART DRAWER ===== -->
+    <div id="cart-drawer" class="fixed inset-0 z-[70] hidden">
+        <!-- backdrop -->
+        <button class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300" data-cart-close></button>
+    
+        <!-- panel -->
+        <aside id="cart-panel"
+            class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl
+                    translate-x-full transition-transform duration-300 will-change-transform
+                    flex flex-col">
+            <!-- header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b">
+                <h3 class="text-lg font-semibold tracking-wide">CART</h3>
+                <button class="p-2 rounded-full hover:bg-gray-100" data-cart-close aria-label="Close">✕</button>
+            </div>
+        
+            <!-- free shipping notice -->
+            <div class="px-5 py-4 border-b space-y-2">
+                <p id="fs-text" class="text-sm text-gray-700">Spend IDR 0 more for FREE shipping.</p>
+                <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div id="fs-bar" class="h-full bg-black w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        
+            <!-- items -->
+            <div id="cart-items" class="flex-1 overflow-y-auto px-5 divide-y"></div>
+        
+            <!-- footer -->
+            <div class="border-t p-5 space-y-3">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-600">Subtotal</span>
+                    <strong id="cart-subtotal">IDR 0</strong>
+                </div>
+                <p class="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
+                <button class="w-full h-12 rounded-full bg-black text-white font-semibold hover:opacity-90">
+                CHECKOUT • <span id="cart-total">IDR 0</span>
+                </button>
+            </div>
+        </aside>
+    </div>
+  
   
 </body>
 </html>

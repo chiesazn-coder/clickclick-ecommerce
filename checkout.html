@@ -260,105 +260,177 @@
     </main>
   
 
-  <script>
-    // === CONFIG ===
-    const API = 'https://<NGROK-KAMU>.ngrok-free.app'; // ganti ke URL server kamu
-    const CART_KEY = 'cc_cart_v1';
-
-    // === Utils ===
-    const $ = (s,r=document)=>r.querySelector(s);
-    const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
-    const fIDR = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
-
-    // === Cart state ===
-    const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-    const subtotal = () => cart.reduce((s,i)=> s + Number(i.price)*Number(i.qty), 0);
-    const shipFee = () => {
-      const r = document.querySelector('input[name="ship"]:checked');
-      return r ? Number(r.dataset.fee || 0) : 0;
-    };
-
-    // === Render summary ===
-    const sumItems = $('#summary-items');
-    const subEl = $('#sub');
-    const shipTextEl = $('#shipText');
-    const totEl = $('#tot');
-
-    function renderSummary(){
-      sumItems.innerHTML = cart.map(i => `
-        <div class="flex items-center gap-3">
-          <img src="${i.image || 'assets/placeholder.png'}" class="w-14 h-14 rounded-md object-cover bg-gray-50" />
-          <div class="flex-1">
-            <div class="text-sm">${i.title}</div>
-            <div class="text-xs text-gray-500">Qty ${i.qty}</div>
-          </div>
-          <div class="text-sm font-medium">IDR ${fIDR(Number(i.price)*Number(i.qty))}</div>
-        </div>
-      `).join('');
-
-      const sub = subtotal();
-      const fee = shipFee();
-
-      subEl.textContent = `IDR ${fIDR(sub)}`;
-      shipTextEl.textContent = fee ? `IDR ${fIDR(fee)}` : 'Enter shipping address';
-      totEl.textContent = fIDR(sub + fee);
-    }
-
-    renderSummary();
-
-    // Tampilkan opsi shipping setelah klik "Enter your shipping address…"
-    $('#btn-recalc').addEventListener('click', ()=>{
-      $('#ship-methods').classList.remove('hidden');
-      renderSummary();
-    });
-    $$('input[name="ship"]').forEach(r=>r.addEventListener('change', renderSummary));
-
-    // === Place order (→ Midtrans Snap) ===
-    $('#btn-place-order').addEventListener('click', async () => {
-      const errEl = $('#err'); errEl.textContent = '';
-      if (!cart.length) { errEl.textContent = 'Keranjang kosong.'; return; }
-
-      const items = cart.map(i => ({
-        id: i.id, title: i.title, price: Number(i.price), qty: Number(i.qty)
-      }));
-
-      const customer = {
-        name: `${$('#firstName').value || ''} ${$('#lastName').value || ''}`.trim() || 'Guest',
-        email: $('#email').value || 'guest@example.com',
-        phone: $('#phone').value || '',
-        address: {
-          line1: $('#address').value || '',
-          line2: $('#address2').value || '',
-          city: $('#city').value || '',
-          province: $('#province').value || '',
-          zip: $('#zip').value || '',
-          country: $('#country').value || 'ID',
-        },
-        shipping: {
-          code: (document.querySelector('input[name="ship"]:checked')?.value) || 'REG',
-          fee: shipFee()
+    <script>
+        // === CONFIG ===
+        const API = 'https://153ad62474ca.ngrok-free.app'; // ganti kalau perlu
+        const CART_KEY = 'cc_cart_v1';
+      
+        // === Utils ===
+        const $  = (s,r=document)=>r.querySelector(s);
+        const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+        const fIDR = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
+      
+        // bikin URL gambar jadi absolute (biar aman di semua path)
+        const toAbs = (src) => {
+          try { return new URL(src || 'assets/placeholder.png', location.origin).href; }
+          catch { return src || 'assets/placeholder.png'; }
+        };
+      
+        // === Cart state ===
+        const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      
+        const subtotal = () => cart.reduce((s,i)=> s + Number(i.price)*Number(i.qty), 0);
+        const shipFee = () => {
+          const r = document.querySelector('input[name="ship"]:checked');
+          return r ? Number(r.dataset.fee || 0) : 0;
+        };
+      
+        // === Render summary ===
+        const sumItems   = $('#summary-items');
+        const subEl      = $('#sub');
+        const shipTextEl = $('#shipText');
+        const totEl      = $('#tot');
+      
+        function renderSummary(){
+          if (!Array.isArray(cart)) return;
+      
+          sumItems.innerHTML = cart.length
+            ? cart.map(i => `
+                <div class="flex items-center gap-3">
+                  <img src="${toAbs(i.image)}" class="w-14 h-14 rounded-md object-cover bg-gray-50" />
+                  <div class="flex-1">
+                    <div class="text-sm">${i.title ?? '-'}</div>
+                    <div class="text-xs text-gray-500">Qty ${i.qty ?? 0}</div>
+                  </div>
+                  <div class="text-sm font-medium">IDR ${fIDR(Number(i.price)*Number(i.qty))}</div>
+                </div>
+              `).join('')
+            : '<div class="text-sm text-gray-500">Keranjang kosong.</div>';
+      
+          const sub = subtotal();
+          const fee = shipFee();
+          subEl.textContent      = `IDR ${fIDR(sub)}`;
+          shipTextEl.textContent = fee ? `IDR ${fIDR(fee)}` : 'Enter shipping address';
+          totEl.textContent      = fIDR(sub + fee);
         }
-      };
-
-      const btn = $('#btn-place-order');
-      btn.disabled = true; btn.textContent = 'Processing...';
-
-      try{
-        const r = await fetch(`${API}/api/checkout`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ items, customer })
+      
+        // tampilkan ringkasan awal
+        renderSummary();
+      
+        // tampilkan pilihan shipping setelah klik
+        $('#btn-recalc').addEventListener('click', ()=>{
+          $('#ship-methods').classList.remove('hidden');
+          renderSummary();
         });
-        const data = await r.json();
-        if (!r.ok || !data?.redirect_url) throw new Error(data?.error || 'Gagal membuat transaksi');
-
-        // Redirect ke halaman pembayaran Midtrans (Snap)
-        window.location.href = data.redirect_url;
-      }catch(e){
-        errEl.textContent = e.message;
-        btn.disabled = false; btn.textContent = 'Pay now';
-      }
-    });
-  </script>
+        $$('input[name="ship"]').forEach(r=>r.addEventListener('change', renderSummary));
+      
+        // === Place order (→ Midtrans Snap) + Validasi Wajib ===
+        $('#btn-place-order').addEventListener('click', async () => {
+          const errEl = $('#err');
+          errEl.textContent = '';
+      
+          // 1) Keranjang harus ada isinya
+          if (!cart.length) {
+            errEl.textContent = 'Keranjang kosong.';
+            return;
+          }
+      
+          // 2) Validasi field wajib
+          const requiredFields = [
+            { el: $('#email'),     name: 'Email' },
+            { el: $('#firstName'), name: 'First name' },
+            { el: $('#lastName'),  name: 'Last name' },
+            { el: $('#address'),   name: 'Address' },
+            { el: $('#city'),      name: 'City' },
+            { el: $('#province'),  name: 'State/Province' },
+            { el: $('#zip'),       name: 'ZIP code' },
+            { el: $('#phone'),     name: 'Phone' },
+          ];
+      
+          // bersihkan highlight error (opsional)
+          requiredFields.forEach(f => f.el?.classList.remove('border-red-500'));
+      
+          for (const f of requiredFields) {
+            if (!f.el || !f.el.value.trim()) {
+              errEl.textContent = `${f.name} wajib diisi.`;
+              f.el?.classList.add('border-red-500'); // opsional: border merah
+              f.el?.focus();
+              return;
+            }
+          }
+      
+          // 3) Validasi format email sederhana
+          const emailVal = $('#email').value.trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+            errEl.textContent = 'Format email tidak valid.';
+            $('#email').classList.add('border-red-500');
+            $('#email').focus();
+            return;
+          }
+      
+          // 4) Validasi nomor telepon minimal 8 digit angka
+          const phoneDigits = ($('#phone').value || '').replace(/\D/g, '');
+          if (phoneDigits.length < 8) {
+            errEl.textContent = 'Nomor telepon terlalu pendek.';
+            $('#phone').classList.add('border-red-500');
+            $('#phone').focus();
+            return;
+          }
+      
+          // === lanjut proses (kirim ke server) ===
+          const items = cart.map(i => ({
+            id: i.id,
+            title: i.title,
+            price: Number(i.price),
+            qty: Number(i.qty),
+            image: toAbs(i.image) // penting biar gambar muncul di thankyou
+          }));
+      
+          const customer = {
+            name: `${$('#firstName').value || ''} ${$('#lastName').value || ''}`.trim() || 'Guest',
+            email: $('#email').value || 'guest@example.com',
+            phone: $('#phone').value || '',
+            address: {
+              line1: $('#address').value || '',
+              line2: $('#address2').value || '',
+              city: $('#city').value || '',
+              province: $('#province').value || '',
+              zip: $('#zip').value || '',
+              country: $('#country').value || 'ID',
+            },
+            shipping: {
+              code: (document.querySelector('input[name="ship"]:checked')?.value) || 'REG',
+              fee: shipFee()
+            }
+          };
+      
+          const btn = $('#btn-place-order');
+          btn.disabled = true;
+          btn.textContent = 'Processing...';
+      
+          try {
+            const r = await fetch(`${API}/api/checkout`, {
+              method: 'POST',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({ items, customer })
+            });
+            const data = await r.json();
+            if (!r.ok || !data?.redirect_url) {
+              throw new Error(data?.error || 'Gagal membuat transaksi');
+            }
+      
+            if (data.order_id) {
+              sessionStorage.setItem('last_order_id', data.order_id);
+            }
+      
+            window.location.href = data.redirect_url;
+          } catch (e) {
+            errEl.textContent = e.message || 'Terjadi kesalahan.';
+            btn.disabled = false;
+            btn.textContent = 'Pay now';
+          }
+        });
+    </script>
+      
 </body>
 </html>

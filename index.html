@@ -367,12 +367,21 @@
           <strong id="cart-subtotal">IDR 0</strong>
         </div>
         <p class="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
-        <button class="w-full h-12 rounded-full bg-black text-white font-semibold hover:opacity-90">
+        <button id="btn-checkout" class="w-full h-12 rounded-full bg-black text-white font-semibold hover:opacity-90">
           CHECKOUT • <span id="cart-total">IDR 0</span>
         </button>
       </div>
     </aside>
   </div>
+
+  <!--Script Button CHECKOUT-->
+  <!-- Script Button CHECKOUT (INDEX) -->
+  <script>
+    document.getElementById('btn-checkout')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = './checkout.html';
+    });
+  </script>
 
   <!-- ================== SCRIPTS DI PALING BAWAH ================== -->
 

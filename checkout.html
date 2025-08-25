@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout — Clickclick</title>
+  <link rel="stylesheet" href="./dist/output.css?v=prod" />
+  <style>
+    /* pastikan gambar di summary kecil */
+    #summary-items img{
+      width:56px !important;   /* = w-14 */
+      height:56px !important;  /* = h-14 */
+      object-fit:cover;
+      border-radius:8px;        /* ~ rounded-md */
+      background:#f9fafb;       /* bg-gray-50 */
+      flex:0 0 56px;
+    }
+    #summary-items .row{ display:flex; align-items:center; gap:.75rem; }
+  </style>
+  <style>
+    .field { @apply w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400; }
+    .label { @apply text-[13px] text-gray-700; }
+    .card { @apply rounded-2xl border border-gray-200 bg-white; }
+    .btn-primary { @apply h-12 rounded-xl bg-gray-900 text-white font-semibold hover:opacity-90 inline-flex items-center justify-center; }
+    .btn-ghost { @apply h-11 rounded-xl border font-semibold hover:bg-gray-50 inline-flex items-center justify-center; }
+    .divider { @apply relative my-6 text-center text-xs text-gray-500; }
+    .divider:before, .divider:after { content:''; @apply absolute top-1/2 w-full border-t border-gray-200; }
+    .divider:before { left:0; transform:translateX(-105%); width:45%; }
+    .divider:after  { right:0; transform:translateX(105%); width:45%; }
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+  <!-- Header -->
+  <header class="border-b">
+    <div class="max-w-[1100px] mx-auto h-16 flex items-center justify-between px-4">
+      <a href="./index.html" class="text-2xl font-black tracking-tight">CLICKCLICK</a>
+      <a href="./index.html#cart" class="text-sm underline decoration-gray-300 hover:decoration-gray-700">Back to store</a>
+    </div>
+  </header>
+
+  <!-- Content -->
+    <main class="max-w-[1120px] mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <!-- LEFT: form -->
+        <section class="lg:col-span-7 space-y-8">
+        <!-- Express checkout -->
+        <div class="rounded-2xl border border-gray-200 bg-white p-6">
+            <p class="text-sm font-medium text-gray-700 text-center">Express checkout</p>
+    
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button class="h-12 rounded-xl bg-[#5A31F4] text-white font-semibold">shop<span class="ml-1">Pay</span></button>
+            <button class="h-12 rounded-xl bg-[#FFC439] text-gray-900 font-semibold">PayPal</button>
+            <button class="h-12 rounded-xl bg-black text-white font-semibold">G&nbsp;Pay</button>
+            </div>
+    
+            <div class="relative my-6">
+            <hr class="border-gray-200">
+            <span class="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-xs text-gray-500">OR</span>
+            </div>
+    
+            <!-- Contact -->
+            <div class="space-y-3">
+            <h2 class="text-xl font-semibold">Contact</h2>
+            <div>
+                <label class="block text-[13px] text-gray-700 mb-1">Email</label>
+                <input id="email" type="email" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="you@email.com"/>
+            </div>
+            <label class="flex items-center gap-3 text-sm text-gray-700">
+                <input id="newsletter" type="checkbox" class="h-4 w-4 rounded border-gray-300"/>
+                Email me with news and offers
+            </label>
+            </div>
+    
+            <!-- Delivery -->
+            <div class="mt-6 space-y-3">
+            <h2 class="text-xl font-semibold">Delivery</h2>
+            <div class="grid grid-cols-12 gap-3">
+                <div class="col-span-12">
+                <label class="block text-[13px] text-gray-700 mb-1">Country/Region</label>
+                <select id="country" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400">
+                    <option value="ID">Indonesia</option>
+                    <option value="SG">Singapore</option>
+                    <option value="MY">Malaysia</option>
+                </select>
+                </div>
+    
+                <div class="col-span-12 sm:col-span-6">
+                <label class="block text-[13px] text-gray-700 mb-1">First name</label>
+                <input id="firstName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                <label class="block text-[13px] text-gray-700 mb-1">Last name</label>
+                <input id="lastName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+    
+                <div class="col-span-12">
+                <label class="block text-[13px] text-gray-700 mb-1">Address</label>
+                <div class="relative">
+                    <input id="address" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg>
+                </div>
+                </div>
+    
+                <div class="col-span-12">
+                <label class="block text-[13px] text-gray-700 mb-1">Apartment, suite, etc. (optional)</label>
+                <input id="address2" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+    
+                <div class="col-span-12 sm:col-span-4">
+                <label class="block text-[13px] text-gray-700 mb-1">City</label>
+                <input id="city" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+                <div class="col-span-12 sm:col-span-4">
+                <label class="block text-[13px] text-gray-700 mb-1">State</label>
+                <input id="province" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+                <div class="col-span-12 sm:col-span-4">
+                <label class="block text-[13px] text-gray-700 mb-1">ZIP code</label>
+                <input id="zip" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                </div>
+    
+                <div class="col-span-12">
+                <label class="block text-[13px] text-gray-700 mb-1">Phone</label>
+                <div class="relative">
+                    <input id="phone" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62…"/>
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M15 17h5l-1.4-4.2A2 2 0 0 0 16.7 11H15m0 6V8a2 2 0 0 0-2-2H6v9a2 2 0 0 0 2 2h7Z"/></svg>
+                </div>
+                </div>
+            </div>
+            </div>
+    
+            <!-- Shipping method -->
+            <div class="mt-6 space-y-3">
+            <h2 class="text-xl font-semibold">Shipping method</h2>
+    
+            <button type="button" id="btn-recalc" class="w-full h-11 rounded-xl border font-semibold hover:bg-gray-50 text-left px-4">
+                Enter your shipping address to view available shipping methods.
+            </button>
+    
+            <div id="ship-methods" class="hidden space-y-2">
+                <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer">
+                <input type="radio" name="ship" value="REG" data-fee="25000" checked />
+                <div>
+                    <div class="font-medium">Reguler (2–4 hari)</div>
+                    <div class="text-xs text-gray-500">IDR 25.000</div>
+                </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer">
+                <input type="radio" name="ship" value="EXP" data-fee="45000" />
+                <div>
+                    <div class="font-medium">Express (1–2 hari)</div>
+                    <div class="text-xs text-gray-500">IDR 45.000</div>
+                </div>
+                </label>
+            </div>
+            </div>
+    
+            <!-- Payment -->
+            <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-3">Payment</h2>
+            <p class="text-sm text-gray-600 mb-3">All transactions are secure and encrypted.</p>
+    
+            <div class="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+                <label class="flex items-center justify-between p-3 border rounded-lg">
+                <span class="flex items-center gap-2">
+                    <input type="radio" name="pay" checked />
+                    <span class="font-medium">Credit card</span>
+                </span>
+                <span class="text-xs text-gray-500">VISA · MasterCard · Amex</span>
+                </label>
+    
+                <!-- Fake fields (UI only) -->
+                <div class="grid grid-cols-12 gap-3">
+                <div class="col-span-12">
+                    <label class="block text-[13px] text-gray-700 mb-1">Card number</label>
+                    <div class="relative">
+                    <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 px-3 pr-10 text-[15px]" placeholder="#### #### #### ####" disabled />
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">via Midtrans</span>
+                    </div>
+                </div>
+                <div class="col-span-6">
+                    <label class="block text-[13px] text-gray-700 mb-1">Expiration date (MM / YY)</label>
+                    <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 px-3 text-[15px]" placeholder="MM/YY" disabled />
+                </div>
+                <div class="col-span-6">
+                    <label class="block text-[13px] text-gray-700 mb-1">Security code</label>
+                    <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 px-3 text-[15px]" placeholder="CVC" disabled />
+                </div>
+                <div class="col-span-12">
+                    <label class="block text-[13px] text-gray-700 mb-1">Name on card</label>
+                    <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 px-3 text-[15px]" placeholder="Name" disabled />
+                </div>
+                </div>
+    
+                <label class="flex items-center gap-3 p-3 border rounded-lg">
+                <input type="radio" name="pay" />
+                <span class="font-medium">PayPal</span>
+                </label>
+            </div>
+            </div>
+    
+            <!-- Save info -->
+            <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+            <label class="flex items-center gap-3">
+                <input id="remember" type="checkbox" class="h-4 w-4 rounded border-gray-300" />
+                <span class="text-sm">Save my information for a faster checkout with a Shop account</span>
+            </label>
+            <div>
+                <label class="block text-[13px] text-gray-700 mb-1">Mobile phone number</label>
+                <input id="rememberPhone" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62" />
+            </div>
+            <div class="text-[11px] text-gray-500 flex items-center gap-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" class="text-gray-400"><path fill="currentColor" d="M12 2a6 6 0 0 0-6 6v3H5a1 1 0 0 0-1 1v9h16v-9a1 1 0 0 0-1-1h-1V8a6 6 0 0 0-6-6Zm0 2a4 4 0 0 1 4 4v3H8V8a4 4 0 0 1 4-4Z"/></svg>
+                Secure and encrypted
+            </div>
+            </div>
+    
+            <!-- Submit -->
+            <div class="mt-6">
+            <button id="btn-place-order" class="h-12 rounded-xl bg-gray-900 text-white font-semibold hover:opacity-90 px-6 w-full md:w-auto">Pay now</button>
+            <p id="err" class="mt-2 text-sm text-red-600"></p>
+            </div>
+        </div>
+        </section>
+    
+        <!-- RIGHT: summary -->
+        <aside class="lg:col-span-5">
+        <div class="sticky top-20 rounded-2xl border border-gray-200 bg-white p-6">
+            <!-- Items -->
+            <div id="summary-items" class="space-y-4"></div>
+    
+            <!-- Discount -->
+            <div class="mt-4 flex gap-2">
+            <input id="disc" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="Discount code or gift card" />
+            <button class="h-11 px-4 rounded-xl border font-semibold hover:bg-gray-50">Apply</button>
+            </div>
+    
+            <!-- Subtotals -->
+            <div class="mt-6 space-y-2 text-sm">
+            <div class="flex justify-between"><span>Subtotal</span><span id="sub">IDR 0</span></div>
+            <div class="flex justify-between text-gray-600">
+                <span>Shipping</span>
+                <span id="shipText">Enter shipping address</span>
+            </div>
+            </div>
+    
+            <hr class="my-4">
+    
+            <!-- Total -->
+            <div class="flex justify-between items-baseline">
+            <span class="text-xl font-semibold">Total</span>
+            <div class="text-right">
+                <div class="text-xs text-gray-500">IDR</div>
+                <div id="tot" class="text-xl font-semibold">0</div>
+            </div>
+            </div>
+    
+
+        </div>
+        </aside>
+    </main>
+  
+
+  <script>
+    // === CONFIG ===
+    const API = 'https://<NGROK-KAMU>.ngrok-free.app'; // ganti ke URL server kamu
+    const CART_KEY = 'cc_cart_v1';
+
+    // === Utils ===
+    const $ = (s,r=document)=>r.querySelector(s);
+    const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+    const fIDR = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
+
+    // === Cart state ===
+    const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    const subtotal = () => cart.reduce((s,i)=> s + Number(i.price)*Number(i.qty), 0);
+    const shipFee = () => {
+      const r = document.querySelector('input[name="ship"]:checked');
+      return r ? Number(r.dataset.fee || 0) : 0;
+    };
+
+    // === Render summary ===
+    const sumItems = $('#summary-items');
+    const subEl = $('#sub');
+    const shipTextEl = $('#shipText');
+    const totEl = $('#tot');
+
+    function renderSummary(){
+      sumItems.innerHTML = cart.map(i => `
+        <div class="flex items-center gap-3">
+          <img src="${i.image || 'assets/placeholder.png'}" class="w-14 h-14 rounded-md object-cover bg-gray-50" />
+          <div class="flex-1">
+            <div class="text-sm">${i.title}</div>
+            <div class="text-xs text-gray-500">Qty ${i.qty}</div>
+          </div>
+          <div class="text-sm font-medium">IDR ${fIDR(Number(i.price)*Number(i.qty))}</div>
+        </div>
+      `).join('');
+
+      const sub = subtotal();
+      const fee = shipFee();
+
+      subEl.textContent = `IDR ${fIDR(sub)}`;
+      shipTextEl.textContent = fee ? `IDR ${fIDR(fee)}` : 'Enter shipping address';
+      totEl.textContent = fIDR(sub + fee);
+    }
+
+    renderSummary();
+
+    // Tampilkan opsi shipping setelah klik "Enter your shipping address…"
+    $('#btn-recalc').addEventListener('click', ()=>{
+      $('#ship-methods').classList.remove('hidden');
+      renderSummary();
+    });
+    $$('input[name="ship"]').forEach(r=>r.addEventListener('change', renderSummary));
+
+    // === Place order (→ Midtrans Snap) ===
+    $('#btn-place-order').addEventListener('click', async () => {
+      const errEl = $('#err'); errEl.textContent = '';
+      if (!cart.length) { errEl.textContent = 'Keranjang kosong.'; return; }
+
+      const items = cart.map(i => ({
+        id: i.id, title: i.title, price: Number(i.price), qty: Number(i.qty)
+      }));
+
+      const customer = {
+        name: `${$('#firstName').value || ''} ${$('#lastName').value || ''}`.trim() || 'Guest',
+        email: $('#email').value || 'guest@example.com',
+        phone: $('#phone').value || '',
+        address: {
+          line1: $('#address').value || '',
+          line2: $('#address2').value || '',
+          city: $('#city').value || '',
+          province: $('#province').value || '',
+          zip: $('#zip').value || '',
+          country: $('#country').value || 'ID',
+        },
+        shipping: {
+          code: (document.querySelector('input[name="ship"]:checked')?.value) || 'REG',
+          fee: shipFee()
+        }
+      };
+
+      const btn = $('#btn-place-order');
+      btn.disabled = true; btn.textContent = 'Processing...';
+
+      try{
+        const r = await fetch(`${API}/api/checkout`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ items, customer })
+        });
+        const data = await r.json();
+        if (!r.ok || !data?.redirect_url) throw new Error(data?.error || 'Gagal membuat transaksi');
+
+        // Redirect ke halaman pembayaran Midtrans (Snap)
+        window.location.href = data.redirect_url;
+      }catch(e){
+        errEl.textContent = e.message;
+        btn.disabled = false; btn.textContent = 'Pay now';
+      }
+    });
+  </script>
+</body>
+</html>

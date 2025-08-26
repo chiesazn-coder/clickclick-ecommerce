@@ -8,15 +8,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{--ink:#0b1020;--muted:#6b7280;--ok:#10b981;--warn:#f59e0b;--bad:#ef4444;--bg:#f7f7fb;}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
     .wrap{max-width:900px;margin:40px auto;padding:0 16px}
     .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px}
-    h1{margin:0 0 8px;font-size:28px} .muted{color:var(--muted)}
-    .grid{display:grid;gap:16px} @media(min-width:900px){.grid{grid-template-columns:2fr 1.2fr}}
+    h1{margin:0 0 8px;font-size:28px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:2fr 1.2fr}}
     .row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
     .total{font-size:22px;font-weight:700}
     .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
-    .tag.ok{background:#ecfdf5;color:#065f46}.tag.pending{background:#fffbeb;color:#92400e}.tag.fail{background:#fef2f2;color:#991b1b}
+    .tag.ok{background:#ecfdf5;color:#065f46}
+    .tag.pending{background:#fffbeb;color:#92400e}
+    .tag.fail{background:#fef2f2;color:#991b1b}
     .items{display:flex;flex-direction:column;gap:12px;margin-top:8px}
     .item{display:flex;gap:12px;align-items:center}
     .thumb{width:56px;height:56px;border-radius:10px;background:#f3f4f6;object-fit:cover}
@@ -27,6 +32,7 @@
     .hr{height:1px;background:#f1f1f3;margin:16px 0}
   </style>
 </head>
+
 <body>
   <div class="wrap grid">
     <!-- Left: order -->
@@ -36,14 +42,20 @@
 
       <div class="hr"></div>
 
+      <!-- Membership banner -->
+      <div id="memberBanner" class="card" style="display:none; margin:12px 0; padding:14px; border-style:dashed;">
+        <div style="font-weight:700; margin-bottom:4px;">Membership aktif 🎉</div>
+        <div id="memberText" class="small muted"></div>
+      </div>
+
       <h3>Ringkasan pesanan</h3>
       <div id="items" class="items"></div>
 
       <div class="hr"></div>
 
-      <div class="row"><span>Subtotal</span><strong id="sub">Rp 0</strong></div>
-      <div class="row muted"><span>Ongkir</span><span id="ship">Rp 0</span></div>
-      <div class="row total"><span>Total</span><span id="tot">Rp 0</span></div>
+      <div class="row"><span>Subtotal</span><strong id="sub">Rp 0</strong></div>
+      <div class="row muted"><span>Ongkir</span><span id="ship">Rp 0</span></div>
+      <div class="row total"><span>Total</span><span id="tot">Rp 0</span></div>
 
       <div class="hr"></div>
 
@@ -62,22 +74,29 @@
   </div>
 
   <script>
-    const API_BASE = 'https://153ad62474ca.ngrok-free.app'; // ganti kalau URL berubah
-    const fmt = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
-
-    // ambil order_id dari query
+    // ====== CONFIG ======
+    const API_BASE = window.PUBLIC_URL || 'https://68859790617a.ngrok-free.app';
+  
+    // ====== Utils ======
+    const fmt  = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
+    const toAbs = (src) => { try { return new URL(src || 'assets/placeholder.png', document.baseURI).href; } catch { return src || 'assets/placeholder.png'; } };
+    const memberBanner = document.getElementById('memberBanner');
+    const memberText   = document.getElementById('memberText');
+  
+    // Ambil order_id: prioritas query → sessionStorage → localStorage
     const q = new URLSearchParams(location.search);
     const orderId =
-    q.get('order_id') ||
-    q.get('orderId') ||
-    sessionStorage.getItem('last_order_id') || '';
-
+      q.get('order_id') ||
+      q.get('orderId') ||
+      sessionStorage.getItem('last_order_id') ||
+      localStorage.getItem('last_order_id') || '';
+  
     document.getElementById('note').textContent =
-    orderId ? `Order: ${orderId}` : 'Order tidak diketahui';
-
-    // bersihkan cart lokal (kalau berasal dari checkout)
+      orderId ? `Order: ${orderId}` : 'Order tidak diketahui';
+  
+    // bersihkan cart lokal
     localStorage.removeItem('cc_cart_v1');
-
+  
     const statusWrap = document.getElementById('statusWrap');
     const itemsEl = document.getElementById('items');
     const subEl = document.getElementById('sub');
@@ -85,7 +104,7 @@
     const totEl = document.getElementById('tot');
     const custEl = document.getElementById('cust');
     const invBtn = document.getElementById('invoice');
-
+  
     function tag(status){
       const s = String(status||'').toUpperCase();
       let cls='pending', txt='Menunggu';
@@ -93,24 +112,33 @@
       else if (s==='CANCELLED'||s==='DENIED'||s==='EXPIRED') { cls='fail'; txt=s==='EXPIRED'?'Kedaluwarsa':'Gagal'; }
       return `<span class="tag ${cls}">Status: ${txt}</span>`;
     }
-
+  
     async function loadOnce(){
-      const r = await fetch(`${API_BASE}/api/orders/${encodeURIComponent(orderId)}`, {
-        headers:{'ngrok-skip-browser-warning':'true'}
-      });
-      if (!r.ok) throw new Error('Gagal mengambil order');
-      const o = await r.json();
-
+      if (!orderId) throw new Error('order_id kosong');
+  
+      let o;
+      try{
+        const r = await fetch(`${API_BASE}/api/orders/${encodeURIComponent(orderId)}`, {
+          headers:{'ngrok-skip-browser-warning':'true'}
+        });
+        if (!r.ok) throw new Error('HTTP '+r.status);
+        o = await r.json();
+      }catch(e){
+        statusWrap.innerHTML = '<span class="tag fail">Gagal mengambil order</span>';
+        itemsEl.innerHTML = '<div class="small muted">Tidak bisa memuat item. Coba refresh.</div>';
+        throw e;
+      }
+  
       statusWrap.innerHTML = `${tag(o.status)} <span class="small muted">Order ID: ${orderId}</span>`;
-
-      // render items (pakai data yang kamu simpan saat checkout)
+  
+      // render items
       const srcItems = (o.items || []).map(it => ({
         title: it.title || 'Item',
         price: Number(it.price)||0,
         qty: Number(it.qty)||1,
-        image: it.image || 'assets/placeholder.png'
+        image: toAbs(it.image)
       }));
-
+  
       itemsEl.innerHTML = srcItems.map(it => `
         <div class="item">
           <img class="thumb" src="${it.image}" alt="">
@@ -121,11 +149,11 @@
           <div><strong>Rp ${fmt(it.price*it.qty)}</strong></div>
         </div>
       `).join('') || '<div class="small muted">Tidak ada item.</div>';
-
+  
       subEl.textContent = `Rp ${fmt(o.subtotal || 0)}`;
       shipEl.textContent = `Rp ${fmt(o.shippingFee || 0)}`;
       totEl.textContent = `Rp ${fmt(o.total || 0)}`;
-
+  
       // customer box
       const c = o.customer || {};
       const addr = c.address || {};
@@ -139,17 +167,44 @@
         </div>
         <div class="small muted" style="margin-top:8px">Phone: ${c.phone || '-'}</div>
       `;
-
+  
       invBtn.href = `${API_BASE}/api/orders/${encodeURIComponent(orderId)}`;
+  
+      // === Membership banner ===
+      try {
+        const ssUid = localStorage.getItem('cc_user_id') || sessionStorage.getItem('cc_user_id');
+        const st = String(o.status || '').toUpperCase();
+        const isPaid = (st === 'PAID' || st === 'SETTLEMENT');
+        if (o.userId && isPaid) {
+          memberBanner.style.display = 'block';
+          const nama  = c.name || 'Member';
+          const email = c.email || '(tanpa email)';
+          if (ssUid && ssUid === o.userId) {
+            memberText.innerHTML = `
+              Hai <strong>${nama}</strong>! Kami sudah membuat akun membership memakai email
+              <strong>${email}</strong>. Mulai sekarang, pesananmu otomatis terhubung ke akun ini.
+            `;
+          } else {
+            memberText.innerHTML = `
+              Akun membership untuk email <strong>${email}</strong> sudah aktif dan terhubung ke pesanan ini.
+            `;
+          }
+        } else {
+          memberBanner.style.display = 'none';
+        }
+      } catch (_) {
+        memberBanner.style.display = 'none';
+      }
+  
+      return String(o.status||'').toUpperCase();
     }
-
-    // Polling status (tiap 3s sampai PAID/FAIL, max 2 menit)
+  
+    // Polling status (tiap 3s sampai final)
     let tries = 0, timer;
     async function poll(){
       try{
-        await loadOnce();
-        const txt = (statusWrap.textContent||'').toUpperCase();
-        const done = txt.includes('LUNAS') || txt.includes('GAGAL') || txt.includes('KEDALUWARSA');
+        const st = await loadOnce();
+        const done = ['PAID','SETTLEMENT','EXPIRED','DENIED','CANCELLED'].includes(st);
         if (done || tries++ > 40) clearInterval(timer);
       }catch(e){
         console.error(e);
@@ -163,5 +218,6 @@
       statusWrap.innerHTML = '<span class="tag fail">Order ID tidak ditemukan</span>';
     }
   </script>
+  
 </body>
 </html>

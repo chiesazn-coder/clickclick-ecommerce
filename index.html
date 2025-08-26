@@ -285,64 +285,205 @@
   </div>
 
   <!-- FEATURES (singkat) -->
-  <section id="features" class="bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center reveal fade-up slow">
-      <div class="relative">
-        <img src="assets/feature-magsafe.png" alt="Click Click MagSafe" class="w-full max-w-2xl mx-auto object-contain" />
-      </div>
-      <div class="space-y-10">
-        <div id="feat-magsafe" class="max-w-xl scroll-mt-28">
-          <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2">MagSafe Compatibility</span>
-          <p class="mt-4 text-gray-800 leading-8 text-lg">MagSafe yang menempel sempurna di belakang handphone, sehingga stabil digunakan kapan saja.</p>
+  <!-- FEATURES (modern) -->
+  <section id="features" class="bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 grid lg:grid-cols-12 gap-10 items-center reveal fade-up slow">
+
+      <!-- LEFT: Product visual -->
+      <div class="lg:col-span-6">
+        <div class="relative">
+          <!-- glow ring -->
+          <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-indigo-200/40 via-purple-200/40 to-pink-200/40 blur-2xl"></div>
+          <div class="relative rounded-3xl overflow-hidden ring-1 ring-black/5 shadow-xl bg-white">
+            <img src="assets/feature-magsafe.png" alt="Clickclick MagSafe" class="w-full object-contain">
+          </div>
+
+          <!-- floating badge -->
+          <div class="hidden md:flex items-center gap-2 absolute -bottom-4 left-6 rounded-full bg-white/90 backdrop-blur px-4 py-2 shadow-md ring-1 ring-black/5">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span class="text-sm font-medium text-gray-800">Snaps strong with MagSafe</span>
+          </div>
         </div>
-        <div id="feat-design" class="max-w-xl scroll-mt-28">
-          <span class="inline-block rounded-full bg-gray-200/90 text-gray-900 font-semibold px-5 py-2">Desain Tipis & Stylish</span>
-          <p class="mt-4 text-gray-800 leading-8 text-lg">Desain slim yang ringan, mudah dibawa ke mana saja tanpa menambah beban di ponselmu.</p>
+      </div>
+
+      <!-- RIGHT: Copy + feature cards -->
+      <div class="lg:col-span-6">
+        <div class="max-w-xl">
+          <span class="inline-flex items-center gap-2 rounded-full bg-black text-white px-3 py-1 text-xs font-semibold tracking-wide">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> New Gen Accessory
+          </span>
+          <h2 class="mt-4 text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+            Slim. Strong. <span class="text-gray-500">Clicks like magic.</span>
+          </h2>
+          <p class="mt-3 text-gray-600 leading-7">
+            Dirancang untuk dipakai harian—ringan, tipis, dan stabil saat menempel.
+            Lebih nyaman dipakai kapan saja tanpa bikin ponsel terasa bulky.
+          </p>
+
+          <!-- Feature grid -->
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Card 1 -->
+            <div class="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-indigo-50 p-2 ring-1 ring-indigo-100">
+                  <!-- icon: magnet -->
+                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-indigo-600" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M6 8v5a6 6 0 1 0 12 0V8" />
+                    <path d="M6 8a6 6 0 0 1 12 0" />
+                    <path d="M6 13H3m18 0h-3" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">MagSafe Compatibility</h3>
+                  <p class="mt-1 text-sm text-gray-600">
+                    Menempel kuat dan stabil di belakang ponsel—siap dipakai tiap momen.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-rose-50 p-2 ring-1 ring-rose-100">
+                  <!-- icon: feather -->
+                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-rose-600" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M20 7a8 8 0 0 0-11.31 0L3 12v4h4l5-5"/>
+                    <path d="M16 7l-9 9"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Desain Tipis & Stylish</h3>
+                  <p class="mt-1 text-sm text-gray-600">
+                    Super slim dan ringan—mudah dibawa tanpa menambah beban.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 (optional, mudah dihapus) -->
+            <div class="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-emerald-50 p-2 ring-1 ring-emerald-100">
+                  <!-- icon: shield -->
+                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Grip Nyaman</h3>
+                  <p class="mt-1 text-sm text-gray-600">
+                    Tekstur halus dengan feel mantap—enak digenggam tanpa licin.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 (optional) -->
+            <div class="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-amber-50 p-2 ring-1 ring-amber-100">
+                  <!-- icon: bolt -->
+                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Klik Cepat</h3>
+                  <p class="mt-1 text-sm text-gray-600">
+                    Pasang-lepas instan. Pindah mode tanpa ribet—langsung ready.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="mt-8">
+            <a href="./shop/all-shop.html" class="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white px-5 py-3 text-sm font-semibold shadow-sm hover:bg-black transition">
+              Shop Now
+            </a>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
+
   <!-- FOOTER (diringkas) -->
+  <!-- FOOTER (modern & clean) -->
   <footer class="bg-white border-t border-black/5 text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-10">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <!-- Customer Care -->
         <div>
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
-          <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
+          <ul class="mt-4 space-y-3 text-gray-700">
             <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
             <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
-            <li><a href="#" class="hover:opacity-80">FAQ</a></li>
-            <li><a href="#" class="hover:opacity-80">Contact</a></li>
-            <li><a href="#" class="hover:opacity-80">Gallery</a></li>
+            <li><a href="faq.html" class="hover:opacity-80">FAQ</a></li>
+            <li><a href="#" class="hover:opacity-80">Track Order</a></li>
+            <li><a href="#" class="hover:opacity-80">Contact Us</a></li>
           </ul>
         </div>
+
+        <!-- About Us -->
         <div>
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
-          <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-gray-800">
+          <ul class="mt-4 space-y-3 text-gray-700">
             <li><a href="#" class="hover:opacity-80">Our Story</a></li>
             <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
-            <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
-            <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
+            <li><a href="#" class="hover:opacity-80">Sustainability</a></li>
+            <li><a href="#" class="hover:opacity-80">Blog</a></li>
+            <li><a href="#" class="hover:opacity-80">Careers</a></li>
           </ul>
         </div>
-        <div class="text-gray-800">
-          <p class="leading-7 md:leading-8 text-sm md:text-base">Welcome to <span class="font-semibold">Clickclick</span> — Designed for creators, built for every moment</p>
+
+        <!-- Help & Legal -->
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Help & Legal</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
+            <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
+            <li><a href="#" class="hover:opacity-80">Warranty Information</a></li>
+            <li><a href="#" class="hover:opacity-80">Payment & Security</a></li>
+            <li><a href="#" class="hover:opacity-80">Cookie Policy</a></li>
+          </ul>
         </div>
-        <div class="flex items-center gap-3">
-          <img src="assets/payments/spay-logo.png" class="h-9">
-          <img src="assets/payments/MasterCard_Logo.png" class="h-9">
-          <img src="assets/payments/bca.png" class="h-9">
-          <img src="assets/payments/bni.png" class="h-6">
+
+        <!-- Follow Us + Payments -->
+        <div class="flex flex-col items-start">
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Follow Us</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="#" class="hover:opacity-80">Instagram</a></li>
+            <li><a href="#" class="hover:opacity-80">TikTok</a></li>
+            <li><a href="#" class="hover:opacity-80">YouTube</a></li>
+            <li><a href="#" class="hover:opacity-80">Newsletter</a></li>
+          </ul>
+
+          <!-- Payment icons -->
+          <div class="flex items-center gap-4 flex-wrap mt-8">
+            <img src="assets/payments/spay-logo.png" class="h-9" alt="ShopeePay">
+            <img src="assets/payments/MasterCard_Logo.png" class="h-9" alt="MasterCard">
+            <img src="assets/payments/bca.png" class="h-9" alt="BCA">
+            <img src="assets/payments/bni.png" class="h-6" alt="BNI">
+          </div>
         </div>
+
       </div>
     </div>
+
+    <!-- Bottom Bar -->
     <div class="border-t border-black/5">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between text-xs sm:text-sm text-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between text-xs sm:text-sm text-gray-600">
         <p>© 2025 Clickclick, All rights reserved.</p>
+        <p>Secured Checkout • Trusted Payments</p>
       </div>
     </div>
   </footer>
+
 
   <!-- ===== CART DRAWER ===== -->
   <div id="cart-drawer" class="fixed inset-0 z-[70] hidden">

@@ -28,66 +28,101 @@
     @media (prefers-reduced-motion:reduce){.promo-track{animation:none;transform:none}}
     @media (max-width:767px){.promo-marquee{--speed:22s}}
   </style>
+
+  <style>
+    @media (prefers-reduced-motion: reduce){
+    .reveal{transition: none !important; transform: none !important; opacity: 1 !important;}
+    }
+  </style>
+
+  <style>
+    .reveal{opacity:0;transform:translate3d(0,12px,0);transition:opacity .7s ease,transform .7s ease;will-change:opacity,transform}
+    .reveal.show{opacity:1;transform:none}
+    .fade-up{transform:translate3d(0,24px,0)} .fade-down{transform:translate3d(0,-24px,0)}
+    .fade-left{transform:translate3d(24px,0,0)} .fade-right{transform:translate3d(-24px,0,0)}
+    .zoom-in{transform:scale(.96)} .slow{transition-duration:1s} .slower{transition-duration:1.25s}
+  </style>
 </head>
 
 <body class="font-sans bg-gray-50">
 
-  <!-- NAVBAR -->
+  <!-- ========== NAVBAR (mobile hamburger + dropdown) ========== -->
   <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2">
         <img src="assets/logo.png" alt="Click Click Logo" class="h-10">
       </a>
-
-      <!-- Menu -->
-      <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
+      
+      
+      <!-- Desktop menu -->
+      <ul class="hidden md:flex items-center gap-10 text-gray-700 font-medium">
         <li><a class="hover:text-black" href="#">Home</a></li>
-        <li><a href="./shop/all-shop.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">Shop</a></li>
+        <li><a href="./shop/all-shop.html" class="px-4 py-2 hover:text-black">Shop</a></li>
         <li class="relative group">
-          <button class="px-4 py-2 font-medium text-gray-700 hover:text-black">Features</button>
-          <div class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl opacity-0 scale-95 pointer-events-none transition group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto z-50">
-            <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
-              <li><a href="#features" class="block px-4 py-2 hover:bg-gray-50">Overview</a></li>
-              <li><a href="#feat-magsafe" class="block px-4 py-2 hover:bg-gray-50">Key Features</a></li>
-              <li><a href="#feat-design" class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a></li>
-              <li><a href="#feat-install" class="block px-4 py-2 hover:bg-gray-50">Support</a></li>
-            </ul>
-          </div>
+        <button class="px-4 py-2 hover:text-black">Features</button>
+        <div class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl opacity-0 scale-95 pointer-events-none transition group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto z-50">
+          <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
+          <li><a href="#features" class="block px-4 py-2 hover:bg-gray-50">Overview</a></li>
+          <li><a href="#feat-magsafe" class="block px-4 py-2 hover:bg-gray-50">Key Features</a></li>
+          <li><a href="#feat-design" class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a></li>
+          <li><a href="#feat-install" class="block px-4 py-2 hover:bg-gray-50">Support</a></li>
+        </ul>
+        </div>
         </li>
-        <li><a href="faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">FAQ</a></li>
+        <li><a href="faq.html" class="px-4 py-2 hover:text-black">FAQ</a></li>
       </ul>
-
-      <!-- Icons -->
-      <div class="flex items-center gap-4">
-        <!-- Search -->
-        <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
-            <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
-          </svg>
+      
+      
+      <!-- Right icons + hamburger -->
+      <div class="flex items-center gap-2">
+        <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full hidden sm:inline-flex">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path></svg>
         </button>
-        <!-- Cart + Badge -->
         <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <circle cx="9" cy="19" r="1.8"></circle>
-            <circle cx="17" cy="19" r="1.8"></circle>
-          </svg>
-          <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="19" r="1.8"></circle><circle cx="17" cy="19" r="1.8"></circle></svg>
+        <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
+        </button>
+        <!-- Hamburger (mobile) -->
+        <button id="btn-menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
         </button>
       </div>
     </div>
+      <!-- Mobile menu panel -->
+      <div id="mobile-menu" class="md:hidden hidden border-t">
+        <ul class="px-4 py-3 space-y-2 text-gray-800">
+        <li><a class="block py-2" href="#">Home</a></li>
+        <li><a class="block py-2" href="./shop/all-shop.html">Shop</a></li>
+        <li><a class="block py-2" href="#features">Features</a></li>
+        <li><a class="block py-2" href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
   </nav>
 
+  <script>
+    // Mobile menu toggle
+    document.getElementById('btn-menu')?.addEventListener('click', () => {
+    const panel = document.getElementById('mobile-menu');
+    const nowOpen = panel.classList.toggle('hidden') ? false : true;
+    document.getElementById('btn-menu').setAttribute('aria-expanded', nowOpen);
+    });
+  </script>
+
   <!-- HERO -->
-  <header class="relative bg-cover bg-center sm:bg-right min-h-[calc(100vh-4rem)] reveal fade-up slow" style="background-image:url('assets/background-3.jpeg')">
+  <!-- ========== HERO (fluid type + min-height responsif + picture srcset) ========== -->
+  <header class="relative bg-cover bg-center sm:bg-right min-h-[70vh] sm:min-h-[calc(100vh-4rem)] reveal fade-up slow">
+    <picture>
+      <source srcset="assets/background-3-1280.jpeg" media="(max-width: 640px)">
+      <source srcset="assets/background-3-1920.jpeg" media="(max-width: 1024px)">
+      <img src="assets/background-3.jpeg" alt="Click Click hero" class="absolute inset-0 w-full h-full object-cover"/>
+    </picture>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
       <div class="grid lg:grid-cols-2 h-full">
-        <div class="flex flex-col justify-center lg:justify-start pt-24 sm:pt-32 lg:pt-50 ml-0 sm:ml-5">
+        <div class="flex flex-col justify-center lg:justify-start pt-20 sm:pt-28 lg:pt-32 ml-0 sm:ml-5">
           <h1 class="leading-tight tracking-[-0.02em] text-black">
-            <span class="block text-4xl sm:text-6xl lg:text-7xl font-extrabold">Now Available</span>
-            <span class="block mt-2 text-2xl sm:text-4xl lg:text-5xl font-normal">Magnetic Selfie Screen</span>
+            <span class="block font-extrabold text-[clamp(2rem,4vw+1rem,4.5rem)]">Now Available</span>
+            <span class="block mt-2 font-normal text-[clamp(1.25rem,2.8vw+0.75rem,3rem)]">Magnetic Selfie Screen</span>
           </h1>
           <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
             <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
@@ -100,28 +135,33 @@
   </header>
 
   <!-- SECTION M4 -->
-  <section id="m4" class="relative overflow-hidden py-20 md:py-50 bg-white min-h-[500px]">
+  <!-- ========== SECTION M4 (absolute images dengan ukuran aman per breakpoint) ========== -->
+  <section id="m4" class="relative overflow-hidden py-16 md:py-24 bg-white min-h-[640px] md:min-h-[520px]">
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-      <div class="grid grid-cols-2 items-center">
-        <div class="flex flex-col justify-center pb-20 md:pb-24">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div class="grid grid-cols-2 items-center">
+        <div class="flex flex-col justify-center pb-16 md:pb-20">
           <p class="text-lg text-gray-700/80">New Arrival</p>
           <div class="leading-none">
-            <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light text-gray-400/40 select-none">M4</span>
+          <span class="block text-[3.75rem] sm:text-[5rem] lg:text-[7rem] font-light text-gray-400/40 select-none">M4</span>
           </div>
-        </div>
-        <div class="relative text-right pt-10 md:pt-30">
+          </div>
+          <div class="relative text-right pt-6 md:pt-16">
           <div class="leading-none">
-            <span class="block text-[5rem] sm:text-[6rem] lg:text-[8rem] font-light tracking-wide text-gray-400/30 select-none">SLIM</span>
+          <span class="block text-[3.5rem] sm:text-[5rem] lg:text-[7rem] font-light tracking-wide text-gray-400/30 select-none">SLIM</span>
           </div>
-          <p class="text-3xl sm:text-4xl font-light text-gray-900 mt-2">Stylist</p>
+          <p class="text-2xl sm:text-3xl font-light text-gray-900 mt-2">Stylist</p>
         </div>
       </div>
     </div>
-    <div class="absolute right-[0%] top-[-2%] w-[80%] sm:w-[75%] lg:w-[70%] xl:w-[65%] reveal fade-left slow">
+    
+    
+    <!-- Top image -->
+    <div class="absolute right-0 top-[-2%] w-[88%] sm:w-[75%] lg:w-[68%] xl:w-[58%] max-w-[980px] reveal fade-left slow pointer-events-none">
       <img src="assets/m4-top.png" alt="M4 top view" class="w-full h-auto drop-shadow-2xl select-none" />
     </div>
-    <div class="absolute left-[0%] bottom-[-5%] w-[65%] sm:w-[80%] lg:w-[75%] xl:w-[70%] reveal fade-right slow">
+    <!-- Bottom image -->
+    <div class="absolute left-0 bottom-[-6%] w-[78%] sm:w-[80%] lg:w-[70%] xl:w-[60%] max-w-[980px] reveal fade-right slow pointer-events-none">
       <img src="assets/m4-bottom.png" alt="M4 bottom view" class="w-full h-auto drop-shadow-2xl select-none" />
     </div>
   </section>
@@ -788,6 +828,28 @@
 
       // initial render
       render();
+    });
+  </script>
+
+  <script>
+    // Reveal-on-scroll (copy-safe; idempotent)
+    document.addEventListener('DOMContentLoaded', () => {
+    const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    const el = entry.target;
+    const sel = el.getAttribute('data-stagger');
+    if (sel) {
+    el.querySelectorAll(sel).forEach((k, i) => {
+    k.style.transitionDelay = (i * 90) + 'ms';
+    k.classList.add('show');
+    });
+    }
+    el.classList.add('show');
+    obs.unobserve(el);
+    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     });
   </script>
 

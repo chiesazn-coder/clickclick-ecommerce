@@ -1743,64 +1743,6 @@
         #prod3{ left:50% !important; bottom:28% !important; transform:translate(-50%,0) !important; }
         #prod4{ left:82% !important; bottom:18% !important; transform:translate(-50%,0) rotate(6deg) !important; }
         .promo-panels{ bottom:3% !important; max-width:min(94vw,380px) !important; }
-      
-        /* M4 — jadikan section sebagai anchor absolute */
-        #m4{ position:relative; }
-        /* hilangkan 'relative' di kolom kiri (order-2) agar overlay nempel ke #m4 */
-        #m4 .order-2{ position:static !important; }
-      
-        /* padding section */
-        #m4 > .mx-auto{ padding-top:4vw !important; padding-bottom:10vw !important; }
-      
-        /* Label kiri-atas */
-        #m4-left-copy{
-          position:absolute; z-index:10; top:6vw; left:6vw;
-        }
-        #m4-left-copy p{ font-size:clamp(16px,4.2vw,20px); color:#111; }
-        #m4-left-copy h2{
-          font-size:clamp(68px,28vw,120px);
-          font-weight:300; line-height:.9; margin-top:1vw;
-          color:rgba(17,24,39,.18);
-        }
-      
-        /* Gambar */
-        #m4-top{
-          width:180vw !important; max-width:none !important;
-          transform:translateX(-10vw) !important; /* lebih “menjorok” ke tengah */
-          margin-top:6vw;
-        }
-        #m4-bottom{
-          width:170vw !important; max-width:none !important;
-          transform:translateX(-44vw) translateY(-10vw) !important;
-          margin-bottom:12vw;
-        }
-      
-        /* Overlay “SLIM / Stylish” */
-        #m4-mobile-words{
-          position:absolute; z-index:9;
-          left:12vw; top:47%;
-          width:88vw;
-          transform:none !important;
-          text-align:left;
-          pointer-events:none;
-        }
-        #m4-mobile-words > div:first-child{   /* SLIM */
-          font-size:clamp(58px,27vw,112px) !important;
-          line-height:.9; font-weight:300; color:rgba(17,24,39,.18);
-        }
-        #m4-mobile-words > div:last-child{    /* Stylish */
-          font-size:clamp(36px,15.5vw,72px) !important;
-          line-height:.9; margin-top:-3vw !important;
-          font-weight:300; color:rgba(17,24,39,.18);
-        }
-      }
-      
-      /* ============ MICRO ≤360px (iPhone SE lawas, dll) ============ */
-      @media (max-width: 360px){
-        #m4-top{ width:186vw !important; transform:translateX(-12vw) !important; }
-        #m4-bottom{ width:178vw !important; transform:translateX(-48vw) translateY(-12vw) !important; }
-        #m4-mobile-words{ left:14vw; top:49%; }
-      }
       </style>
       
   </body>

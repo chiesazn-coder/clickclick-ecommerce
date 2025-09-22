@@ -4,80 +4,159 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shop — Click Click</title>
-  <link rel="stylesheet" href="../dist/output.css?v=prod" />
+
+  <!-- CSS Tailwind -->
+  <link id="twcss" rel="stylesheet" href="../dist/output.css">
+
+  <!-- Muat versi -->
+  <script src="../version.js"></script>
+
+  <script>
+    (function(){
+      const isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const link = document.getElementById("twcss");
+      if (!link) return;
+
+      if (isLocal) {
+        link.href = link.href + "?v=" + Date.now();
+      } else {
+        link.href = link.href + "?v=" + (window.__ASSET_VERSION__ || "1");
+      }
+
+      // Contoh jika ada JS halaman ini:
+      // const s = document.createElement("script");
+      // s.src = "../dist/app.js?v=" + (isLocal ? Date.now() : (window.__ASSET_VERSION__ || "1"));
+      // document.head.appendChild(s);
+    })();
+  </script>
+
   <style>
     .no-scroll{overflow:hidden}
   </style>
+
+
+  <link rel="icon" type="image/png" href="../assets/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../assets/favicon.png">
+
 </head>
+
 <body class="bg-white text-gray-900">
+    
+    <div class="bg-amber-100 text-amber-900 text-center text-sm py-2">
+      ⚠️ The online payment feature is still being prepared. To order, contact
+      <a href="https://wa.me/c/6282146151597" target="_blank" class="underline font-semibold hover:text-amber-700">
+        our WhatsApp
+      </a>.
+    </div>
 
   <!-- ================= NAVBAR ================= -->
-  <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-2">
-        <img src="../assets/logo.png" alt="Click Click Logo" class="h-10">
-      </a>
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur shadow-sm">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center justify-between">
+        <a href="#" class="inline-flex items-center gap-2">
+          <img src="../assets/logo.png" alt="Click Click" class="h-7 w-auto" />
+        </a>
 
-      <!-- Menu -->
-      <ul class="hidden md:flex items-center gap-16 text-gray-700 font-medium">
-        <li><a class="hover:text-black" href="../index.html">Home</a></li>
-        <li><a href="../shop/all-shop.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">Shop</a></li>
-        <li class="relative group">
-          <button class="px-4 py-2 font-medium text-gray-700 hover:text-black">Features</button>
-          <div class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl opacity-0 scale-95 pointer-events-none transition group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto z-50">
-            <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
-              <li><a href="#features" class="block px-4 py-2 hover:bg-gray-50">Overview</a></li>
-              <li><a href="#feat-magsafe" class="block px-4 py-2 hover:bg-gray-50">Key Features</a></li>
-              <li><a href="#feat-design" class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a></li>
-              <li><a href="#feat-install" class="block px-4 py-2 hover:bg-gray-50">Support</a></li>
-            </ul>
-          </div>
-        </li>
-        <li><a href="../faq.html" class="px-4 py-2 font-medium text-gray-700 hover:text-black">FAQ</a></li>
-      </ul>
+        <!-- Desktop menu -->
+        <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
+          <a class="hover:text-pink-600" href="../index.html">Home</a>
+          <a class="hover:text-pink-600" href="../shop/all-shop.html">Products</a>
+          <a class="hover:text-pink-600" href="../our-story.html">About Us</a>
+          <a class="hover:text-pink-600" href="../contact.html">Contact</a>
+        </nav>
 
-      <!-- Icons -->
-      <div class="flex items-center gap-4">
-        <!-- Search -->
-        <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
-            <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
-          </svg>
-        </button>
-        <!-- Cart + Badge -->
-        <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <circle cx="9" cy="19" r="1.8"></circle>
-            <circle cx="17" cy="19" r="1.8"></circle>
-          </svg>
+        <!-- Right icons + hamburger -->
+        <div class="flex items-center gap-2">
+          <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full hidden sm:inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path></svg>
+          </button>
+          <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="19" r="1.8"></circle><circle cx="17" cy="19" r="1.8"></circle></svg>
           <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
-        </button>
+          </button>
+          <!-- Hamburger (mobile) -->
+          <button id="btn-menu"
+            class="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+            aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+              <path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- LIVE SEARCH (drop-down) -->
+        <div id="live-search" class="hidden border-t border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+
+            <input id="live-search-input"
+                  class="flex-1 bg-transparent outline-none text-sm sm:text-base placeholder:text-gray-400"
+                  type="text" placeholder="Search products… (press Esc to close)" autocomplete="off" />
+
+            <span id="search-count" class="text-xs text-gray-500 hidden"></span>
+
+            <button id="live-search-clear" class="px-2 py-1 text-sm text-gray-600 hover:text-black hidden" aria-label="Clear search">
+              Clear
+            </button>
+            <button id="live-search-close" class="px-2 py-1 text-sm text-gray-600 hover:text-black" aria-label="Close search">
+              ✕
+            </button>
+          </div>
+        </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu"
+        class="md:hidden hidden absolute left-0 right-0 top-full
+                bg-white border-t border-black/10 shadow-lg">
+        <nav class="px-4 py-3 grid gap-2 text-[15px] font-medium">
+          <a class="py-2 hover:text-pink-600" href="../index.html">Home</a>
+          <a class="py-2 hover:text-pink-600" href="../shop/all-shop.html">Products</a>
+          <a class="py-2 hover:text-pink-600" href="../our-story.html">About Us</a>
+          <a class="py-2 hover:text-pink-600" href="../contact.html">Contact</a>
+          <a href="../shop/all-shop.html"
+            class="mt-2 inline-flex w-full items-center justify-center rounded-full
+                    border border-gray-900 px-5 py-2 text-sm font-semibold
+                    hover:bg-gray-900 hover:text-white transition">
+            Shop Now
+          </a>
+        </nav>
       </div>
     </div>
-  </nav>
+  </header>
 
   <!-- ================= CONTENT ================= -->
   <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
     <header class="mb-8 text-center">
       <h1 class="text-3xl md:text-4xl font-bold">All Products</h1>
-      <p class="mt-2 text-gray-600">Temukan semua produk Click Click dalam satu halaman.</p>
+      <p class="mt-2 text-gray-600">Find all Click Click products on one page.</p>
     </header>
 
     <!-- grid produk -->
-    <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+    <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-3">
+
+      <!-- No results -->
+      <p id="no-results" class="hidden mt-8 text-center text-gray-500">
+        No products match your search.
+      </p>
+
       <!-- card produk -->
       <article class="group">
         <a href="#" class="block overflow-hidden rounded-2xl border border-gray-100 js-open-sheet" data-product="m4">
           <div class="relative aspect-[4/5] bg-gray-50">
+            <span class="absolute left-2 top-2 z-10 rounded-lg bg-amber-400 text-amber-900 px-2 py-1 text-[10px] md:text-xs font-bold shadow">
+              SAVE 55%
+            </span>
             <img src="../assets/prod-m4.png" alt="M4 Selfie Screen"
                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
           </div>
           <div class="p-4 space-y-1">
             <h3 class="text-sm font-medium">MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone</h3>
-            <p class="text-base font-semibold">IDR 1.990.000</p>
+            <span class="js-price text-lg font-bold text-gray-900">IDR 895.500</span>
+            <span class="js-compare text-sm text-gray-400 line-through">IDR 1.990.000</span>
           </div>
         </a>
       </article>
@@ -85,25 +164,16 @@
       <article class="group">
         <a href="#" class="block overflow-hidden rounded-2xl border border-gray-100 js-open-sheet" data-product="t8d">
           <div class="relative aspect-[4/5] bg-gray-50">
+            <span class="absolute left-2 top-2 z-10 rounded-lg bg-amber-400 text-amber-900 px-2 py-1 text-[10px] md:text-xs font-bold shadow">
+              SAVE 55%
+            </span>
             <img src="../assets/prod-t8d.png" alt="T8D Selfie Screen"
                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
           </div>
           <div class="p-4 space-y-1">
             <h3 class="text-sm font-medium">MagSafe Selfie Screen T8D | Monitor Vlog Wireless Iphone</h3>
-            <p class="text-base font-semibold">IDR 1.850.000</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="group">
-        <a href="#" class="block overflow-hidden rounded-2xl border border-gray-100 js-open-sheet" data-product="t3b">
-          <div class="relative aspect-[4/5] bg-gray-50">
-            <img src="../assets/prod-t3b.png" alt="T3B Selfie Screen"
-                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
-          </div>
-          <div class="p-4 space-y-1">
-            <h3 class="text-sm font-medium">MagSafe Selfie Screen T3B | Monitor Vlog Wireless Iphone</h3>
-            <p class="text-base font-semibold">IDR 1.990.000</p>
+            <span class="js-price text-lg font-bold text-gray-900">IDR 832.500</span>
+            <span class="js-compare text-sm text-gray-400 line-through">IDR 1.850.000</span>
           </div>
         </a>
       </article>
@@ -111,12 +181,16 @@
       <article class="group">
         <a href="#" class="block overflow-hidden rounded-2xl border border-gray-100 js-open-sheet" data-product="t1m">
           <div class="relative aspect-[4/5] bg-gray-50">
+            <span class="absolute left-2 top-2 z-10 rounded-lg bg-amber-400 text-amber-900 px-2 py-1 text-[10px] md:text-xs font-bold shadow">
+              SAVE 55%
+            </span>
             <img src="../assets/prod-t1m.png" alt="T1M Selfie Screen"
                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
           </div>
           <div class="p-4 space-y-1">
             <h3 class="text-sm font-medium">MagSafe Selfie Screen T1M | Monitor Vlog Wireless Iphone</h3>
-            <p class="text-base font-semibold">IDR 1.850.000</p>
+            <span class="js-price text-lg font-bold text-gray-900">IDR 760.500</span>
+            <span class="js-compare text-sm text-gray-400 line-through">IDR 1.690.000</span>
           </div>
         </a>
       </article>
@@ -143,24 +217,23 @@
       </div>
 
       <!-- RIGHT: info -->
-      <div class="flex flex-col p-5 pt-30">
+      <div class="flex flex-col p-5 pt-20">
         <h3 id="sheet-name" class="text-2xl font-extrabold leading-tight">Product Name</h3>
         <div class="mt-2 text-xl font-semibold">
           <span id="sheet-price">IDR 0</span>
           <span id="sheet-compare" class="ml-2 text-gray-400 line-through text-base hidden"></span>
         </div>
 
-        <div class="mt-5 inline-flex items-center rounded-full border">
-          <button class="qty-btn px-3 py-2" data-delta="-1">−</button>
-          <input id="qty" value="1" class="w-12 h-11 border-x text-center outline-none" />
-          <button class="qty-btn px-3 py-2" data-delta="1">＋</button>
+        <div class="mt-5 inline-flex items-center rounded-full border overflow-hidden">
+          <button class="qty-btn w-8 h-8 text-sm flex-1" data-delta="-1">−</button>
+          <input id="qty" value="1" class="w-10 h-8 text-sm text-center outline-none border-x" />
+          <button class="qty-btn w-8 h-8 text-sm flex-1" data-delta="1">＋</button>
         </div>
-
+        
         <div class="mt-5 grid gap-3">
           <button id="sheet-add" class="h-11 rounded-xl border border-gray-900 bg-gray-900 text-white font-semibold hover:opacity-90">
             ADD TO CART
           </button>
-          <button class="h-11 rounded-xl border font-semibold hover:bg-gray-50">More payment options</button>
         </div>
 
         <div class="mt-6 space-y-3 text-sm text-gray-600">
@@ -209,14 +282,14 @@
   <script>
   // ---------- Data produk (pakai harga NUMERIC biar gampang hitung) ----------
   const PRODUCTS = {
-    m4:  { id:'m4',  name:'M4 Selfie Screen',  price:1990000, compareAt:2990000,
+    m4:  { id:'m4',  name:'MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone',  price:895500, compareAt:1990000,
            images:['../assets/prod-m4.png','../assets/product/M4 SLIDE 2.png','../assets/product/M4 SLIDE 3.png','../assets/product/M4 SLIDE 4.png']},
-    t8d: { id:'t8d', name:'T8D Selfie Screen', price:1850000, compareAt:null,
+    t8d: { id:'t8d', name:'MagSafe Selfie Screen T8D | Monitor Vlog Wireless Iphone', price:832500, compareAt:1850000,
            images:['../assets/prod-t8d.png','../assets/product/T8D SLIDE 2.png','../assets/product/T8D SLIDE 3.png','../assets/product/T8D SLIDE 5.png']},
-    t3b: { id:'t3b', name:'T3B Selfie Screen', price:1990000, compareAt:null,
+    t3b: { id:'t3b', name:'MagSafe Selfie Screen T3B | Monitor Vlog Wireless Iphone', price:895500, compareAt:1990000,
            images:['../assets/prod-t3b.png','../assets/product/T3B SLIDE 2.png','../assets/product/T3B SLIDE 3.png','../assets/product/T3B SLIDE 4.png']},
-    t1m: { id:'t1m', name:'T1M Selfie Screen', price:1850000, compareAt:null,
-           images:['../assets/prod-t1m.png','../assets/product/T3B SLIDE 2.png','../assets/product/T3B SLIDE 3.png','../assets/product/T3B SLIDE 4.png']},
+    t1m: { id:'t1m', name:'MagSafe Selfie Screen T1M | Monitor Vlog Wireless Iphone', price:760500, compareAt:1690000,
+           images:['../assets/prod-t1m.png','../assets/product/T1M SLIDE 2.png','../assets/product/T1M SLIDE 3.png','../assets/product/T1M SLIDE 6.png']},
   };
   const fIDR = n => 'IDR ' + new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
   </script>
@@ -441,69 +514,61 @@
   })();
   </script>
 
-    <!-- FOOTER (modern & clean) -->
-    <footer class="bg-white border-t border-black/5 text-sm">
+  <!-- FOOTER (modern & clean) -->
+  <footer class="bg-white border-t border-black/5 text-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-  
+
           <!-- Customer Care -->
           <div>
             <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
             <ul class="mt-4 space-y-3 text-gray-700">
-              <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
-              <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
-              <li><a href="faq.html" class="hover:opacity-80">FAQ</a></li>
-              <li><a href="#" class="hover:opacity-80">Track Order</a></li>
-              <li><a href="#" class="hover:opacity-80">Contact Us</a></li>
+              <li><a href="../shipping.html" class="hover:opacity-80">Shipping & Delivery</a></li>
+              <li><a href="../returns.html" class="hover:opacity-80">Returns & Exchanges</a></li>
+              <li><a href="../faq.html" class="hover:opacity-80">FAQ</a></li>
             </ul>
           </div>
-  
+
           <!-- About Us -->
           <div>
             <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
             <ul class="mt-4 space-y-3 text-gray-700">
-              <li><a href="#" class="hover:opacity-80">Our Story</a></li>
+              <li><a href="../our-story.html" class="hover:opacity-80">Our Story</a></li>
               <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
-              <li><a href="#" class="hover:opacity-80">Sustainability</a></li>
-              <li><a href="#" class="hover:opacity-80">Blog</a></li>
-              <li><a href="#" class="hover:opacity-80">Careers</a></li>
             </ul>
           </div>
-  
+
           <!-- Help & Legal -->
           <div>
             <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Help & Legal</h4>
             <ul class="mt-4 space-y-3 text-gray-700">
-              <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
-              <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
-              <li><a href="#" class="hover:opacity-80">Warranty Information</a></li>
-              <li><a href="#" class="hover:opacity-80">Payment & Security</a></li>
-              <li><a href="#" class="hover:opacity-80">Cookie Policy</a></li>
+              <li><a href="../privacy.html" class="hover:opacity-80">Privacy Policy</a></li>
+              <li><a href="../terms.html" class="hover:opacity-80">Terms of Service</a></li>
+              <li><a href="../contact.html" class="hover:opacity-80">Contact Us</a></li>
             </ul>
           </div>
-  
+
           <!-- Follow Us + Payments -->
           <div class="flex flex-col items-start">
             <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Follow Us</h4>
             <ul class="mt-4 space-y-3 text-gray-700">
-              <li><a href="#" class="hover:opacity-80">Instagram</a></li>
-              <li><a href="#" class="hover:opacity-80">TikTok</a></li>
-              <li><a href="#" class="hover:opacity-80">YouTube</a></li>
-              <li><a href="#" class="hover:opacity-80">Newsletter</a></li>
+              <li><a href="https://www.instagram.com/clickclickofficial.id/" class="hover:opacity-80">Instagram</a></li>
+              <li><a href="https://www.tiktok.com/@clickclick.id?_t=ZS-8zDr2pMwNhI&_r=1" class="hover:opacity-80">TikTok</a></li>
+              <li><a href="https://shopee.co.id/shop/1556220986" class="hover:opacity-80">Shopee</a></li>
             </ul>
-  
+
             <!-- Payment icons -->
             <div class="flex items-center gap-4 flex-wrap mt-8">
-              <img src="../assets/payments/spay-logo.png" class="h-9" alt="ShopeePay">
-              <img src="../assets/payments/MasterCard_Logo.png" class="h-9" alt="MasterCard">
-              <img src="../assets/payments/bca.png" class="h-9" alt="BCA">
-              <img src="../assets/payments/bni.png" class="h-6" alt="BNI">
+              <img src="../assets/payments/spay.png" class="h-9" alt="ShopeePay">
+              <img src="../assets/payments/mastercard.png" class="h-9" alt="MasterCard">
+              <img src="../assets/payments/bca-logo.png" class="h-9" alt="BCA">
+              <img src="../assets/payments/bni-logo.png" class="h-6" alt="BNI">
             </div>
           </div>
-  
+
         </div>
       </div>
-  
+
       <!-- Bottom Bar -->
       <div class="border-t border-black/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between text-xs sm:text-sm text-gray-600">
@@ -511,14 +576,158 @@
           <p>Secured Checkout • Trusted Payments</p>
         </div>
       </div>
-    </footer>
+  </footer>
     
-    <script>
-      document.getElementById('btn-checkout')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = '../checkout.html'; // path relatif dari /shop/
+  <!--Script Button CHECKOUT-->
+  <script>
+    document.getElementById('btn-checkout')?.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const CART_KEY = 'cc_cart_v1';
+      const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      if (!cart.length) { alert('Cart kosong.'); return; }
+
+      // biar nanti bisa dipakai analitik/guard di checkout
+      sessionStorage.setItem('cc_checkout_started', Date.now().toString());
+
+      // pergi ke halaman checkout
+      location.href = '../checkout.html';
+    });
+  </script>
+
+<script>
+  (function(){
+    // Tombol search di navbar (sudah ada di HTML kamu)
+    const searchBtn   = document.querySelector('button[aria-label="Search"]');
+  
+    // Elemen Live Search
+    const bar         = document.getElementById('live-search');
+    const input       = document.getElementById('live-search-input');
+    const btnClear    = document.getElementById('live-search-clear');
+    const btnClose    = document.getElementById('live-search-close');
+    const countEl     = document.getElementById('search-count');
+    const noResultsEl = document.getElementById('no-results');
+  
+    // Kartu produk (article.group) + index text
+    const cards = [...document.querySelectorAll('section article.group')].map(el => {
+      const name = (el.querySelector('h3')?.textContent || '').toLowerCase();
+      const id   = el.querySelector('a.js-open-sheet')?.dataset.product || '';
+      return { el, text: (name + ' ' + id).trim() };
+    });
+  
+    // Helpers
+    function openBar(){
+      bar.classList.remove('hidden');
+      input.focus();
+    }
+    function closeBar(){
+      input.value = '';
+      bar.classList.add('hidden');
+      applyFilter('');
+    }
+  
+    function applyFilter(q){
+      const term = q.trim().toLowerCase();
+      let shown = 0;
+  
+      cards.forEach(({el, text}) => {
+        const match = !term || text.includes(term);
+        el.style.display = match ? '' : 'none';
+        if (match) shown++;
       });
-    </script>
+  
+      // count + visibilitas kontrol
+      if (term) {
+        countEl.textContent = shown + ' result' + (shown===1 ? '' : 's');
+        countEl.classList.remove('hidden');
+        btnClear.classList.remove('hidden');
+      } else {
+        countEl.classList.add('hidden');
+        btnClear.classList.add('hidden');
+      }
+  
+      // no results message
+      if (noResultsEl){
+        if (term && shown === 0) noResultsEl.classList.remove('hidden');
+        else noResultsEl.classList.add('hidden');
+      }
+    }
+  
+    // Debounce input agar halus
+    let t;
+    function onInput(){
+      clearTimeout(t);
+      t = setTimeout(() => applyFilter(input.value), 120);
+    }
+  
+    // Events
+    searchBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (bar.classList.contains('hidden')) openBar(); else closeBar();
+    });
+  
+    input.addEventListener('input', onInput);
+  
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeBar();
+      }
+    });
+  
+    btnClear.addEventListener('click', () => {
+      input.value = '';
+      input.focus();
+      applyFilter('');
+    });
+  
+    btnClose.addEventListener('click', closeBar);
+  
+    // Optional: tutup saat pindah halaman (klik kartu produk)
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.js-open-sheet')) closeBar();
+    });
+  })();
+  </script>
+
+  <script>
+    (function(){
+      const btn  = document.getElementById('btn-menu');
+      const menu = document.getElementById('mobileMenu');
+      const html = document.documentElement;
+      if (!btn || !menu) return;
+    
+      function openMenu(){
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        html.classList.add('no-scroll');
+      }
+      function closeMenu(){
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        html.classList.remove('no-scroll');
+      }
+      function toggleMenu(){
+        if (menu.classList.contains('hidden')) openMenu(); else closeMenu();
+      }
+    
+      // Klik tombol
+      btn.addEventListener('click', toggleMenu);
+    
+      // Klik link di menu -> tutup
+      menu.addEventListener('click', (e) => {
+        if (e.target.closest('a')) closeMenu();
+      });
+    
+      // ESC untuk menutup
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    })();
+  </script>
+  
+  
+  
     
 </body>
 </html>

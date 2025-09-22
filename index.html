@@ -3,10 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="description" content="Click Click — Magnetic Selfie Screen & MagSafe accessories. Slim, strong, clicks like magic.">
+  <link rel="canonical" href="https://clickclick.id/">
+
   <title>Click Click</title>
-  <!-- Tailwind build kamu -->
-  <link rel="stylesheet" href="./dist/output.css?v=prod" />
+
+  <!-- CSS Tailwind -->
+  <link id="twcss" rel="stylesheet" href="./dist/output.css">
+
+  <!-- Muat versi -->
+  <script src="./version.js"></script>
+
+  <script>
+    // Saat localhost: pakai timestamp biar selalu fresh
+    (function(){
+      const isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const link = document.getElementById("twcss");
+      if (!link) return;
+
+      if (isLocal) {
+        link.href = link.href + "?v=" + Date.now();
+      } else {
+        // Production: pakai version.js
+        link.href = link.href + "?v=" + (window.__ASSET_VERSION__ || "1");
+      }
+
+      // Contoh jika kamu punya JS terpisah:
+      // const s = document.createElement("script");
+      // s.src = "./dist/app.js?v=" + (isLocal ? Date.now() : (window.__ASSET_VERSION__ || "1"));
+      // document.head.appendChild(s);
+    })();
+  </script>
+
+
+  <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
 
   <!-- Anim reveal -->
   <style>
@@ -36,145 +68,423 @@
   </style>
 
   <style>
-    .reveal{opacity:0;transform:translate3d(0,12px,0);transition:opacity .7s ease,transform .7s ease;will-change:opacity,transform}
-    .reveal.show{opacity:1;transform:none}
-    .fade-up{transform:translate3d(0,24px,0)} .fade-down{transform:translate3d(0,-24px,0)}
-    .fade-left{transform:translate3d(24px,0,0)} .fade-right{transform:translate3d(-24px,0,0)}
-    .zoom-in{transform:scale(.96)} .slow{transition-duration:1s} .slower{transition-duration:1.25s}
+    .whats-fixed{position:fixed;right:16px;bottom:16px;z-index:99999}
   </style>
+
+  <style>
+    /* efek badge & pita */
+    .promo-badge{box-shadow:0 6px 16px rgba(0,0,0,.12)}
+    .promo-pill{box-shadow:0 6px 16px rgba(0,0,0,.08)}
+    /* bintang rating (pakai mask SVG sederhana) */
+    .star{--s:1; width:calc(16px*var(--s)); height:calc(16px*var(--s));
+      -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>') no-repeat center / contain;
+              mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>') no-repeat center / contain;
+      background:#f59e0b}
+  </style>
+
+
+  <style>
+    html, body { height: 100%; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    /* ---- Animations (existing) ---- */
+    @keyframes fadeUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+    .reveal { opacity:0; transform: translateY(18px); }
+    .reveal.inview { animation: fadeUp .7s ease-out both; }
+
+    @keyframes floaty { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+    .floaty { animation: floaty 6s ease-in-out infinite; }
+
+    /* === M4 slide-in wrappers === */
+    .m4-anim { opacity: 0; will-change: transform, opacity; }
+
+    @keyframes slideInRight {
+      from { opacity:0; transform: translateX(10vw); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity:0; transform: translateX(-10vw); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    /* tambahin delay */
+    .m4-anim-right.inview {
+      animation: slideInRight .9s cubic-bezier(.2,.7,.2,1) .4s both; /* delay 0.4s */
+    }
+    .m4-anim-left.inview {
+      animation: slideInLeft .9s cubic-bezier(.2,.7,.2,1) .6s both;  /* delay 0.6s */
+    }
+
+    /* Reduced motion respect */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+
+  <style>
+    /* Skala responsif: min | prefer (vw) | max */
+    .w-prod-1 { width: clamp(250px, 30vw, 300px); }   /* kiri */
+    .w-prod-2 { width: clamp(260px, 38vw, 300px); }  /* tengah-kiri */
+    .w-prod-3 { width: clamp(260px, 38vw, 300px); } /* bundar tengah */
+    .w-prod-4 { width: clamp(270px, 35vw, 320px); }/* kanan */
+    .w-rounded{ width: clamp(700px, 90vw, 980px); }  /* panel bawah */
+
+    /* (Opsional) haluskan render PNG tipis */
+    img { image-rendering: auto; }
+  </style>
+
+  <style>
+    /* masuk dari atas + fade */
+    @keyframes riseFade { from{opacity:.0; transform:translateY(18px)} to{opacity:1; transform:translateY(0)} }
+    /* pop lembut untuk angka/badge */
+    @keyframes pop { 0%{transform:scale(.9); opacity:0} 60%{transform:scale(1.04); opacity:1} 100%{transform:scale(1)} }
+    /* mengambang vertikal pelan */
+    @keyframes floatY { 0%,100%{ transform:translate(-50%,0) } 50%{ transform:translate(-50%,-8px) } }
+    /* tilt + float untuk device kanan */
+    @keyframes tiltFloat { 0%,100%{ transform:translate(-50%,0) rotate(6deg) } 50%{ transform:translate(-50%,-10px) rotate(6deg) } }
+    /* glow berdenyut di panel tengah */
+    @keyframes glowPulse { 0%,100%{ box-shadow:0 16px 48px rgba(214,81,131,.22) } 50%{ box-shadow:0 20px 56px rgba(214,81,131,.32) } }
+    /* highlight shine horizontal */
+    @keyframes shine { 0%{ transform:translateX(-120%) } 100%{ transform:translateX(120%) } }
+    
+    /* Matikan animasi jika user pilih reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+  </style>
+
+  <style>
+    @keyframes floatY {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -12px); }
+    }
+    @keyframes tiltFloat {
+      0%, 100% { transform: translate(-50%, 0) rotate(6deg); }
+      50% { transform: translate(-50%, -12px) rotate(6deg); }
+    }
+  </style>
+
+  <style>
+    @keyframes glowPulse { 0%,100%{ box-shadow:0 16px 48px rgba(214,81,131,.22) }
+                          50%{ box-shadow:0 20px 58px rgba(214,81,131,.32) } }
+    @keyframes shine { 0%{ transform:translateX(-120%) } 100%{ transform:translateX(120%) } }
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+  </style>
+  
+  
+  
 </head>
 
 <body class="font-sans bg-gray-50">
 
+
   <!-- ========== NAVBAR (mobile hamburger + dropdown) ========== -->
-  <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-2">
-        <img src="assets/logo.png" alt="Click Click Logo" class="h-10">
-      </a>
-      
-      
-      <!-- Desktop menu -->
-      <ul class="hidden md:flex items-center gap-10 text-gray-700 font-medium">
-        <li><a class="hover:text-black" href="#">Home</a></li>
-        <li><a href="./shop/all-shop.html" class="px-4 py-2 hover:text-black">Shop</a></li>
-        <li class="relative group">
-        <button class="px-4 py-2 hover:text-black">Features</button>
-        <div class="absolute left-0 top-full mt-3 w-64 rounded-xl bg-white border border-black/10 shadow-xl opacity-0 scale-95 pointer-events-none transition group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto z-50">
-          <ul class="py-1 text-[15px] text-gray-800 divide-y divide-gray-100">
-          <li><a href="#features" class="block px-4 py-2 hover:bg-gray-50">Overview</a></li>
-          <li><a href="#feat-magsafe" class="block px-4 py-2 hover:bg-gray-50">Key Features</a></li>
-          <li><a href="#feat-design" class="block px-4 py-2 hover:bg-gray-50">Tech Specs</a></li>
-          <li><a href="#feat-install" class="block px-4 py-2 hover:bg-gray-50">Support</a></li>
-        </ul>
-        </div>
-        </li>
-        <li><a href="faq.html" class="px-4 py-2 hover:text-black">FAQ</a></li>
-      </ul>
-      
-      
-      <!-- Right icons + hamburger -->
-      <div class="flex items-center gap-2">
-        <button aria-label="Search" class="p-2 hover:bg-gray-100 rounded-full hidden sm:inline-flex">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path></svg>
-        </button>
-        <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="19" r="1.8"></circle><circle cx="17" cy="19" r="1.8"></circle></svg>
-        <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
-        </button>
-        <!-- Hamburger (mobile) -->
-        <button id="btn-menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-        </button>
-      </div>
-    </div>
-      <!-- Mobile menu panel -->
-      <div id="mobile-menu" class="md:hidden hidden border-t">
-        <ul class="px-4 py-3 space-y-2 text-gray-800">
-        <li><a class="block py-2" href="#">Home</a></li>
-        <li><a class="block py-2" href="./shop/all-shop.html">Shop</a></li>
-        <li><a class="block py-2" href="#features">Features</a></li>
-        <li><a class="block py-2" href="faq.html">FAQ</a></li>
-        </ul>
-      </div>
-  </nav>
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur shadow-sm">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center justify-between">
+        <a href="#" class="inline-flex items-center gap-2">
+          <img src="./assets/logo.png" alt="Click Click" class="h-7 w-auto" />
+        </a>
 
-  <script>
-    // Mobile menu toggle
-    document.getElementById('btn-menu')?.addEventListener('click', () => {
-    const panel = document.getElementById('mobile-menu');
-    const nowOpen = panel.classList.toggle('hidden') ? false : true;
-    document.getElementById('btn-menu').setAttribute('aria-expanded', nowOpen);
-    });
-  </script>
+        <!-- Desktop menu -->
+        <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
+          <a class="hover:text-pink-600" href="./index.html">Home</a>
+          <a class="hover:text-pink-600" href="./shop/all-shop.html">Products</a>
+          <a class="hover:text-pink-600" href="./our-story.html">About Us</a>
+          <a class="hover:text-pink-600" href="./contact.html">Contact</a>
+        </nav>
 
-  <!-- HERO -->
-  <!-- ========== HERO (fluid type + min-height responsif + picture srcset) ========== -->
-  <header class="relative bg-cover bg-center sm:bg-right min-h-[70vh] sm:min-h-[calc(100vh-4rem)] reveal fade-up slow">
-    <picture>
-      <source srcset="assets/background-3-1280.jpeg" media="(max-width: 640px)">
-      <source srcset="assets/background-3-1920.jpeg" media="(max-width: 1024px)">
-      <img src="assets/background-3.jpeg" alt="Click Click hero" class="absolute inset-0 w-full h-full object-cover"/>
-    </picture>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-      <div class="grid lg:grid-cols-2 h-full">
-        <div class="flex flex-col justify-center lg:justify-start pt-20 sm:pt-28 lg:pt-32 ml-0 sm:ml-5">
-          <h1 class="leading-tight tracking-[-0.02em] text-black">
-            <span class="block font-extrabold text-[clamp(2rem,4vw+1rem,4.5rem)]">Now Available</span>
-            <span class="block mt-2 font-normal text-[clamp(1.25rem,2.8vw+0.75rem,3rem)]">Magnetic Selfie Screen</span>
-          </h1>
-          <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-            <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
-            <a href="#features" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition">Learn More</a>
-          </div>
+        <!-- Right icons + hamburger -->
+        <div class="flex items-center gap-2">
+          <button id="open-cart" aria-label="Cart" class="relative p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h9l3-8H6.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="19" r="1.8"></circle><circle cx="17" cy="19" r="1.8"></circle></svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-black text-white text-[10px] leading-[18px] text-center hidden"></span>
+          </button>
+          <!-- Hamburger (mobile) -->
+          <button id="btn-menu"
+            class="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+            aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+              <path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+            </svg>
+          </button>
         </div>
-        <div class="hidden lg:block"></div>
+
       </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu"
+          class="md:hidden hidden absolute left-0 right-0 top-full
+                  bg-white border-t border-black/10 shadow-lg">
+        <nav class="px-4 py-3 grid gap-2 text-[15px] font-medium">
+          <a class="py-2 hover:text-pink-600" href="./index.html">Home</a>
+          <a class="py-2 hover:text-pink-600" href="./shop/all-shop.html">Products</a>
+          <a class="py-2 hover:text-pink-600" href="./our-story.html">About Us</a>
+          <a class="py-2 hover:text-pink-600" href="./contact.html">Contact</a>
+          <a href="./shop/all-shop.html"
+            class="mt-2 inline-flex w-full items-center justify-center rounded-full
+                    border border-gray-900 px-5 py-2 text-sm font-semibold
+                    hover:bg-gray-900 hover:text-white transition">
+            Shop Now
+          </a>
+        </nav>
+      </div>
+
     </div>
   </header>
 
-  <!-- SECTION M4 -->
-  <!-- ========== SECTION M4 (absolute images dengan ukuran aman per breakpoint) ========== -->
-  <section id="m4" class="relative overflow-hidden py-16 md:py-24 bg-white min-h-[640px] md:min-h-[520px]">
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div class="grid grid-cols-2 items-center">
-        <div class="flex flex-col justify-center pb-16 md:pb-20">
-          <p class="text-lg text-gray-700/80">New Arrival</p>
-          <div class="leading-none">
-          <span class="block text-[3.75rem] sm:text-[5rem] lg:text-[7rem] font-light text-gray-400/40 select-none">M4</span>
-          </div>
-          </div>
-          <div class="relative text-right pt-6 md:pt-16">
-          <div class="leading-none">
-          <span class="block text-[3.5rem] sm:text-[5rem] lg:text-[7rem] font-light tracking-wide text-gray-400/30 select-none">SLIM</span>
-          </div>
-          <p class="text-2xl sm:text-3xl font-light text-gray-900 mt-2">Stylist</p>
-        </div>
+
+  <!-- ========== HERO (fluid type + min-height responsif + picture srcset) ========== -->
+  <!-- HERO -->
+  <section
+  id="hero"
+    class="relative w-full min-h-screen overflow-hidden"  
+    style="
+      background-image:url('./assets/promo/Artboard-1.png');  /* absolute path */
+      background-size:cover;
+      background-position:center -90px;
+      background-repeat:no-repeat;
+    ">
+
+    <!-- Bagian Judul -->
+    <div id="hero-title" class="absolute top-[4%] left-1/2 -translate-x-1/2 text-center
+                animate-[riseFade_.8s_ease-out_.05s_both]">
+      <h1 class="text-[clamp(50px,10vw,70px)] font-extrabold tracking-tight text-[#9E1010] drop-shadow-sm
+                animate-[pop_.8s_ease-out_.1s_both]">
+        SPECIAL SALE
+      </h1>
+      <span class="mt-2 inline-block px-[clamp(12px,3vw,28px)] py-[clamp(4px,1vw,8px)]
+                  text-[clamp(12px,2vw,20px)] font-semibold text-white rounded-full
+                  bg-gradient-to-r from-rose-500 to-amber-500 shadow-md
+                  animate-[pop_.9s_cubic-bezier(.2,.8,.2,1)_.2s_both]">
+        OFFICIAL STORE
+      </span>
+    </div>
+
+    <!-- panggung: area aman tempat produk, dirata-tengah & dibatasi max width -->
+    <div class="absolute inset-0 max-w-[1280px] mx-auto">
+      <!-- supaya konten benar2 rata tengah, kita pakai grid -->
+      <div class="absolute inset-0 grid place-items-center">
+
+        <!-- ================= PRODUK ================= -->
+        <!-- NB: top/left pakai % agar ikut skala layar; translate untuk anchor ke tengah objek -->
+        <!-- Kamu bisa geser nilai % di bawah untuk penyesuaian manual -->
+
+        <!-- Produk 1 (kiri tegak) -->
+        <img id="prod1" src="./assets/promo/produk-1.png" alt="Produk 1"
+            class="absolute w-prod-1"
+            style="left:30%; bottom:42%; transform:translate(-50%, 0); animation: floatY 6s ease-in-out infinite;"
+            title="Posisi: kiri • left:18% | bottom:22%" />
+
+        <!-- Produk 2 (tengah kiri, agak besar) -->
+        <img id="prod2" src="./assets/promo/produk-4.png" alt="Produk 2"
+            class="absolute w-prod-2"
+            style="left:45%; bottom:35%; transform:translate(-50%, 0); animation: floatY 6s ease-in-out infinite;"
+            title="Posisi: tengah-kiri • left:39% | bottom:18% | rotate°" />
+
+        <!-- Produk 3 (jam bundar di tengah) -->
+        <img id="prod3" src="./assets/promo/produk-3.png" alt="Produk 3"
+            class="absolute w-prod-3"
+            style="left:57.5%; bottom:30%; transform:translate(-50%, 0); animation: floatY 6s ease-in-out infinite;"
+            title="Posisi: tengah • left:57.5% | bottom:20%" />
+
+        <!-- Produk 4 (kanan miring, paling besar) -->
+        <img id="prod4" src="./assets/promo/produk-2.png" alt="Produk 4"
+            class="absolute w-prod-4"
+            style="left:73%; bottom:15%; transform:translate(-50%, 0) rotate(6deg); animation: floatY 6s ease-in-out infinite;"
+            title="Posisi: kanan • left:78.5% | bottom:25% | rotate:6°" />
+
       </div>
     </div>
-    
-    
-    <!-- Top image -->
-    <div class="absolute right-0 top-[-2%] w-[88%] sm:w-[75%] lg:w-[68%] xl:w-[58%] max-w-[980px] reveal fade-left slow pointer-events-none">
-      <img src="assets/m4-top.png" alt="M4 top view" class="w-full h-auto drop-shadow-2xl select-none" />
+
+    <!-- ===== Panel bawah (3 rectangle sejajar, responsif & rapi) ===== -->
+    <div
+    class="promo-panels absolute left-1/2 bottom-[6%] -translate-x-1/2 z-30
+          flex flex-wrap md:flex-nowrap items-end justify-center
+          gap-[clamp(10px,2.5vw,22px)] max-w-[min(95vw,1100px)]"
+    aria-label="Promo panels"
+    >
+
+    <!-- PANEL KIRI -->
+    <div
+      class="relative overflow-hidden rounded-[28px]
+            h-[clamp(72px,11vw,120px)]
+            w-[clamp(180px,26vw,300px)]
+            bg-white/75 backdrop-blur-[2px]
+            ring-1 ring-rose-200/50
+            shadow-[0_8px_30px_rgba(214,81,131,0.16)]
+            grid place-items-center px-[clamp(12px,2vw,20px)]
+            transition-transform duration-300 hover:-translate-y-1"
+    >
+      <!-- shine -->
+      <span class="pointer-events-none absolute inset-y-0 left-0 w-1/3
+                  bg-gradient-to-r from-white/0 via-white/35 to-white/0
+                  -skew-x-12 animate-[shine_3s_linear_infinite]"></span>
+
+      <p class="text-[clamp(14px,2.2vw,26px)] leading-[1.05]
+                font-extrabold tracking-tight text-[#9E1010] text-center">
+        PRICE<br/>DISCOUNT
+      </p>
     </div>
-    <!-- Bottom image -->
-    <div class="absolute left-0 bottom-[-6%] w-[78%] sm:w-[80%] lg:w-[70%] xl:w-[60%] max-w-[980px] reveal fade-right slow pointer-events-none">
-      <img src="assets/m4-bottom.png" alt="M4 bottom view" class="w-full h-auto drop-shadow-2xl select-none" />
+
+    <!-- PANEL TENGAH (GOLD) -->
+    <div
+      class="relative overflow-hidden rounded-[28px]
+            h-[clamp(92px,15vw,160px)]
+            w-[clamp(240px,36vw,440px)]
+            bg-white/95 backdrop-blur-[4px]
+            ring-1 ring-rose-300
+            grid place-items-center px-[clamp(14px,2vw,24px)]
+            animate-[glowPulse_3.6s_ease-in-out_infinite]
+            transition-transform duration-300 hover:-translate-y-1"
+    >
+      <!-- bingkai emas -->
+      <div class="pointer-events-none absolute inset-0 rounded-[28px] ring-2 ring-[#d7c26a]/70"></div>
+      <!-- gradient lembut -->
+      <div class="pointer-events-none absolute inset-0
+                  bg-gradient-to-b from-amber-200/55 via-white/80 to-rose-100/45"></div>
+      <!-- glow highlight -->
+      <div class="pointer-events-none absolute -top-[clamp(16px,3vw,28px)] -left-[clamp(20px,4vw,36px)]
+                  w-[clamp(120px,18vw,220px)] h-[clamp(120px,18vw,220px)] rounded-full opacity-80"
+          style="background: radial-gradient(closest-side, rgba(255,234,180,.95), rgba(255,234,180,0) 70%);"></div>
+
+      <!-- isi -->
+      <div class="relative text-center">
+        <h3 class="text-[clamp(11px,1.6vw,18px)] font-extrabold tracking-wide text-[#9E1010]">
+          DISCOUNT ALL ITEM
+        </h3>
+        <p class="mt-[clamp(0px,.6vw,6px)] text-[clamp(42px,7.5vw,88px)] leading-none font-extrabold
+                  text-[#9E1010] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)]">
+          55%
+        </p>
+      </div>
     </div>
+
+    <!-- PANEL KANAN -->
+    <div
+      class="relative overflow-hidden rounded-[28px]
+            h-[clamp(72px,11vw,120px)]
+            w-[clamp(180px,26vw,300px)]
+            bg-white/75 backdrop-blur-[2px]
+            ring-1 ring-rose-200/50
+            shadow-[0_8px_30px_rgba(214,81,131,0.16)]
+            grid place-items-center px-[clamp(12px,2vw,20px)]
+            transition-transform duration-300 hover:-translate-y-1"
+    >
+      <!-- shine -->
+      <span class="pointer-events-none absolute inset-y-0 left-0 w-1/3
+                  bg-gradient-to-r from-white/0 via-white/35 to-white/0
+                  -skew-x-12 animate-[shine_3.2s_linear_infinite]"></span>
+
+      <p class="text-[clamp(14px,2.2vw,26px)] leading-[1.05]
+                font-extrabold tracking-tight text-[#9E1010] text-center">
+        FREE<br/>SHIPPING
+      </p>
+    </div>
+    </div>
+     
+    <!-- (Opsional) gradient halus di atas biar glow background lebih mulus -->
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/30 to-transparent"></div>
   </section>
+
+  <style>
+    /* Fallback kuat untuk mobile */
+    #hero{ min-height:100svh; }                      /* stabil di iOS modern */
+    @supports (-webkit-touch-callout:none){
+      #hero{ min-height:100dvh; }                    /* fallback Safari */
+    }
+    @media (max-width:640px){
+      #hero{ background-position:center top !important; }  /* jangan offset negatif di HP */
+    }
+  </style>
+
+  <!-- SECTION M4 — clean & responsive -->
+  <section id="m4" class="relative overflow-hidden overflow-x-clip bg-white">
+    <div class="relative mx-auto w-full max-w-[1700px] px-4 sm:px-6 lg:px-0 py-10 sm:py-14 lg:py-20">
+
+      <div class="relative grid grid-cols-1 lg:grid-cols-2 items-center">
+
+        <!-- LEFT (bottom image) -->
+        <div class="relative order-2 lg:order-1 px-4 sm:px-6 lg:pl-10">
+          <div class="z-10 mb-6 sm:mb-8 lg:mb-0 lg:px-0">
+            <p class="text-gray-700 text-sm sm:text-base lg:text-lg">New Arrival</p>
+            <h2 class="font-light text-gray-900 leading-none"
+                style="font-size:clamp(36px,8vw,104px); letter-spacing:.5px;">
+              M4
+            </h2>
+          </div>
+
+          <!-- wrap img dengan anim kiri->kanan -->
+          <div class="relative overflow-visible lg:mt-[-10vh] m4-anim m4-anim-left">
+            <img
+              src="./assets/m4-bottom.png"
+              alt="M4 bottom"
+              class="w-full h-full object-contain lg:translate-x-[-15%]"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+        <!-- RIGHT (top image) -->
+        <div class="relative order-1 lg:order-2 overflow-visible px-4 sm:px-6 lg:pr-10">
+          <!-- wrap img dengan anim kanan->kiri -->
+          <div class="relative overflow-visible lg:mt-[-10vh] m4-anim m4-anim-right">
+            <img
+              src="./assets/m4-top.png"
+              alt="M4 top"
+              class="w-full h-full object-contain lg:translate-x-[15%]"
+              loading="eager"
+            />
+          </div>
+
+          <div class="absolute bottom-0 right-0 text-right text-gray-900 pr-4 sm:pr-6 lg:pr-0 hidden lg:block">
+            <div class="font-light leading-none sm:tracking-tight" style="font-size:clamp(30px,7.4vw,100px);">
+              SLIM
+            </div>
+            <div class="text-gray-600" style="font-size:clamp(12px,2vw,28px); font-weight:300;">
+              Stylist
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+</section>
+
+  <script>
+    // Mobile nav toggle
+    const btn = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
+  
+    // Reveal on scroll (sekalian amati .m4-anim)
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('inview');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+  
+    document.querySelectorAll('.reveal, .m4-anim').forEach(el => obs.observe(el));
+  </script>
 
   <div class="promo-marquee mt-10">
     <div class="promo-track">
       <div class="promo-chunk">
-        <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
-        <span>•</span><span>Gratis ongkir Jabodetabek</span><span>•</span><span>Stok terbatas</span>
+        <span>Launching Promo! Get the Click Click Mirror Screen at an exclusive price – only for a limited time!</span>
+        <span>•</span><span>Free shipping in Jabodetabek</span><span>•</span><span>Hurry, while stocks last</span>
       </div>
       <div class="promo-chunk" aria-hidden="true">
-        <span>Launching Promo! Dapatkan Click Click Mirror Screen dengan harga spesial – hanya minggu ini!</span>
-        <span>•</span><span>Gratis ongkir Jabodetabek</span><span>•</span><span>Stok terbatas</span>
+        <span>Launching Promo! Get the Click Click Mirror Screen at an exclusive price – only for a limited time!</span>
+        <span>•</span><span>Free shipping in Jabodetabek</span><span>•</span><span>Hurry, while stocks last</span>
       </div>
     </div>
   </div>
@@ -187,87 +497,133 @@
         <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 mt-4 rounded-lg border-2 border-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
       </div>
 
-      <div class="grid md:grid-cols-4 gap-10">
+      <div id="product-grid" class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+
         <!-- ITEM 1 -->
-        <figure class="group">
-          <div class="relative inline-block w-full">
-            <img src="assets/prod-m4.png" alt="T3B Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+        <figure class="group prod-card rounded-2xl border border-black/5 bg-white p-3 hover:-translate-y-1 hover:shadow-xl transition">
+          <div class="relative rounded-xl overflow-hidden">
+            <!-- BADGE SAVE XX% -->
+            <span class="promo-badge absolute left-3 top-3 z-10 inline-flex items-center rounded-md
+                         bg-amber-400 text-amber-900 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide">
+              SAVE <span class="js-save ml-1">55</span>%
+            </span>
+        
+            <img src="assets/prod-m4.png" alt="M4" class="w-full h-auto select-none" />
+        
+            <!-- QUICK VIEW BTN tetap -->
             <button
-              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              class="absolute left-0 right-0 bottom-0 bg-white/90 backdrop-blur text-gray-900
+                     px-6 py-3 text-sm font-medium border-t border-black/10 md:opacity-0 md:translate-y-2
+                     md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
               data-product='{
                 "id":"m4",
                 "title":"MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone",
-                "price":1990000,
-                "compareAt":2990000,
+                "price":895500,
+                "compareAt":1990000,
                 "images":["assets/prod-m4.png","./assets/product/M4 SLIDE 2.png","./assets/product/M4 SLIDE 3.png","./assets/product/M4 SLIDE 4.png"]
               }'>Quick View</button>
           </div>
-          <figcaption class="mt-4">
-            <h3 class="font-medium text-gray-900">MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone</h3>
-            <p class="text-gray-700">1.990.000</p>
+        
+          <figcaption class="mt-3">
+        
+            <h3 class="mt-2 font-medium text-gray-900 leading-snug">
+              MagSafe Selfie Screen M4 | Monitor Vlog Wireless Iphone
+            </h3>
+        
+            <!-- Harga: promo + coret -->
+            <div class="mt-1 flex items-baseline gap-2">
+              <span class="js-price text-lg font-bold text-gray-900">IDR 895.500</span>
+              <span class="js-compare text-sm text-gray-400 line-through">IDR 1.990.000</span>
+            </div>
           </figcaption>
         </figure>
+        
 
         <!-- ITEM 2 -->
-        <figure class="group">
-          <div class="relative inline-block w-full">
-            <img src="assets/prod-t8d.png" alt="T8D Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+        <figure class="group prod-card rounded-2xl border border-black/5 bg-white p-3 hover:-translate-y-1 hover:shadow-xl transition">
+          <div class="relative rounded-xl overflow-hidden">
+            <!-- BADGE SAVE XX% -->
+            <span class="promo-badge absolute left-3 top-3 z-10 inline-flex items-center rounded-md
+                         bg-amber-400 text-amber-900 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide">
+              SAVE <span class="js-save ml-1">55</span>%
+            </span>
+        
+            <img src="assets/prod-t8d.png" alt="t8d" class="w-full h-auto select-none" />
+        
+            <!-- QUICK VIEW BTN tetap -->
             <button
-              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              class="absolute left-0 right-0 bottom-0 bg-white/90 backdrop-blur text-gray-900
+                     px-6 py-3 text-sm font-medium border-t border-black/10 md:opacity-0 md:translate-y-2
+                     md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
               data-product='{
                 "id":"t8d",
                 "title":"T8D Magnetic Safe Mirror Selfie Screen",
-                "price":1850000,
-                "compareAt":1999000,
+                "price":832500,
+                "compareAt":1850000,
                 "images":["assets/prod-t8d.png","./assets/product/T8D SLIDE 2.png","./assets/product/T8D SLIDE 3.png","./assets/product/T8D SLIDE 5.png"]
               }'>Quick View</button>
           </div>
-          <figcaption class="mt-4">
-            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-            <p class="text-gray-700">1.850.000</p>
+        
+          <figcaption class="mt-3">
+        
+            <h3 class="mt-2 font-medium text-gray-900 leading-snug">
+              MagSafe Selfie Screen T8D | Monitor Vlog Wireless Iphone
+            </h3>
+        
+            <!-- Harga: promo + coret -->
+            <div class="mt-1 flex items-baseline gap-2">
+              <span class="js-price text-lg font-bold text-gray-900">IDR 832.500</span>
+              <span class="js-compare text-sm text-gray-400 line-through">IDR 1.850.000</span>
+            </div>
           </figcaption>
         </figure>
 
-        <!-- ITEM 3 -->
-        <figure class="group">
-          <div class="relative inline-block w-full">
-            <img src="assets/prod-t3b.png" alt="T3B Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
-            <button
-              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
-              data-product='{
-                "id":"t3b",
-                "title":"T3B Magnetic Safe Mirror Selfie Screen",
-                "price":1850000,
-                "compareAt":1999000,
-                "images":["assets/prod-t3b.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
-              }'>Quick View</button>
-          </div>
-          <figcaption class="mt-4">
-            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-            <p class="text-gray-700">1.850.000</p>
-          </figcaption>
-        </figure>
 
         <!-- ITEM 4 -->
-        <figure class="group">
-          <div class="relative inline-block w-full">
-            <img src="assets/prod-t1m.png" alt="T1M Magnetic Safe Mirror Selfie Screen" class="w-full h-auto select-none pointer-events-none" />
+        <figure class="group prod-card rounded-2xl border border-black/5 bg-white p-3 hover:-translate-y-1 hover:shadow-xl transition">
+          <div class="relative rounded-xl overflow-hidden">
+            <!-- BADGE SAVE XX% -->
+            <span class="promo-badge absolute left-3 top-3 z-10 inline-flex items-center rounded-md
+                         bg-amber-400 text-amber-900 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide">
+              SAVE <span class="js-save ml-1">55</span>%
+            </span>
+        
+            <img src="assets/prod-t1m.png" alt="M4" class="w-full h-auto select-none" />
+        
+            <!-- QUICK VIEW BTN tetap -->
             <button
-              class="absolute left-0 right-0 bottom-0 bg-gray-200/95 backdrop-blur text-gray-900 px-6 py-3 text-base font-medium border-t border-black/10 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
+              class="absolute left-0 right-0 bottom-0 bg-white/90 backdrop-blur text-gray-900
+                     px-6 py-3 text-sm font-medium border-t border-black/10 md:opacity-0 md:translate-y-2
+                     md:group-hover:opacity-100 md:group-hover:translate-y-0 transition js-open-qv"
               data-product='{
                 "id":"t1m",
                 "title":"T1M Magnetic Safe Mirror Selfie Screen",
-                "price":1850000,
-                "compareAt":1999000,
-                "images":["assets/prod-t1m.png","./assets/product/T3B SLIDE 2.png","./assets/product/T3B SLIDE 3.png","./assets/product/T3B SLIDE 4.png"]
+                "price":760500,
+                "compareAt":1690000,
+                "images":["assets/prod-t1m.png","./assets/product/T1M SLIDE 2.png","./assets/product/T1M SLIDE 3.png","./assets/product/T1M SLIDE 6.png"]
               }'>Quick View</button>
           </div>
-          <figcaption class="mt-4">
-            <h3 class="font-medium text-gray-900">T8D Magnetic Safe Mirror Selfie Screen</h3>
-            <p class="text-gray-700">1.850.000</p>
+        
+          <figcaption class="mt-3">
+        
+            <h3 class="mt-2 font-medium text-gray-900 leading-snug">
+              MagSafe Selfie Screen T1M | Monitor Vlog Wireless Iphone
+            </h3>
+        
+            <!-- Harga: promo + coret -->
+            <div class="mt-1 flex items-baseline gap-2">
+              <span class="js-price text-lg font-bold text-gray-900">IDR 760.500</span>
+              <span class="js-compare text-sm text-gray-400 line-through">IDR 1.690.000</span>
+            </div>
           </figcaption>
         </figure>
+
       </div>
+
+      <!-- No results -->
+      <p id="no-results" class="hidden mt-8 text-center text-gray-500">
+        No products match your search.
+      </p>
     </div>
   </section>
 
@@ -309,11 +665,7 @@
               ADD TO CART
             </button>
           </div>
-
-          <button class="mt-3 w-full rounded-xl border px-6 py-3 font-semibold hover:bg-gray-50">
-            More payment options
-          </button>
-
+          
           <ul class="mt-5 text-sm text-gray-600 space-y-1">
             <li>• Kompatibel MagSafe</li>
             <li>• Instalasi &lt; 30 detik</li>
@@ -324,7 +676,6 @@
     </div>
   </div>
 
-  <!-- FEATURES (singkat) -->
   <!-- FEATURES (modern) -->
   <section id="features" class="bg-gradient-to-b from-gray-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 grid lg:grid-cols-12 gap-10 items-center reveal fade-up slow">
@@ -353,12 +704,18 @@
             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> New Gen Accessory
           </span>
           <h2 class="mt-4 text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-            Slim. Strong. <span class="text-gray-500">Clicks like magic.</span>
+            Slim. Strong. <span class="text-gray-500">Clicks like Magic.</span>
           </h2>
-          <p class="mt-3 text-gray-600 leading-7">
-            Dirancang untuk dipakai harian—ringan, tipis, dan stabil saat menempel.
-            Lebih nyaman dipakai kapan saja tanpa bikin ponsel terasa bulky.
-          </p>
+
+          <div class="mt-3 text-gray-600 leading-7">
+            <p>
+              Designed for everyday use. Lightweight, sleek, and stable when attached.
+            </p>
+            <p>
+              Comfortably fits your lifestyle without making your phone feel bulky.
+            </p>
+          </div>
+
 
           <!-- Feature grid -->
           <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -376,7 +733,7 @@
                 <div>
                   <h3 class="font-semibold text-gray-900">MagSafe Compatibility</h3>
                   <p class="mt-1 text-sm text-gray-600">
-                    Menempel kuat dan stabil di belakang ponsel—siap dipakai tiap momen.
+                    Locks firmly with MagSafe on the back of your phone, ready for every moment.
                   </p>
                 </div>
               </div>
@@ -393,9 +750,9 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Desain Tipis & Stylish</h3>
+                  <h3 class="font-semibold text-gray-900">Sleek & Stylish Design</h3>
                   <p class="mt-1 text-sm text-gray-600">
-                    Super slim dan ringan—mudah dibawa tanpa menambah beban.
+                    Ultra-slim and featherlight, easy to carry anywhere without extra bulk.
                   </p>
                 </div>
               </div>
@@ -411,9 +768,9 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Grip Nyaman</h3>
+                  <h3 class="font-semibold text-gray-900">Comfort Grip</h3>
                   <p class="mt-1 text-sm text-gray-600">
-                    Tekstur halus dengan feel mantap—enak digenggam tanpa licin.
+                    Smooth texture with a secure feel—easy to hold, never slippery.
                   </p>
                 </div>
               </div>
@@ -429,9 +786,9 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Klik Cepat</h3>
+                  <h3 class="font-semibold text-gray-900">Quick Snap</h3>
                   <p class="mt-1 text-sm text-gray-600">
-                    Pasang-lepas instan. Pindah mode tanpa ribet—langsung ready.
+                    Attach and detach instantly. Switch modes effortlessly, always ready to go.
                   </p>
                 </div>
               </div>
@@ -451,8 +808,8 @@
   </section>
 
 
-  <!-- FOOTER (modern & clean) -->
-  <footer class="bg-white border-t border-black/5 text-sm">
+   <!-- FOOTER (modern & clean) -->
+   <footer class="bg-white border-t border-black/5 text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
@@ -460,11 +817,9 @@
         <div>
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
           <ul class="mt-4 space-y-3 text-gray-700">
-            <li><a href="#" class="hover:opacity-80">Shipping & Delivery</a></li>
-            <li><a href="#" class="hover:opacity-80">Returns & Exchanges</a></li>
+            <li><a href="shipping.html" class="hover:opacity-80">Shipping & Delivery</a></li>
+            <li><a href="returns.html" class="hover:opacity-80">Returns & Exchanges</a></li>
             <li><a href="faq.html" class="hover:opacity-80">FAQ</a></li>
-            <li><a href="#" class="hover:opacity-80">Track Order</a></li>
-            <li><a href="#" class="hover:opacity-80">Contact Us</a></li>
           </ul>
         </div>
 
@@ -472,11 +827,8 @@
         <div>
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
           <ul class="mt-4 space-y-3 text-gray-700">
-            <li><a href="#" class="hover:opacity-80">Our Story</a></li>
+            <li><a href="./our-story.html" class="hover:opacity-80">Our Story</a></li>
             <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
-            <li><a href="#" class="hover:opacity-80">Sustainability</a></li>
-            <li><a href="#" class="hover:opacity-80">Blog</a></li>
-            <li><a href="#" class="hover:opacity-80">Careers</a></li>
           </ul>
         </div>
 
@@ -484,11 +836,9 @@
         <div>
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Help & Legal</h4>
           <ul class="mt-4 space-y-3 text-gray-700">
-            <li><a href="#" class="hover:opacity-80">Privacy Policy</a></li>
-            <li><a href="#" class="hover:opacity-80">Terms of Service</a></li>
-            <li><a href="#" class="hover:opacity-80">Warranty Information</a></li>
-            <li><a href="#" class="hover:opacity-80">Payment & Security</a></li>
-            <li><a href="#" class="hover:opacity-80">Cookie Policy</a></li>
+            <li><a href="./privacy.html" class="hover:opacity-80">Privacy Policy</a></li>
+            <li><a href="./terms.html" class="hover:opacity-80">Terms of Service</a></li>
+            <li><a href="./contact.html" class="hover:opacity-80">Contact Us</a></li>
           </ul>
         </div>
 
@@ -496,18 +846,17 @@
         <div class="flex flex-col items-start">
           <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Follow Us</h4>
           <ul class="mt-4 space-y-3 text-gray-700">
-            <li><a href="#" class="hover:opacity-80">Instagram</a></li>
-            <li><a href="#" class="hover:opacity-80">TikTok</a></li>
-            <li><a href="#" class="hover:opacity-80">YouTube</a></li>
-            <li><a href="#" class="hover:opacity-80">Newsletter</a></li>
+            <li><a href="https://www.instagram.com/clickclickofficial.id/" class="hover:opacity-80">Instagram</a></li>
+            <li><a href="https://www.tiktok.com/@clickclick.id?_t=ZS-8zDr2pMwNhI&_r=1" class="hover:opacity-80">TikTok</a></li>
+            <li><a href="https://shopee.co.id/shop/1556220986" class="hover:opacity-80">Shopee</a></li>
           </ul>
 
           <!-- Payment icons -->
           <div class="flex items-center gap-4 flex-wrap mt-8">
-            <img src="assets/payments/spay-logo.png" class="h-9" alt="ShopeePay">
-            <img src="assets/payments/MasterCard_Logo.png" class="h-9" alt="MasterCard">
-            <img src="assets/payments/bca.png" class="h-9" alt="BCA">
-            <img src="assets/payments/bni.png" class="h-6" alt="BNI">
+            <img src="./assets/payments/spay.png" class="h-9" alt="ShopeePay">
+            <img src="./assets/payments/mastercard.png" class="h-9" alt="MasterCard">
+            <img src="./assets/payments/bca-logo.png" class="h-9" alt="BCA">
+            <img src="./assets/payments/bni-logo.png" class="h-6" alt="BNI">
           </div>
         </div>
 
@@ -521,7 +870,7 @@
         <p>Secured Checkout • Trusted Payments</p>
       </div>
     </div>
-  </footer>
+</footer>
 
 
   <!-- ===== CART DRAWER ===== -->
@@ -555,14 +904,23 @@
   </div>
 
   <!--Script Button CHECKOUT-->
-  <!-- Script Button CHECKOUT (INDEX) -->
   <script>
     document.getElementById('btn-checkout')?.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = './checkout.html';
+
+      const CART_KEY = 'cc_cart_v1';
+      const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      if (!cart.length) { alert('Cart kosong.'); return; }
+
+      // biar nanti bisa dipakai analitik/guard di checkout
+      sessionStorage.setItem('cc_checkout_started', Date.now().toString());
+
+      // pergi ke halaman checkout
+      location.href = '/checkout.html';
     });
   </script>
 
+    
   <!-- ================== SCRIPTS DI PALING BAWAH ================== -->
 
   <!-- Reveal on scroll -->
@@ -852,6 +1210,68 @@
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     });
   </script>
+
+  <a href="https://wa.me/c/6282146151597?text=Halo%20ClickClick,%20saya%20ingin%20order%20produk."
+    class="whats-fixed bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg"
+    target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M20 3.94A11.92 11.92 0 0 0 12 .06C5.37.06.06 5.37.06 12a11.92 11.92 0 0 0 3.94 8.94L2 24l3.2-1.94A11.92 11.92 0 0 0 12 23.94c6.63 0 11.94-5.31 11.94-11.94A11.92 11.92 0 0 0 20 3.94ZM12 22a9.94 9.94 0 0 1-5.36-1.55l-.38-.24-2.28 1.38 1-2.51-.26-.4A9.94 9.94 0 1 1 12 22Zm5.49-7.39c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.5-.5-.67-.51h-.57c-.2 0-.52.07-.8.37s-1.05 1.03-1.05 2.52 1.08 2.93 1.23 3.13c.15.2 2.13 3.26 5.16 4.57.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.73 2.02-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35Z"/>
+    </svg>
+  </a>
+
+  <script type="text/javascript"
+    src="https://app.midtrans.com/snap/snap.js"
+    data-client-key="Mid-client-zm_c7npVzn49Jo5F">
+  </script>
+
+  <script>
+    // Mobile nav toggle – simpel & aksesibel
+    (function () {
+      const btn  = document.getElementById('btn-menu');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+
+      function toggleMenu(forceOpen) {
+        const willOpen = forceOpen != null ? forceOpen : menu.classList.contains('hidden');
+        menu.classList.toggle('hidden', !willOpen);
+        btn.setAttribute('aria-expanded', String(willOpen));
+      }
+
+      btn.addEventListener('click', () => toggleMenu());
+
+      // Tutup menu saat klik link di dalam menu (UX umum)
+      menu.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) toggleMenu(false);
+      });
+
+      // ESC untuk tutup
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') toggleMenu(false);
+      });
+    })();
+  </script>
+
+  <style>
+    /* ===== Mobile override (<=640px) untuk HERO ===== */
+    @media (max-width: 640px) {
+      #hero {
+        background-image: url('./assets/promo/Artboard-1-mobile.png');
+        background-position: center top !important;
+        background-size: cover !important;
+      }
+      #hero-title { top: 6% !important; }
+      #prod1 { left:18% !important; bottom:44% !important; transform:translate(-50%,0) !important; }
+      #prod2 { left:50% !important; bottom:42% !important; transform:translate(-50%,0) !important; }
+      #prod3 { left:50% !important; bottom:28% !important; transform:translate(-50%,0) !important; }
+      #prod4 { left:82% !important; bottom:18% !important; transform:translate(-50%,0) rotate(6deg) !important; }
+      .promo-panels { bottom:3% !important; max-width:min(94vw,380px) !important; }
+    }
+  </style>
+
+
+
+  
 
 </body>
 </html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Our Story — Click Click</title>
+  <meta name="description" content="The story behind Click Click: a MagSafe Selfie Screen born from real creators’ needs — slim, strong, and clicks like magic." />
+  <link rel="canonical" href="https://clickclick.id/our-story.html" />
+
+  <!-- Tailwind CSS -->
+  <link id="twcss" rel="stylesheet" href="./dist/output.css" />
+
+  <!-- Versioning (same pattern as index.html) -->
+  <script src="./version.js"></script>
+  <script>
+    (function(){
+      const isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const link = document.getElementById("twcss");
+      if (!link) return;
+      link.href = link.href + "?v=" + (isLocal ? Date.now() : (window.__ASSET_VERSION__ || "1"));
+    })();
+  </script>
+
+  <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+
+
+  <!-- ✨ Modern extras (patterns, blobs, cards, tilt) -->
+  <style>
+    /* reveal */
+    .reveal{opacity:0;transform:translate3d(0,14px,0);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+    .reveal.show{opacity:1;transform:none}
+    .slow{transition-duration:1s} .slower{transition-duration:1.2s}
+    @media (prefers-reduced-motion:reduce){.reveal{opacity:1 !important;transform:none !important;transition:none !important}}
+
+    /* gradient blobs */
+    .blob{position:absolute;filter:blur(40px);opacity:.55;pointer-events:none;mix-blend:multiply}
+
+    /* grid pattern bg */
+    .grid-bg{background-image:linear-gradient(to right,rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,.04) 1px,transparent 1px);background-size:22px 22px}
+
+    /* glass card */
+    .glass{background:rgba(255,255,255,.65);backdrop-filter:saturate(140%) blur(10px)}
+
+    /* gradient border utility */
+    .gradient-border{position:relative}
+    .gradient-border:before{content:"";position:absolute;inset:0;padding:1px;border-radius:1.25rem;background:linear-gradient(135deg,#e879f9,#60a5fa,#34d399);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+
+    /* hover tilt */
+    .tilt{transform:perspective(800px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateZ(0);transition:transform .12s ease}
+
+    /* marquee badges */
+    .marquee{--speed:26s;overflow:hidden}
+    .marquee__track{display:flex;gap:1.25rem;width:max-content;animation:scroll var(--speed) linear infinite}
+    .marquee:hover .marquee__track{animation-play-state:paused}
+    @keyframes scroll{to{transform:translateX(-50%)}}
+
+    /* sticky subnav */
+    .sticky-sub{position:sticky;top:64px;z-index:30}
+
+    /* Before/After slider */
+    .ba{ --pos:58%; }
+    .ba .ba-after{ width: var(--pos); }
+    .ba .ba-handle{ left: calc(var(--pos)); }
+    @media (prefers-reduced-motion: reduce){
+    .ba input[type="range"]{ display: none; } /* statis, tanpa interaksi */
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-900">
+  <!-- Top notice -->
+  <div class="bg-amber-100 text-amber-900 text-center text-sm py-2">
+    ⚠️ The online payment feature is still being prepared. To order, contact
+    <a href="https://wa.me/c/6282146151597" target="_blank" class="underline font-semibold hover:text-amber-700">our WhatsApp</a>.
+  </div>
+
+  <!-- Navbar (mirrors index) -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur shadow-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center justify-between">
+        <a href="#" class="inline-flex items-center gap-2">
+          <img src="./assets/logo.png" alt="Click Click" class="h-7 w-auto" />
+        </a>
+
+        <!-- Desktop menu -->
+        <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
+          <a class="hover:text-pink-600" href="./index.html">Home</a>
+          <a class="hover:text-pink-600" href="./shop/all-shop.html">Products</a>
+          <a class="hover:text-pink-600" href="./our-story.html">About Us</a>
+          <a class="hover:text-pink-600" href="./contact.html">Contact</a>
+        </nav>
+
+        <div class="hidden md:block">
+          <a href="./shop/all-shop.html" class="inline-flex items-center rounded-full border border-gray-900 px-5 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
+            Shop Now
+          </a>
+        </div>
+
+        <!-- Mobile toggler -->
+        <button id="navToggle" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300">
+          <span class="sr-only">Toggle Menu</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="stroke-gray-900">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="md:hidden hidden pt-3 pb-4">
+        <nav class="grid gap-2 text-[15px] font-medium">
+          <a class="py-2 hover:text-pink-600" href="./index.html">Home</a>
+          <a class="py-2 hover:text-pink-600" href="./shop/all-shop.html">Products</a>
+          <a class="py-2 hover:text-pink-600" href="./our-story.html">About Us</a>
+          <a class="py-2 hover:text-pink-600" href="./contact.html">Contact</a>
+          <a href="#" class="mt-2 inline-flex w-full items-center justify-center rounded-full border border-gray-900 px-5 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
+            Shop Now
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO: asymmetric, layered -->
+  <header class="relative overflow-hidden grid-bg">
+    <div class="blob -top-24 -left-24 h-80 w-80 rounded-full bg-pink-200"></div>
+    <div class="blob -bottom-24 -right-24 h-96 w-96 rounded-full bg-indigo-200"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 grid lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-6 reveal slow">
+        <span class="inline-flex items-center gap-2 rounded-full bg-black text-white px-3 py-1 text-xs font-semibold tracking-wide">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Behind the Magic
+        </span>
+        <h1 class="mt-4 text-[clamp(2.2rem,3.6vw,3.4rem)] font-extrabold leading-tight tracking-tight">
+          Our Story
+        </h1>
+        <p class="mt-4 text-gray-600 text-lg max-w-prose">
+          We wanted a way to see ourselves while filming with the rear camera—without cables, bulk, or guesswork. The result is a MagSafe Selfie Screen that’s <strong>slim</strong>, <strong>strong</strong>, and <strong>clicks like magic</strong>.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="./shop/all-shop.html" class="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white px-5 py-3 text-sm font-semibold shadow-sm hover:bg-black transition">Shop Now</a>
+          <a href="https://wa.me/c/6282146151597" target="_blank" class="inline-flex items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold hover:bg-gray-50">Chat WhatsApp</a>
+        </div>
+        <!-- sticky subnav -->
+        <div class="sticky-sub mt-6 hidden sm:block">
+          <div class="glass rounded-full px-3 py-2 inline-flex gap-1 text-xs">
+            <a href="#started" class="px-3 py-1 rounded-full hover:bg-white">How it started</a>
+            <a href="#difference" class="px-3 py-1 rounded-full hover:bg-white">Why we’re different</a>
+            <a href="#quality" class="px-3 py-1 rounded-full hover:bg-white">Quality & Warranty</a>
+            <a href="#timeline" class="px-3 py-1 rounded-full hover:bg-white">Milestones</a>
+            <a href="#crew" class="px-3 py-1 rounded-full hover:bg-white">#ClickClickCrew</a>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 reveal slower">
+        <div class="relative gradient-border rounded-2xl">
+          <div class="relative rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-xl bg-white tilt" id="hero-tilt">
+            <img src="assets/story/Feeds 8.png" 
+                  alt="Click Click MagSafe Selfie Screen"
+                  class="w-full max-w-[220px] sm:max-w-[280px] md:max-w-[360px] lg:max-w-[420px] xl:max-w-[480px] mx-auto object-contain" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- marquee badges -->
+    <div class="marquee border-t border-b border-black/5 bg-white/60 backdrop-blur">
+      <div class="marquee__track py-3 px-4 text-sm font-medium text-gray-700">
+        <span class="inline-flex items-center gap-2">⚡ Quick snap</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🧲 MagSafe-first</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🪶 Ultra-slim</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🛡️ 12-month warranty</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">💬 Fast WA support</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🌿 Repair-friendly</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">⚡ Quick snap</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🧲 MagSafe-first</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🪶 Ultra-slim</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🛡️ 12-month warranty</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">💬 Fast WA support</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-2">🌿 Repair-friendly</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOW IT STARTED (Video Demo) -->
+    <section id="started" class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-12 gap-10 items-start">
+        <!-- Copy -->
+        <div class="lg:col-span-5 reveal slow">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight">From a simple need to a daily essential</h2>
+            <p class="mt-4 text-gray-600 leading-7">
+            We loved the quality of the rear camera, but framing was a guessing game.
+            External monitors were bulky and overkill for everyday content.
+            </p>
+            <p class="mt-3 text-gray-600 leading-7">
+            We asked: <em>what if a screen could just… click into place?</em>
+            Prototyping began with creators, small businesses, and parents.
+            Each iteration got thinner, lighter, and more stable.
+            </p>
+    
+            <!-- highlights kecil -->
+            <ul class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <li class="rounded-xl border border-black/5 bg-white px-4 py-3 shadow-sm">
+                <div class="font-semibold">Slim</div><div class="text-gray-600 mt-0.5">Pocket-ready</div>
+            </li>
+            <li class="rounded-xl border border-black/5 bg-white px-4 py-3 shadow-sm">
+                <div class="font-semibold">Strong</div><div class="text-gray-600 mt-0.5">MagSafe hold</div>
+            </li>
+            <li class="rounded-xl border border-black/5 bg-white px-4 py-3 shadow-sm">
+                <div class="font-semibold">Quick</div><div class="text-gray-600 mt-0.5">&lt; 30s setup</div>
+            </li>
+            </ul>
+        </div>
+    
+        <!-- Video -->
+        <div class="lg:col-span-7 reveal slower">
+            <figure class="relative rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-md bg-gray-50">
+            <video id="story-video"
+                    class="w-full h-80 sm:h-96 md:h-[420px] object-cover"
+                    autoplay muted loop playsinline preload="metadata"
+                    poster="assets/story/m4-poster.jpg">
+                <source src="assets/video/IMG_2676.MOV"  type="video/mp4">
+                <!-- Fallback -->
+                Your browser does not support the video tag.
+            </video>
+            </figure>
+            <p class="mt-2 text-xs text-gray-500 text-center">Tap video to pause / play</p>
+        </div>
+        </div>
+    </section>
+  
+  
+
+  <!-- The Difference -->
+  <section id="difference" class="bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="text-center max-w-3xl mx-auto reveal slow">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight">What makes Click Click different</h2>
+        <p class="mt-3 text-gray-600">Three simple promises guide every decision we make.</p>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="gradient-border rounded-2xl p-[1px] reveal slow"><div class="rounded-2xl bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Slim</h3>
+          <p class="mt-1 text-gray-600">Pocketable and effortless to carry—no camera bag required.</p>
+        </div></div>
+        <div class="gradient-border rounded-2xl p-[1px] reveal slow"><div class="rounded-2xl bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Strong</h3>
+          <p class="mt-1 text-gray-600">MagSafe hold you can trust, quality materials, and layered QC.</p>
+        </div></div>
+        <div class="gradient-border rounded-2xl p-[1px] reveal slow"><div class="rounded-2xl bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Clicks like Magic</h3>
+          <p class="mt-1 text-gray-600">Attach, frame, shoot—fewer steps, more moments captured right.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quality & Warranty (glass + stats) -->
+  <section id="quality" class="relative">
+    <div class="blob top-0 left-1/3 h-64 w-64 rounded-full bg-emerald-200"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-7 reveal slow">
+        <div class="glass rounded-3xl p-8 ring-1 ring-black/5">
+          <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Built to last, supported for real use</h2>
+          <ul class="mt-5 space-y-3 text-gray-800">
+            <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span> 12‑month warranty and responsive WhatsApp support.</li>
+            <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span> Spare parts & repair options to extend product life.</li>
+            <li class="flex items-start gap-3"><span class="mt-1 h-2 w-2 rounded-full bg-emerald-500"></span> Packaging with less plastic and more durability.</li>
+          </ul>
+          <div class="mt-6 flex gap-3">
+            <a href="./faq.html" class="inline-flex items-center rounded-xl border px-5 py-3 text-sm font-semibold hover:bg-white">Read FAQ</a>
+            <a href="https://wa.me/c/6282146151597" target="_blank" class="inline-flex items-center rounded-xl bg-gray-900 text-white px-5 py-3 text-sm font-semibold hover:bg-black">Need help? Chat us</a>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-5 reveal slower">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-2xl bg-white p-5 text-center ring-1 ring-black/5 shadow-sm">
+            <div class="text-3xl font-extrabold">&lt; 30s</div>
+            <p class="text-xs text-gray-500 mt-1">setup time</p>
+          </div>
+          <div class="rounded-2xl bg-white p-5 text-center ring-1 ring-black/5 shadow-sm">
+            <div class="text-3xl font-extrabold">12 mo</div>
+            <p class="text-xs text-gray-500 mt-1">warranty</p>
+          </div>
+          <div class="rounded-2xl bg-white p-5 text-center ring-1 ring-black/5 shadow-sm">
+            <div class="text-3xl font-extrabold">24/7</div>
+            <p class="text-xs text-gray-500 mt-1">support via WA</p>
+          </div>
+          <div class="rounded-2xl bg-white p-5 text-center ring-1 ring-black/5 shadow-sm">
+            <div class="text-3xl font-extrabold">MagSafe</div>
+            <p class="text-xs text-gray-500 mt-1">friendly</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline (modern line) -->
+  <section id="timeline" class="bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="text-center max-w-3xl mx-auto reveal slow">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Milestones</h2>
+        <p class="mt-3 text-gray-600">A few moments that shaped Click Click.</p>
+      </div>
+      <ol class="mt-10 relative max-w-3xl mx-auto">
+        <div class="absolute left-3 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-200 via-pink-200 to-emerald-200"></div>
+        <li class="mb-10 ml-10 reveal slow">
+          <div class="w-6 h-6 rounded-full bg-white ring-4 ring-pink-200 -ml-10"></div>
+          <h3 class="font-semibold">2024 — Idea & prototypes</h3>
+          <p class="mt-1 text-gray-600">Sketches, magnets, prints—testing with real creators to get the feel right.</p>
+        </li>
+        <li class="mb-10 ml-10 reveal slow">
+          <div class="w-6 h-6 rounded-full bg-white ring-4 ring-indigo-200 -ml-10"></div>
+          <h3 class="font-semibold">2025 — M4 launch</h3>
+          <p class="mt-1 text-gray-600">Our slimmest, most stable MagSafe Selfie Screen so far.</p>
+        </li>
+        <li class="mb-10 ml-10 reveal slow">
+          <div class="w-6 h-6 rounded-full bg-white ring-4 ring-purple-200 -ml-10"></div>
+          <h3 class="font-semibold">2025 — Accessories expansion</h3>
+          <p class="mt-1 text-gray-600">More MagSafe-friendly tools to simplify your filming routine.</p>
+        </li>
+        <li class="ml-10 reveal slow">
+          <div class="w-6 h-6 rounded-full bg-white ring-4 ring-emerald-200 -ml-10"></div>
+          <h3 class="font-semibold">Next — New models</h3>
+          <p class="mt-1 text-gray-600">Iterating with community feedback to make filming even easier.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Community UGC (masonry-ish) -->
+  <section id="crew" class="bg-white" aria-labelledby="ugc-title">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-end justify-between gap-6">
+        <div class="reveal slow">
+          <h2 id="ugc-title" class="text-2xl md:text-3xl font-bold tracking-tight">#ClickClickCrew</h2>
+          <p class="mt-3 text-gray-600">Tag us to get featured — real shots from everyday creators.</p>
+        </div>
+        <a href="https://www.instagram.com/clickclickofficial.id/" target="_blank" class="hidden sm:inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold hover:bg-gray-50 reveal slow">Follow Instagram</a>
+      </div>
+      <div class="mt-8 columns-2 md:columns-3 gap-3 [column-fill:_balance]">
+        <img src="assets/story/Feeds 15.png" alt="UGC 1"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+        <img src="assets/story/Feeds 5.png" alt="UGC 2"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+        <img src="assets/story/Feeds 6.png" alt="UGC 3"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+        <img src="assets/story/Feeds 7.png" alt="UGC 4"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+        <img src="assets/story/Feeds 4.png" alt="UGC 5"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+        <img src="assets/story/Feeds 9.png" alt="UGC 6"
+             class="mb-3 break-inside-avoid rounded-2xl bg-gray-100 max-w-[220px] mx-auto w-full"/>
+      </div>      
+    </div>
+  </section>
+
+  <!-- Founder note + floating CTA -->
+  <section class="bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="rounded-3xl bg-white ring-1 ring-black/5 shadow-sm p-8 md:p-10 reveal slow">
+        <div class="flex items-start gap-4">
+          <img src="assets/founder.jpg" alt="Founder portrait" class="w-16 h-16 rounded-2xl object-cover bg-gray-100" onerror="this.style.display='none'"/>
+          <div>
+            <h3 class="text-lg font-semibold">A note from us</h3>
+            <p class="mt-2 text-gray-600 leading-7">We built Click Click so you can focus on your ideas—not on the setup. If our tools help you capture one extra moment you would’ve missed, that’s a win. Thanks for being part of the journey.</p>
+            <p class="mt-3 font-medium">— The Click Click team</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 text-center reveal slow">
+        <a href="./shop/all-shop.html" class="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white px-6 py-3 text-sm font-semibold shadow-sm hover:bg-black">Browse Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (mirror index) -->
+  <footer class="bg-white border-t border-black/5 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Customer Care</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="shipping.html" class="hover:opacity-80">Shipping & Delivery</a></li>
+            <li><a href="returns.html" class="hover:opacity-80">Returns & Exchanges</a></li>
+            <li><a href="faq.html" class="hover:opacity-80">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">About Us</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="our-story.html" class="hover:opacity-80 font-medium">Our Story</a></li>
+            <li><a href="#" class="hover:opacity-80">Wholesale</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Help & Legal</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="privacy.html" class="hover:opacity-80">Privacy Policy</a></li>
+            <li><a href="terms.html" class="hover:opacity-80">Terms of Service</a></li>
+            <li><a href="contact.html" class="hover:opacity-80">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="flex flex-col items-start">
+          <h4 class="text-base md:text-lg font-semibold tracking-wide text-gray-900 uppercase">Follow Us</h4>
+          <ul class="mt-4 space-y-3 text-gray-700">
+            <li><a href="https://www.instagram.com/clickclickofficial.id/" class="hover:opacity-80">Instagram</a></li>
+            <li><a href="https://www.tiktok.com/@clickclick.id?_t=ZS-8zDr2pMwNhI&_r=1" class="hover:opacity-80">TikTok</a></li>
+            <li><a href="https://shopee.co.id/shop/1556220986" class="hover:opacity-80">Shopee</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-full border-t border-black/5 pt-4">
+      <div class="py-4 flex items-center justify-between text-xs sm:text-sm text-gray-600 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p>© 2025 Clickclick, All rights reserved.</p>
+        <p>Secured Checkout • Trusted Payments</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Reveal on scroll + tilt -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const sel = el.getAttribute('data-stagger');
+          if (sel) {
+            el.querySelectorAll(sel).forEach((k, i) => {
+              k.style.transitionDelay = (i * 90) + 'ms';
+              k.classList.add('show');
+            });
+          }
+          el.classList.add('show');
+          obs.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      // tilt
+      const el = document.getElementById('hero-tilt');
+      if(el){
+        const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
+        el.addEventListener('mousemove', (e)=>{
+          const rect = el.getBoundingClientRect();
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2;
+          const dx = (e.clientX - cx) / (rect.width/2);
+          const dy = (e.clientY - cy) / (rect.height/2);
+          el.style.setProperty('--ry', clamp(dx*6,-8,8)+'deg');
+          el.style.setProperty('--rx', clamp(-dy*6,-8,8)+'deg');
+          el.classList.add('tilt');
+        });
+        el.addEventListener('mouseleave', ()=>{
+          el.style.setProperty('--ry','0deg');
+          el.style.setProperty('--rx','0deg');
+        });
+      }
+    });
+
+    // Video: hemat baterai, hormati reduced motion
+    const v = document.getElementById('story-video');
+    if (v) {
+    v.muted = true; // agar autoplay jalan di mobile
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) { v.removeAttribute('autoplay'); v.pause(); }
+
+    const io = new IntersectionObserver(([e]) => {
+        if (!e) return;
+        if (e.isIntersecting && !reduced) v.play().catch(()=>{});
+        else v.pause();
+    }, { threshold: 0.3 });
+    io.observe(v);
+
+    // Tap to pause/play
+    v.addEventListener('click', () => (v.paused ? v.play() : v.pause()));
+    }
+
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <style>.whats-fixed{position:fixed;right:16px;bottom:16px;z-index:99999}</style>
+  <a href="https://wa.me/c/6282146151597?text=Halo%20ClickClick,%20saya%20ingin%20order%20produk." class="whats-fixed bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M20 3.94A11.92 11.92 0 0 0 12 .06C5.37.06.06 5.37.06 12a11.92 11.92 0 0 0 3.94 8.94L2 24l3.2-1.94A11.92 11.92 0 0 0 12 23.94c6.63 0 11.94-5.31 11.94-11.94A11.92 11.92 0 0 0 20 3.94ZM12 22a9.94 9.94 0 0 1-5.36-1.55l-.38-.24-2.28 1.38 1-2.51-.26-.4A9.94 9.94 0 1 1 12 22Zm5.49-7.39c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.5-.5-.67-.51h-.57c-.2 0-.52.07-.8.37s-1.05 1.03-1.05 2.52 1.08 2.93 1.23 3.13c.15.2 2.13 3.26 5.16 4.57.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.73 2.02-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35Z" />
+    </svg>
+  </a>
+</body>
+</html>

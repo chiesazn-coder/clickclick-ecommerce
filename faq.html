@@ -1,320 +1,154 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FAQ — Pertanyaan yang Sering Diajukan</title>
-  <!-- Tailwind sudah ada di project kamu -->
-  <link rel="stylesheet" href="./dist/output.css?v=prod" />
-  <meta name="description" content="Jawaban cepat seputar pengiriman, pembayaran, kompatibilitas perangkat, garansi, pemasangan, dan bantuan teknis produk Magnetic Selfie Screen."/>
-  <!-- Schema.org FAQPage (SEO) — sesuaikan Q&A penting di sini -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "Berapa lama estimasi pengiriman?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Pesanan akan diproses dalam 24 jam kerja. Estimasi pengiriman ke kota besar 1–3 hari kerja dan luar pulau 3–7 hari kerja, tergantung kurir yang dipilih."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Apakah produk kompatibel dengan MagSafe?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Ya, produk mendukung MagSafe dan bekerja optimal pada iPhone 12 ke atas. Untuk perangkat tanpa MagSafe, gunakan ring magnet tambahan."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Bagaimana cara pemasangan?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Bersihkan permukaan, sejajarkan ring ke modul MagSafe, lalu tempel perlahan hingga terkunci. Proses kurang dari 30 detik."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Bagaimana kebijakan garansi & pengembalian?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Garansi 12 bulan untuk cacat produksi. Pengembalian diterima dalam 7 hari sejak diterima selama segel utuh dan kelengkapan lengkap."
-                }
-            }
-            ]
-        }
-    </script>
+  <meta name="description" content="Frequently Asked Questions - Clickclick." />
+  <link rel="canonical" href="https://clickclick.id/faq.html" />
+  <title>FAQ — Clickclick</title>
+
+  <!-- Tailwind CSS build -->
+  <link id="twcss" rel="stylesheet" href="./dist/output.css" />
+  <script src="./version.js"></script>
+  <script>
+    (function(){
+      const isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const link = document.getElementById("twcss");
+      if (!link) return;
+      link.href = link.href + "?v=" + (isLocal ? Date.now() : (window.__ASSET_VERSION__ || "1"));
+    })();
+  </script>
+
+  <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
-<body class="bg-white text-gray-900">
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <!-- Header -->
-    <header class="mb-8">
-      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">FAQ</h1>
-      <p class="mt-2 text-gray-600">Jawaban cepat tentang pengiriman, pembayaran, kompatibilitas perangkat, garansi, pemasangan, dan bantuan teknis.</p>
-    </header>
 
-    <!-- TOC (sticky on large) -->
-    <nav aria-label="Daftar kategori FAQ"
-        class="sticky top-0 z-10 -mx-4 px-4 py-3 mb-6 bg-white/70 backdrop-blur border-b border-gray-100">
-        <ul id="faq-toc"
-            class="no-scrollbar flex gap-3 overflow-x-auto text-sm">
-            <li><a class="chip" href="#faq-shipping">Pengiriman</a></li>
-            <li><a class="chip" href="#faq-orders">Pesanan & Pembayaran</a></li>
-            <li><a class="chip" href="#faq-compat">Kompatibilitas</a></li>
-            <li><a class="chip" href="#faq-warranty">Garansi & Pengembalian</a></li>
-            <li><a class="chip" href="#faq-help">Instalasi & Troubleshooting</a></li>
-            <li><a class="chip" href="#faq-contact">Hubungi Support</a></li>
-        </ul>
-    </nav>
+<body class="font-sans bg-gray-50 text-gray-900">
+  <!-- Top notice -->
+  <div class="bg-amber-100 text-amber-900 text-center text-sm py-2">
+    ⚠️ Online payment feature is being prepared. For orders, please contact us via
+    <a href="https://wa.me/c/6282146151597" target="_blank" class="underline font-semibold hover:text-amber-700">WhatsApp</a>.
+  </div>
 
-    <!-- Section: Shipping -->
-    <section id="faq-shipping" class="scroll-mt-24 mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Pengiriman & Delivery</h2>
-      <div class="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
-        <details class="group open:bg-white">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Berapa lama estimasi pengiriman?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Pesanan <strong>diproses dalam 24 jam kerja</strong>. Estimasi:
-            <ul class="list-disc ml-5 mt-2">
-              <li>Kota besar: <strong>1–3 hari kerja</strong></li>
-              <li>Luar pulau/daerah terpencil: <strong>3–7 hari kerja</strong></li>
-            </ul>
-            <p class="mt-2 text-sm text-gray-500">*Estimasi tergantung kurir & alamat tujuan.</p>
-          </div>
-        </details>
+  <!-- NAVBAR -->
+  <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="Clickclick Logo" class="h-10" />
+      </a>
+      <ul class="hidden md:flex items-center gap-8 text-gray-700 font-medium">
+        <li><a href="/" class="hover:text-black">Home</a></li>
+        <li><a href="./shop/all-shop.html" class="hover:text-black">Shop</a></li>
+        <li><a href="./shipping.html" class="hover:text-black">Shipping</a></li>
+        <li><a href="./returns.html" class="hover:text-black">Returns</a></li>
+        <li><a href="./contact.html" class="hover:text-black">Contact</a></li>
+      </ul>
+      <a href="./shop/all-shop.html" class="inline-flex items-center gap-2 rounded-full border-2 border-black px-4 py-2 text-sm font-semibold hover:bg-black hover:text-white transition">Shop Now</a>
+    </div>
+  </nav>
 
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah bisa pilih kurir dan lacak resi?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Bisa. Pilih kurir saat checkout. Nomor resi akan dikirim otomatis melalui email/SMS setelah paket di-pickup.
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah tersedia pengiriman hari yang sama?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Tersedia untuk area tertentu (Same Day/Instant) dengan biaya tambahan. Cek ketersediaan di halaman checkout.
-            <!-- TODO: sesuaikan kebijakan toko -->
-          </div>
-        </details>
+  <!-- HERO -->
+  <header class="bg-white border-b border-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <nav aria-label="Breadcrumb" class="text-sm text-gray-600">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li>›</li>
+          <li class="text-gray-900 font-medium">FAQ</li>
+        </ol>
+      </nav>
+      <div class="mt-5">
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Frequently Asked Questions</h1>
+        <p class="mt-2 text-gray-600">Find answers to the most common questions about Clickclick orders, shipping, returns, and more.</p>
       </div>
-      <a href="#top" class="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
-    </section>
+    </div>
+  </header>
 
-    <!-- Section: Orders & Payments -->
-    <section id="faq-orders" class="scroll-mt-24 mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Pesanan & Pembayaran</h2>
-      <div class="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
-        <details class="group open:bg-white">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Metode pembayaran apa saja yang didukung?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Kami mendukung kartu kredit/debit, transfer Virtual Account, e‑wallet populer, dan COD di area tertentu.
-            <!-- TODO: sebutkan channel spesifik di project kamu -->
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah saya bisa mengubah alamat setelah checkout?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Bisa selama pesanan belum dikirim. Segera hubungi Support dengan nomor order agar kami bantu update.
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Kapan pesanan saya diproses?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Order masuk sebelum <strong>pukul 15:00 WIB</strong> diproses di hari yang sama (hari kerja). Order setelahnya diproses hari kerja berikutnya.
-            <!-- TODO: sesuaikan cutoff operational -->
-          </div>
-        </details>
-      </div>
-      <a href="#top" class="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
-    </section>
-
-    <!-- Section: Compatibility -->
-    <section id="faq-compat" class="scroll-mt-24 mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Kompatibilitas Perangkat</h2>
-      <div class="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
-        <details class="group open:bg-white">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah kompatibel dengan MagSafe?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Ya. Bekerja optimal pada <strong>iPhone 12 ke atas</strong> dengan MagSafe. Untuk perangkat non‑MagSafe, gunakan <em>ring magnet</em> tambahan (dijual terpisah).
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah bisa dipakai dengan case?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Disarankan case <strong>MagSafe‑ready</strong> atau tipis & datar. Case tebal/bertekstur dapat mengurangi kekuatan magnet.
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Apakah aman untuk NFC atau wireless charging?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Aman digunakan berdampingan dengan NFC. Untuk pengisian nirkabel, lepaskan aksesori jika posisi coil terhalang agar efisiensi tetap maksimal.
-          </div>
-        </details>
-      </div>
-      <a href="#top" class="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
-    </section>
-
-    <!-- Section: Warranty & Returns -->
-    <section id="faq-warranty" class="scroll-mt-24 mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Garansi & Pengembalian</h2>
-      <div class="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
-        <details class="group open:bg-white">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Bagaimana kebijakan garansi?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            <strong>Garansi 12 bulan</strong> untuk cacat produksi. Garansi tidak mencakup kerusakan akibat jatuh, cairan, atau pemakaian tidak wajar.
-            <!-- TODO: sesuaikan durasi/pengecualian -->
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Bisakah melakukan retur/penukaran?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Bisa dalam <strong>7 hari</strong> sejak barang diterima jika segel/kondisi utuh dan kelengkapan lengkap. Biaya kirim kembali mengikuti penyebab retur.
-            <!-- TODO: sesuaikan hari & biaya -->
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Bagaimana cara klaim garansi?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Hubungi Support dengan bukti pembelian, foto/video masalah, dan nomor pesanan. Tim kami akan verifikasi dan memberi instruksi pengiriman unit.
-          </div>
-        </details>
-      </div>
-      <a href="#top" class="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
-    </section>
-
-    <!-- Section: Installation & Troubleshooting -->
-    <section id="faq-help" class="scroll-mt-24 mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Instalasi & Troubleshooting</h2>
-      <div class="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
-        <details class="group open:bg-white">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Cara pasang dalam 30 detik</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            1) Bersihkan area & lepaskan pelindung perekat. 2) Sejajarkan ke pusat MagSafe. 3) Tempel perlahan & tekan 10–15 detik. Selesai.
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Magnet terasa kurang kuat, apa yang harus dilakukan?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Pastikan case mendukung MagSafe, permukaan bersih/flat, dan tidak ada pelapis tebal di antara magnet. Coba tanpa case untuk uji cepat.
-          </div>
-        </details>
-
-        <details class="group">
-          <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50">
-            <span class="font-medium">Bagaimana perawatan harian?</span>
-            <span class="ml-4 text-gray-400 group-open:rotate-180 transition">&#9662;</span>
-          </summary>
-          <div class="px-4 pb-4 text-gray-700">
-            Lap dengan kain microfiber kering. Hindari cairan pembersih keras, suhu ekstrem, dan benturan langsung agar umur pakai maksimal.
-          </div>
-        </details>
-      </div>
-      <a href="#top" class="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
-    </section>
-
-    <!-- Section: Contact -->
-    <section id="faq-contact" class="scroll-mt-24">
-      <h2 class="text-2xl font-semibold mb-4">Hubungi Support</h2>
-      <div class="rounded-2xl border border-gray-200 p-6 bg-gray-50">
-        <p class="text-gray-700">
-          Belum menemukan jawaban? Tim kami siap membantu:
+  <!-- CONTENT -->
+  <main>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <!-- FAQ 1 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">1. How do I place an order?</h2>
+        <p class="mt-2 text-gray-600">
+          You can browse our products in the <a href="./shop/all-shop.html" class="underline">Shop</a> section and add them to your cart. 
+          At checkout, follow the instructions to confirm your shipping details and complete your payment securely via Midtrans.
         </p>
-        <ul class="mt-3 space-y-2">
-          <li>📧 Email: <a class="underline hover:text-black" href="mailto:support@balancia.co.id">support@balancia.co.id</a></li>
-          <li>💬 WhatsApp: <a class="underline hover:text-black" href="https://wa.me/6200000000000" target="_blank" rel="noopener">+62 000‑0000‑0000</a></li>
-          <li>🕘 Jam layanan: Senin–Jumat, 09:00–17:00 WIB</li>
-        </ul>
-        <a href="/contact" class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border bg-white hover:bg-gray-100">
-          Buka Halaman Kontak
-        </a>
-      </div>
-    </section>
+      </section>
 
-    <!-- Footer helper -->
-    <div class="mt-12 text-center">
-      <a href="#top" id="top" class="text-sm text-gray-500 hover:text-gray-700">Kembali ke atas</a>
+      <!-- FAQ 2 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">2. What payment methods are accepted?</h2>
+        <p class="mt-2 text-gray-600">
+          Payments are processed through <strong>Midtrans</strong> in a PCI-DSS certified environment. 
+          We accept credit/debit cards, bank transfers (virtual accounts), and QRIS. 
+          Your card details are never stored on our site.
+        </p>
+      </section>
+
+      <!-- FAQ 3 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">3. How long does shipping take?</h2>
+        <p class="mt-2 text-gray-600">
+          Orders are processed within 1 business day. Delivery time depends on your location:
+          1–3 days for Jabodetabek, 2–4 days for other areas of Java, 3–7 days for Sumatra, Kalimantan, Bali, 
+          and 4–10 days for Sulawesi, Nusa Tenggara, Papua. 
+          For details, see our <a href="./shipping.html" class="underline">Shipping & Delivery</a> page.
+        </p>
+      </section>
+
+      <!-- FAQ 4 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">4. How can I track my order?</h2>
+        <p class="mt-2 text-gray-600">
+          A tracking number will be sent to you via WhatsApp or email once your order has been dispatched. 
+          You can use this tracking number on the courier’s website or app.
+        </p>
+      </section>
+
+      <!-- FAQ 5 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">5. What is your return policy?</h2>
+        <p class="mt-2 text-gray-600">
+          You may request a return within 7 calendar days of receiving your order, provided the items are unused and in original condition. 
+          For defective or incorrect items, we cover return shipping and send replacements. 
+          See our <a href="./returns.html" class="underline">Returns & Exchanges</a> page for full details.
+        </p>
+      </section>
+
+      <!-- FAQ 6 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">6. Do your products have a warranty?</h2>
+        <p class="mt-2 text-gray-600">
+          Yes, Clickclick products come with a limited 12-month warranty covering manufacturing defects. 
+          Warranty claims require proof of purchase and follow manufacturer’s terms.
+        </p>
+      </section>
+
+      <!-- FAQ 7 -->
+      <section class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">7. How can I contact customer support?</h2>
+        <p class="mt-2 text-gray-600">
+          You can reach us during business hours (Mon–Fri, 09:00 – 18:00 WIB) via:
+        </p>
+        <ul class="mt-2 list-disc pl-5 text-gray-600 space-y-1">
+          <li>WhatsApp: <a href="https://wa.me/c/6282146151597" target="_blank" class="underline">+62 821-4615-1597</a></li>
+          <li>Email: <a href="mailto:officialclickclick@gmail.com" class="underline">officialclickclick@gmail.com</a></li>
+        </ul>
+      </section>
     </div>
   </main>
 
-  <style>
-    /* Chip pill */
-    .chip { @apply inline-flex items-center px-4 py-1.5 rounded-full border border-gray-300
-                   text-gray-700 hover:bg-gray-50 hover:border-gray-400 no-underline; }
-    /* State aktif (saat hash cocok) */
-    .chip[aria-current="true"] { @apply bg-gray-900 text-white border-gray-900; }
-    /* Sembunyikan scrollbar horizontal di TOC */
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-  </style>
-  
-  <script>
-    // Set aria-current pada chip sesuai hash URL
-    (function () {
-      const chips = document.querySelectorAll('#faq-toc .chip');
-      function setActive() {
-        const hash = location.hash || '#faq-shipping';
-        chips.forEach(a => a.removeAttribute('aria-current'));
-        const current = Array.from(chips).find(a => a.getAttribute('href') === hash);
-        if (current) current.setAttribute('aria-current', 'true');
-      }
-      window.addEventListener('hashchange', setActive);
-      setActive();
-    })();
- </script>
-  
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-black/5 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-gray-600">© 2025 Clickclick, All rights reserved.</p>
+      <nav class="flex items-center gap-6 text-gray-700">
+        <a href="./privacy.html" class="hover:opacity-80">Privacy Policy</a>
+        <a href="./terms.html" class="hover:opacity-80">Terms of Service</a>
+        <a href="./contact.html" class="hover:opacity-80">Contact</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>

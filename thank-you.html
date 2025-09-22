@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Thank You — Clickclick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#0b1020;--muted:#6b7280;--ok:#10b981;--warn:#f59e0b;--bad:#ef4444;--bg:#f7f7fb;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .wrap{max-width:1020px;margin:40px auto;padding:0 16px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px}
+    h1{margin:0 0 8px;font-size:28px}
+    h3{margin:8px 0 8px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:2fr 1.2fr}}
+    .row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+    .total{font-size:22px;font-weight:700}
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
+    .tag.ok{background:#ecfdf5;color:#065f46}
+    .tag.pending{background:#fffbeb;color:#92400e}
+    .tag.fail{background:#fef2f2;color:#991b1b}
+    .items{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+    .item{display:flex;gap:12px;align-items:center}
+    .thumb{width:56px;height:56px;border-radius:10px;background:#f3f4f6;object-fit:cover}
+    .btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:10px;
+         border:1px solid #111827;background:#111827;color:#fff;text-decoration:none;font-weight:600}
+    .btn.ghost{background:#fff;color:#111827}
+    .small{font-size:12px}
+    .hr{height:1px;background:#f1f1f3;margin:16px 0}
+  </style>
+</head>
+
+<body>
+  <div class="wrap grid">
+    <!-- Left: order -->
+    <section class="card">
+      <h1>Thank you! 🎉</h1>
+      <div id="statusWrap" class="muted small">Loading status…</div>
+
+      <div class="hr"></div>
+
+      <!-- Membership banner (optional) -->
+      <div id="memberBanner" class="card" style="display:none; margin:12px 0; padding:14px; border-style:dashed;">
+        <div style="font-weight:700; margin-bottom:4px;">Membership active 🎉</div>
+        <div id="memberText" class="small muted"></div>
+      </div>
+
+      <h3>Order Summary</h3>
+      <div id="items" class="items"></div>
+
+      <div class="hr"></div>
+
+      <div class="row"><span>Subtotal</span><strong id="sub">Rp 0</strong></div>
+      <div class="row muted"><span>Shipping</span><span id="ship">Rp 0</span></div>
+      <div class="row muted" id="discRow" style="display:none;"><span>Discount</span><span id="disc">Rp 0</span></div>
+      <div class="row total"><span>Total</span><span id="tot">Rp 0</span></div>
+
+      <div class="hr"></div>
+
+      <div class="row" style="gap:12px">
+        <a id="back" class="btn ghost" href="./index.html">Back to Store</a>
+        <a id="invoice" class="btn" target="_blank" rel="noopener">View in Dashboard (JSON)</a>
+      </div>
+      <p class="small muted" id="note"></p>
+      <p class="small muted">The invoice and tracking number will be sent to you via email or WhatsApp.</p>
+    </section>
+
+    <!-- Right: customer -->
+    <aside class="card">
+      <h3>Recipient Details</h3>
+      <div class="small" id="cust">Loading…</div>
+    </aside>
+  </div>
+
+  <script>
+    function fmt(n){ return new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0))); }
+    function toAbs(src){ try { return new URL(src || 'assets/placeholder.png', document.baseURI).href; } catch(e){ return src || 'assets/placeholder.png'; } }
+    function $(s){ return document.querySelector(s); }
+
+    var statusWrap = $('#statusWrap');
+    var itemsEl = $('#items');
+    var subEl = $('#sub');
+    var shipEl = $('#ship');
+    var totEl = $('#tot');
+    var discWrap = $('#discRow');
+    var discEl = $('#disc');
+    var custEl = $('#cust');
+    var invBtn = $('#invoice');
+    var memberBanner = $('#memberBanner');
+    var memberText   = $('#memberText');
+
+    var q = new URLSearchParams(location.search);
+    var orderId =
+      q.get('order_id') ||
+      q.get('orderId') ||
+      sessionStorage.getItem('last_order_id') ||
+      localStorage.getItem('last_order_id') || '';
+
+    var midStat = String(q.get('transaction_status') || '').toLowerCase();
+    function midToUi(s){
+      switch (s) {
+        case 'capture':    return 'PAID';
+        case 'settlement': return 'PAID';
+        case 'pending':    return 'PENDING';
+        case 'deny':       return 'DENIED';
+        case 'cancel':     return 'CANCELLED';
+        case 'expire':     return 'EXPIRED';
+        default:           return '';
+      }
+    }
+
+    $('#note').textContent = orderId ? ('Order: ' + orderId) : 'Order not found';
+
+    function tag(status){
+      var s = String(status||'').toUpperCase();
+      var cls='pending', txt='Pending';
+      if (s==='PAID'||s==='SETTLEMENT') { cls='ok'; txt='Paid'; }
+      else if (s==='CANCELLED'||s==='DENIED'||s==='EXPIRED'||s==='REFUND'||s==='CHARGEBACK') {
+        cls='fail'; txt=(s==='EXPIRED'?'Expired':'Failed');
+      }
+      return '<span class="tag '+cls+'">Status: '+txt+'</span>';
+    }
+
+    function renderFromObject(o){
+      var items = [];
+      if (o.items && o.items.length){
+        items = o.items.map(function(it){
+          return {
+            title: it.title || it.name || 'Item',
+            price: Number(it.price)||0,
+            qty: Number(it.qty || it.quantity)||1,
+            image: toAbs(it.image)
+          };
+        });
+      }
+      itemsEl.innerHTML = items.length
+        ? items.map(function(it){
+            return ''+
+            '<div class="item">'+
+              '<img class="thumb" src="'+it.image+'" alt="">'+
+              '<div style="flex:1">'+
+                '<div><strong>'+it.title+'</strong></div>'+
+                '<div class="small muted">Qty '+it.qty+'</div>'+
+              '</div>'+
+              '<div><strong>Rp '+fmt(it.price*it.qty)+'</strong></div>'+
+            '</div>';
+          }).join('')
+        : '<div class="small muted">No items found.</div>';
+
+      var sub = Number(o.subtotal != null ? o.subtotal : 0);
+      var ship= Number(o.shippingFee != null ? o.shippingFee : 0);
+      var disc= Number(o.discount != null ? o.discount : 0);
+      var tot = Number(o.total != null ? o.total : (sub + ship - disc));
+      subEl.textContent  = 'Rp ' + fmt(sub);
+      shipEl.textContent = 'Rp ' + fmt(ship);
+      if (disc > 0) {
+        discWrap.style.display = '';
+        discEl.textContent = 'Rp ' + fmt(disc);
+      } else {
+        discWrap.style.display = 'none';
+      }
+      totEl.textContent  = 'Rp ' + fmt(tot);
+
+      var c = o.customer || {};
+      var addr = c.address || {};
+      custEl.innerHTML =
+        '<div><strong>'+(c.name || 'Guest')+'</strong></div>'+
+        '<div class="muted small">'+(c.email || '-')+'</div>'+
+        '<div class="small" style="margin-top:8px">'+
+          (addr.line1 || '')+' '+(addr.line2 || '')+'<br>'+
+          (addr.city || '')+' '+(addr.province || '')+' '+(addr.zip || '')+'<br>'+
+          (addr.country || 'ID')+
+        '</div>'+
+        '<div class="small muted" style="margin-top:8px">Phone: '+(c.phone || '-')+'</div>';
+
+      statusWrap.innerHTML = tag(o.status) + ' <span class="small muted">Order ID: ' + orderId + '</span>';
+
+      if (String(o.status).toUpperCase() === 'PAID') {
+        try { localStorage.removeItem('cc_cart_v1'); } catch(e){}
+      }
+
+      try {
+        var ssUid = localStorage.getItem('cc_user_id') || sessionStorage.getItem('cc_user_id');
+        var st = String(o.status || '').toUpperCase();
+        if (o.userId && (st==='PAID'||st==='SETTLEMENT')) {
+          memberBanner.style.display = 'block';
+          var name  = c.name || 'Member';
+          var email = c.email || '(no email)';
+          if (ssUid && ssUid === o.userId) {
+            memberText.innerHTML = 'Hi <strong>'+name+'</strong>! Your membership account with <strong>'+email+'</strong> is now active.';
+          } else {
+            memberText.innerHTML = 'Membership for <strong>'+email+'</strong> is active and linked to this order.';
+          }
+        } else {
+          memberBanner.style.display = 'none';
+        }
+      } catch(e){ memberBanner.style.display = 'none'; }
+    }
+
+    var snapshot = (function(){
+      try {
+        var s1 = sessionStorage.getItem('last_checkout_snapshot');
+        var s2 = localStorage.getItem('last_checkout_snapshot');
+        return JSON.parse(s1 || s2 || 'null');
+      } catch(e){ return null; }
+    })();
+
+    if (orderId && snapshot && snapshot.order_id === orderId) {
+      var fromMid = midToUi(midStat);
+      if (fromMid) snapshot.status = fromMid;
+      renderFromObject(snapshot);
+      try {
+        invBtn.href = 'data:application/json;charset=utf-8,' +
+          encodeURIComponent(JSON.stringify(snapshot, null, 2));
+      } catch(e){ invBtn.href = 'javascript:void(0)'; }
+    } else {
+      statusWrap.innerHTML = '<span class="tag pending">Pending</span> <span class="small muted">Order ID: '+(orderId||'-')+'</span>';
+      itemsEl.innerHTML = '<div class="small muted">Unable to load items. Please refresh.</div>';
+      invBtn.href = 'javascript:void(0)';
+    }
+
+    var FINAL_STATES = ['PAID','CANCELLED','DENIED','EXPIRED','REFUND','CHARGEBACK'];
+
+    function mapServerToUi(s){
+      s = String(s||'').toLowerCase();
+      if (s==='paid' || s==='settlement' || s==='capture') return 'PAID';
+      if (s==='pending')   return 'PENDING';
+      if (s==='cancel')    return 'CANCELLED';
+      if (s==='deny')      return 'DENIED';
+      if (s==='expire')    return 'EXPIRED';
+      if (s==='refund')    return 'REFUND';
+      if (s==='chargeback')return 'CHARGEBACK';
+      return 'PENDING';
+    }
+
+    async function fetchServerStatus() {
+      if (!orderId) return null;
+      var r = await fetch('/api/order-status.php?order_id='+encodeURIComponent(orderId), { cache: 'no-store' });
+      if (!r.ok) return null;
+      var j = {};
+      try { j = await r.json(); } catch(e){ j = {}; }
+
+      var o = {
+        order_id: orderId,
+        status: mapServerToUi(j.status),
+        subtotal: (j.subtotal != null ? j.subtotal : (snapshot ? snapshot.subtotal : null)),
+        shippingFee: (j.shippingFee != null ? j.shippingFee : (snapshot ? snapshot.shippingFee : null)),
+        discount: (j.discount != null ? j.discount : (snapshot ? snapshot.discount : null)),
+        total: (j.total != null ? j.total : (snapshot ? snapshot.total : null)),
+        customer: {
+          name: (j.customer && j.customer.name) || (snapshot && snapshot.customer ? snapshot.customer.name : null),
+          email: (j.customer && j.customer.email) || (snapshot && snapshot.customer ? snapshot.customer.email : null),
+          phone: (j.customer && j.customer.phone) || (snapshot && snapshot.customer ? snapshot.customer.phone : null),
+          address: (snapshot && snapshot.customer ? snapshot.customer.address : null)
+        },
+        items: (snapshot && snapshot.items) ? snapshot.items : []
+      };
+
+      renderFromObject(o);
+      invBtn.href = '/api/order-status.php?order_id='+encodeURIComponent(orderId);
+      return o.status;
+    }
+
+    (async function poll(){
+      try {
+        var status = await fetchServerStatus();
+        if (!status || FINAL_STATES.indexOf(String(status)) !== -1) return;
+      } catch(e){}
+      setTimeout(poll, 3000);
+    })();
+  </script>
+</body>
+</html>

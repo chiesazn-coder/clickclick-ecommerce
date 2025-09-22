@@ -1,32 +1,13 @@
 <!doctype html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Checkout — Clickclick</title>
   <link rel="stylesheet" href="./dist/output.css?v=prod" />
   <style>
-    /* pastikan gambar di summary kecil */
-    #summary-items img{
-      width:56px !important;   /* = w-14 */
-      height:56px !important;  /* = h-14 */
-      object-fit:cover;
-      border-radius:8px;        /* ~ rounded-md */
-      background:#f9fafb;       /* bg-gray-50 */
-      flex:0 0 56px;
-    }
-    #summary-items .row{ display:flex; align-items:center; gap:.75rem; }
-  </style>
-  <style>
-    .field { @apply w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400; }
-    .label { @apply text-[13px] text-gray-700; }
-    .card { @apply rounded-2xl border border-gray-200 bg-white; }
-    .btn-primary { @apply h-12 rounded-xl bg-gray-900 text-white font-semibold hover:opacity-90 inline-flex items-center justify-center; }
-    .btn-ghost { @apply h-11 rounded-xl border font-semibold hover:bg-gray-50 inline-flex items-center justify-center; }
-    .divider { @apply relative my-6 text-center text-xs text-gray-500; }
-    .divider:before, .divider:after { content:''; @apply absolute top-1/2 w-full border-t border-gray-200; }
-    .divider:before { left:0; transform:translateX(-105%); width:45%; }
-    .divider:after  { right:0; transform:translateX(105%); width:45%; }
+    /* util kecil untuk preview ringkas */
+    #summary-items img{ width:56px; height:56px; object-fit:cover; border-radius:8px; background:#f9fafb; flex:0 0 56px; }
   </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -39,387 +20,588 @@
   </header>
 
   <!-- Content -->
-    <main class="max-w-[1120px] mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <!-- LEFT: form -->
-        <section class="lg:col-span-7 space-y-8">
-        <!-- Express checkout -->
-        <div class="rounded-2xl border border-gray-200 bg-white p-6">
-            <p class="text-sm font-medium text-gray-700 text-center">Express checkout</p>
-    
-            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <button class="h-12 rounded-xl bg-[#5A31F4] text-white font-semibold">shop<span class="ml-1">Pay</span></button>
-            <button class="h-12 rounded-xl bg-[#FFC439] text-gray-900 font-semibold">PayPal</button>
-            <button class="h-12 rounded-xl bg-black text-white font-semibold">G&nbsp;Pay</button>
-            </div>
-    
-            <div class="relative my-6">
-            <hr class="border-gray-200">
-            <span class="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-xs text-gray-500">OR</span>
-            </div>
-    
-            <!-- Contact -->
-            <div class="space-y-3">
-            <h2 class="text-xl font-semibold">Contact</h2>
-            <div>
-                <label class="block text-[13px] text-gray-700 mb-1">Email</label>
-                <input id="email" type="email" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="you@email.com"/>
-            </div>
-            <label class="flex items-center gap-3 text-sm text-gray-700">
-                <input id="newsletter" type="checkbox" class="h-4 w-4 rounded border-gray-300"/>
-                Email me with news and offers
-            </label>
-            </div>
-    
-            <!-- Delivery -->
-            <div class="mt-6 space-y-3">
-            <h2 class="text-xl font-semibold">Delivery</h2>
-            <div class="grid grid-cols-12 gap-3">
-                <div class="col-span-12">
-                <label class="block text-[13px] text-gray-700 mb-1">Country/Region</label>
-                <select id="country" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400">
-                    <option value="ID">Indonesia</option>
-                    <option value="SG">Singapore</option>
-                    <option value="MY">Malaysia</option>
-                </select>
-                </div>
-    
-                <div class="col-span-12 sm:col-span-6">
-                <label class="block text-[13px] text-gray-700 mb-1">First name</label>
-                <input id="firstName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                <label class="block text-[13px] text-gray-700 mb-1">Last name</label>
-                <input id="lastName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-    
-                <div class="col-span-12">
-                <label class="block text-[13px] text-gray-700 mb-1">Address</label>
-                <div class="relative">
-                    <input id="address" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg>
-                </div>
-                </div>
-    
-                <div class="col-span-12">
-                <label class="block text-[13px] text-gray-700 mb-1">Apartment, suite, etc. (optional)</label>
-                <input id="address2" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-    
-                <div class="col-span-12 sm:col-span-4">
-                <label class="block text-[13px] text-gray-700 mb-1">City</label>
-                <input id="city" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-                <div class="col-span-12 sm:col-span-4">
-                <label class="block text-[13px] text-gray-700 mb-1">State</label>
-                <input id="province" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-                <div class="col-span-12 sm:col-span-4">
-                <label class="block text-[13px] text-gray-700 mb-1">ZIP code</label>
-                <input id="zip" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
-                </div>
-    
-                <div class="col-span-12">
-                <label class="block text-[13px] text-gray-700 mb-1">Phone</label>
-                <div class="relative">
-                    <input id="phone" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62…"/>
-                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M15 17h5l-1.4-4.2A2 2 0 0 0 16.7 11H15m0 6V8a2 2 0 0 0-2-2H6v9a2 2 0 0 0 2 2h7Z"/></svg>
-                </div>
-                </div>
-            </div>
-            </div>
-    
-            <!-- Shipping method -->
-            <!-- Shipping method -->
-            <div class="mt-6 space-y-3">
-              <h2 class="text-xl font-semibold">Shipping method</h2>
+  <main class="max-w-[1120px] mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <!-- LEFT -->
+    <section class="lg:col-span-7 space-y-8">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6">
 
-              <button type="button" id="btn-recalc" class="w-full h-11 rounded-xl border font-semibold hover:bg-gray-50 text-left px-4">
-                Enter your shipping address to view available shipping methods.
-              </button>
+        <!-- Contact -->
+        <div class="space-y-3">
+          <h2 class="text-xl font-semibold">Contact</h2>
+          <div>
+            <label class="block text-[13px] text-gray-700 mb-1">Email</label>
+            <input id="email" type="email" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="you@email.com"/>
+          </div>
+          <label class="flex items-center gap-3 text-sm text-gray-700">
+            <input id="newsletter" type="checkbox" class="h-4 w-4 rounded border-gray-300"/>
+            Email me with news and offers
+          </label>
+        </div>
 
-              <!-- akan di-render dinamis -->
-              <div id="ship-methods" class="hidden space-y-2"></div>
-              <p id="ship-note" class="text-xs text-gray-500"></p>
+        <!-- Delivery -->
+        <div class="mt-6 space-y-3">
+          <h2 class="text-xl font-semibold">Delivery</h2>
+          <div class="grid grid-cols-12 gap-3">
+            <div class="col-span-12">
+              <label class="block text-[13px] text-gray-700 mb-1">Country/Region</label>
+              <select id="country" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400">
+                <option value="ID">Indonesia</option>
+                <option value="SG">Singapore</option>
+                <option value="MY">Malaysia</option>
+              </select>
             </div>
-    
-            <!-- Payment -->
-            <!-- Payment -->
-            <div class="mt-6">
-              <h2 class="text-xl font-semibold mb-3">Payment</h2>
-              <p class="text-sm text-gray-600 mb-3">All transactions are secure and encrypted.</p>
 
-              <!-- akan di-render dinamis -->
-              <div id="pay-methods" class="rounded-2xl border border-gray-200 bg-white p-4 space-y-2"></div>
+            <div class="col-span-12 sm:col-span-6">
+              <label class="block text-[13px] text-gray-700 mb-1">First name</label>
+              <input id="firstName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
             </div>
-    
-            <!-- Save info -->
-            <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
-            <label class="flex items-center gap-3">
-                <input id="remember" type="checkbox" class="h-4 w-4 rounded border-gray-300" />
-                <span class="text-sm">Save my information for a faster checkout with a Shop account</span>
-            </label>
-            <div>
-                <label class="block text-[13px] text-gray-700 mb-1">Mobile phone number</label>
-                <input id="rememberPhone" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62" />
+            <div class="col-span-12 sm:col-span-6">
+              <label class="block text-[13px] text-gray-700 mb-1">Last name</label>
+              <input id="lastName" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+            </div>
+
+            <div class="col-span-12">
+              <label class="block text-[13px] text-gray-700 mb-1">Address</label>
+              <div class="relative">
+                <input id="address" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg>
+              </div>
+            </div>
+
+            <div class="col-span-12">
+              <label class="block text-[13px] text-gray-700 mb-1">Apartment, suite, dll (opsional)</label>
+              <input id="address2" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+            </div>
+
+            <div class="col-span-12 sm:col-span-4">
+              <label class="block text-[13px] text-gray-700 mb-1">City</label>
+              <input id="city" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="contoh: Jakarta Barat / Sleman"/>
+            </div>
+
+            <!-- Province (dropdown) -->
+            <div class="col-span-12 sm:col-span-4">
+              <label class="block text-[13px] text-gray-700 mb-1">State/Province</label>
+              <select id="province" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400">
+                <option value="">Pilih provinsi</option>
+                <option>Aceh</option>
+                <option>Sumatera Utara</option>
+                <option>Sumatera Barat</option>
+                <option>Riau</option>
+                <option>Jambi</option>
+                <option>Sumatera Selatan</option>
+                <option>Bengkulu</option>
+                <option>Lampung</option>
+                <option>Kepulauan Bangka Belitung</option>
+                <option>Kepulauan Riau</option>
+                <option>DKI Jakarta</option>
+                <option>Jawa Barat</option>
+                <option>Jawa Tengah</option>
+                <option>DI Yogyakarta</option>
+                <option>Jawa Timur</option>
+                <option>Banten</option>
+                <option>Bali</option>
+                <option>Nusa Tenggara Barat</option>
+                <option>Nusa Tenggara Timur</option>
+                <option>Kalimantan Barat</option>
+                <option>Kalimantan Tengah</option>
+                <option>Kalimantan Selatan</option>
+                <option>Kalimantan Timur</option>
+                <option>Kalimantan Utara</option>
+                <option>Sulawesi Utara</option>
+                <option>Sulawesi Tengah</option>
+                <option>Sulawesi Selatan</option>
+                <option>Sulawesi Tenggara</option>
+                <option>Gorontalo</option>
+                <option>Sulawesi Barat</option>
+                <option>Maluku</option>
+                <option>Maluku Utara</option>
+                <option>Papua</option>
+                <option>Papua Tengah</option>
+                <option>Papua Pegunungan</option>
+                <option>Papua Selatan</option>
+                <option>Papua Barat</option>
+                <option>Papua Barat Daya</option>
+              </select>
+            </div>
+
+            <div class="col-span-12 sm:col-span-4">
+              <label class="block text-[13px] text-gray-700 mb-1">ZIP code</label>
+              <input id="zip" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"/>
+            </div>
+
+            <div class="col-span-12">
+              <label class="block text-[13px] text-gray-700 mb-1">Phone</label>
+              <div class="relative">
+                <input id="phone" class="w-full h-11 rounded-lg border border-gray-300 px-3 pr-10 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62…"/>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M15 17h5l-1.4-4.2A2 2 0 0 0 16.7 11H15m0 6V8a2 2 0 0 0-2-2H6v9a2 2 0 0 0 2 2h7Z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="mt-6 space-y-3">
+          <h2 class="text-xl font-semibold">Shipping method</h2>
+          <button type="button" id="btn-recalc" class="w-full h-11 rounded-xl border font-semibold hover:bg-gray-50 text-left px-4">
+            Enter your shipping address to view available shipping methods.
+          </button>
+          <div id="ship-methods" class="hidden space-y-2"></div>
+          <p id="ship-note" class="text-xs text-gray-500"></p>
+        </div>
+
+        <!-- Payment (info-only) -->
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-3">Payment</h2>
+          <div class="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+            <p class="text-sm text-gray-700">
+              Your payment will be handled securely on Midtrans. Click <strong>Pay now</strong>, to proceed and select
+              <span class="font-medium">Virtual Account (BCA/BNI/BRI), QRIS,</span> or <span class="font-medium">Credit/Debit Card</span>.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[11px] text-gray-600">
+              <span class="px-2 py-1 rounded border">VA BCA</span>
+              <span class="px-2 py-1 rounded border">VA BNI</span>
+              <span class="px-2 py-1 rounded border">VA BRI</span>
+              <span class="px-2 py-1 rounded border">QRIS</span>
+              <span class="px-2 py-1 rounded border">Credit/Debit</span>
             </div>
             <div class="text-[11px] text-gray-500 flex items-center gap-1">
-                <svg width="16" height="16" viewBox="0 0 24 24" class="text-gray-400"><path fill="currentColor" d="M12 2a6 6 0 0 0-6 6v3H5a1 1 0 0 0-1 1v9h16v-9a1 1 0 0 0-1-1h-1V8a6 6 0 0 0-6-6Zm0 2a4 4 0 0 1 4 4v3H8V8a4 4 0 0 1 4-4Z"/></svg>
-                Secure and encrypted
+              <svg width="16" height="16" viewBox="0 0 24 24" class="text-gray-400"><path fill="currentColor" d="M12 2a6 6 0 0 0-6 6v3H5a1 1 0 0 0-1 1v9h16v-9a1 1 0 0 0-1-1h-1V8a6 6 0 0 0-6-6Zm0 2a4 4 0 0 1 4 4v3H8V8a4 4 0 0 1 4-4Z"/></svg>
+              All transactions are secure and encrypted.
             </div>
-            </div>
-    
-            <!-- Submit -->
-            <div class="mt-6">
-              <button id="btn-place-order" class="h-12 rounded-xl bg-gray-900 text-white font-semibold hover:opacity-90 px-6 w-full md:w-auto">Pay now</button>
-              <p id="err" class="mt-2 text-sm text-red-600" aria-live="polite"></p>
-            </div>
+          </div>
         </div>
-        </section>
-    
-        <!-- RIGHT: summary -->
-        <aside class="lg:col-span-5">
-        <div class="sticky top-20 rounded-2xl border border-gray-200 bg-white p-6">
-            <!-- Items -->
-            <div id="summary-items" class="space-y-4"></div>
-    
-            <!-- Discount -->
-            <div class="mt-4 flex gap-2">
-            <input id="disc" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="Discount code or gift card" />
-            <button class="h-11 px-4 rounded-xl border font-semibold hover:bg-gray-50">Apply</button>
-            </div>
-    
-            <!-- Subtotals -->
-            <div class="mt-6 space-y-2 text-sm">
-            <div class="flex justify-between"><span>Subtotal</span><span id="sub">IDR 0</span></div>
-            <div class="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span id="shipText">Enter shipping address</span>
-            </div>
-            </div>
-    
-            <hr class="my-4">
-    
-            <!-- Total -->
-            <div class="flex justify-between items-baseline">
-            <span class="text-xl font-semibold">Total</span>
-            <div class="text-right">
-                <div class="text-xs text-gray-500">IDR</div>
-                <div id="tot" class="text-xl font-semibold">0</div>
-            </div>
-            </div>
-    
 
+        <!-- Save info -->
+        <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+          <label class="flex items-center gap-3">
+            <input id="remember" type="checkbox" class="h-4 w-4 rounded border-gray-300" />
+            <span class="text-sm">Save my information for a faster checkout with a Shop account</span>
+          </label>
+          <div>
+            <label class="block text-[13px] text-gray-700 mb-1">Mobile phone number</label>
+            <input id="rememberPhone" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="+62" />
+          </div>
+          <div class="text-[11px] text-gray-500 flex items-center gap-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" class="text-gray-400"><path fill="currentColor" d="M12 2a6 6 0 0 0-6 6v3H5a1 1 0 0 0-1 1v9h16v-9a1 1 0 0 0-1-1h-1V8a6 6 0 0 0-6-6Zm0 2a4 4 0 0 1 4 4v3H8V8a4 4 0 0 1 4-4Z"/></svg>
+            Secure and encrypted
+          </div>
         </div>
-        </aside>
+
+        <!-- Submit -->
+        <div class="mt-6">
+          <button id="btn-place-order" class="h-12 rounded-xl bg-gray-900 text-white font-semibold hover:opacity-90 px-6 w-full md:w-auto">
+            Pay now & Continue to Midtrans
+          </button>
+          <p id="err" class="mt-2 text-sm text-red-600" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="lg:col-span-5">
+      <div class="sticky top-20 rounded-2xl border border-gray-200 bg-white p-6">
+        <div id="summary-items" class="space-y-4"></div>
+
+        <div class="mt-4 flex gap-2">
+          <input id="disc" class="w-full h-11 rounded-lg border border-gray-300 px-3 text-[15px] outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400" placeholder="Discount code or gift card" />
+          <button id="btn-apply" class="h-11 px-4 rounded-xl border font-semibold hover:bg-gray-50">Apply</button>
+        </div>
+
+        <div class="mt-6 space-y-2 text-sm">
+          <div class="flex justify-between"><span>Subtotal</span><span id="sub">IDR 0</span></div>
+          <div class="flex justify-between text-gray-600">
+            <span>Shipping</span>
+            <span id="shipText">Enter shipping address</span>
+          </div>
+          <!-- baris Discount disisipkan via JS -->
+        </div>
+
+        <hr class="my-4">
+
+        <div class="flex justify-between items-baseline">
+          <span class="text-xl font-semibold">Total</span>
+          <div class="text-right">
+            <div class="text-xs text-gray-500">IDR</div>
+            <div id="tot" class="text-xl font-semibold">0</div>
+          </div>
+        </div>
+      </div>
+    </aside>
   </main>
 
   <script>
     /* ========= CONFIG ========= */
-    const API = 'https://11acea6809f1.ngrok-free.app'; // ganti ke domain API-mu saat production
-    const CART_KEY = 'cc_cart_v1';
-    const FREE_SHIP_MIN = 500_000; // threshold gratis ongkir (IDR)
-    
+    const CREATE_URL    = 'https://clickclick.id/api/create-transaction.php';
+    const SHIP_URL      = 'https://clickclick.id/api/shipping-rates.php'; // backend ongkir manual
+    const CART_KEY      = 'cc_cart_v1';
+
+    // Subsidi ongkir All Indonesia (domestik)
+    const ID_SUBSIDY_MAX = 50000; // Rp 50.000
+
+    /* ========= Voucher rules ========= */
+    var VOUCHERS = {
+      'CLICK50K': { type:'flat',    amount: 50000,  minSubtotal: 200000 },
+      'CLICK10':  { type:'percent', amount: 10,     max: 100000 },
+      'DEV-20K':  { type:'set-total', amount: 20000 }
+    };
+    var appliedVoucher = null; // {code}
+    var discountValue  = 0;
+
     /* ========= Utils ========= */
-    const $  = (s,r=document)=>r.querySelector(s);
-    const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
-    const fIDR = n => new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(n||0)));
-    const toAbs = (src) => { try { return new URL(src || 'assets/placeholder.png', document.baseURI).href; } catch { return src || 'assets/placeholder.png'; } };
-    
-    /* ========= State ========= */
-    const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-    const sumItems   = $('#summary-items');
-    const subEl      = $('#sub');
-    const shipTextEl = $('#shipText');
-    const totEl      = $('#tot');
-    const shipWrap   = $('#ship-methods');
-    const shipBtn    = $('#btn-recalc');
-    const shipNote   = $('#ship-note');
-    const payWrap    = $('#pay-methods');
-    
-    let selectedShip = null;   // {id, name, fee}
-    let selectedPay  = 'MIDTRANS_CC'; // default
-    
-    /* ========= Data rules ========= */
-    /** Shipping rules untuk pasar Indonesia */
-    const SHIPPING_RULES = [
-      {
-        id:'REG', name:'Reguler (2–4 hari)', fee:25000,
-        eligible: a => a.country==='ID'
-      },
-      {
-        id:'EXP', name:'Express (1–2 hari)', fee:45000,
-        eligible: a => a.country==='ID'
-      },
-      {
-        id:'SD', name:'Same Day (Jabodetabek)', fee:25000,
-        eligible: a => a.country==='ID' && /jakarta|tangerang|depok|bekasi|bogor/i.test(a.city||'')
-      },
-      {
-        id:'PICKUP', name:'Ambil di Toko', fee:0,
-        eligible: _ => true
-      }
-    ];
-    
-    /** Payment channels yang umum (via Midtrans) */
-    const PAY_CHANNELS = [
-      { id:'MIDTRANS_CC',       label:'Kartu Kredit/Debit (via Midtrans)' },
-      { id:'MIDTRANS_VA_BCA',   label:'Virtual Account BCA' },
-      { id:'MIDTRANS_VA_BNI',   label:'Virtual Account BNI' },
-      { id:'MIDTRANS_VA_BRI',   label:'Virtual Account BRI' },
-      { id:'MIDTRANS_QRIS',     label:'QRIS (Gopay/OVO/ShopeePay/DANA)' }
-    ];
-    
-    /* ========= Helpers ========= */
-    const subtotal = () => cart.reduce((s,i)=> s + Number(i.price)*Number(i.qty), 0);
-    
-    /** address object dari form */
-    function getAddress() {
-      return {
-        country: $('#country')?.value || 'ID',
-        city:    ($('#city')?.value || '').trim(),
-        province:($('#province')?.value || '').trim(),
-        zip:     ($('#zip')?.value || '').trim()
-      };
+    function $(sel, root){ return (root||document).querySelector(sel); }
+    function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+    function fIDR(n){ n = Math.max(0, Math.floor(n||0)); return new Intl.NumberFormat('id-ID').format(n); }
+    function toAbs(src){
+      try { return new URL(src || 'assets/placeholder.png', document.baseURI).href; }
+      catch(e){ return src || 'assets/placeholder.png'; }
     }
-    
-    /** Re-render ringkasan uang */
+
+    /* ========= UTIL BERAT (actual, volumetrik, chargeable) ========= */
+    function ceilToStep(n, step) { step = Math.max(1, step|0); return Math.ceil(n / step) * step; }
+    function totalActualWeightGram() {
+      if (!Array.isArray(cart)) return 0;
+      return cart.reduce(function (sum, i) {
+        const g = Math.max(0, Number(i.weight_gram) || 0);
+        const qty = Math.max(0, Number(i.qty) || 0);
+        return sum + g * qty;
+      }, 0);
+    }
+    function totalVolumetricWeightGram(divisorCm) {
+      if (!Array.isArray(cart)) return 0;
+      return cart.reduce(function (sum, i) {
+        const L = Number(i.length_cm) || 0;
+        const W = Number(i.width_cm)  || 0;
+        const H = Number(i.height_cm) || 0;
+        const qty = Math.max(0, Number(i.qty) || 0);
+        if (L > 0 && W > 0 && H > 0) {
+          const kg = (L * W * H) / (divisorCm||6000); // kg
+          return sum + Math.round(kg * 1000) * qty;   // gram
+        }
+        return sum;
+      }, 0);
+    }
+    function chargeableDomesticGram() {
+      const actual = totalActualWeightGram();
+      const vol    = totalVolumetricWeightGram(6000);
+      const charge = Math.max(actual, vol);
+      return ceilToStep(Math.max(1, charge), 1000); // minimal 1 kg
+    }
+    function chargeableIntlGram() {
+      const actual = totalActualWeightGram();
+      const vol    = totalVolumetricWeightGram(5000);
+      const charge = Math.max(actual, vol);
+      return ceilToStep(Math.max(500, charge), 500); // minimal 0.5 kg
+    }
+    function humanWeight(gram){ return (gram/1000).toFixed(2).replace(/\.00$/,'') + ' kg'; }
+
+    /* ========= Country code mapping ========= */
+    var ALPHA2_TO_3 = { ID:'IDN', SG:'SGP', MY:'MYS' };
+    function getCountryAlpha3(){
+      var el = $('#country'); var c2 = (el && el.value ? el.value : 'ID').toUpperCase();
+      return ALPHA2_TO_3[c2] || c2;
+    }
+
+    /* ========= State ========= */
+    var cart = [];
+    try { cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ cart = []; }
+
+    // Normalisasi berat & dimensi (fallback default 500g/item)
+    function normalizeCartWeights(defaultPerItemGram = 500) {
+      if (!Array.isArray(cart)) return;
+      cart = cart.map(function (i) {
+        var clone = Object.assign({}, i);
+        clone.weight_gram = Number(clone.weight_gram || clone.weight || defaultPerItemGram);
+        clone.length_cm = Number(clone.length_cm || clone.length || 0);
+        clone.width_cm  = Number(clone.width_cm  || clone.width  || 0);
+        clone.height_cm = Number(clone.height_cm || clone.height || 0);
+        return clone;
+      });
+    }
+    normalizeCartWeights(500);
+
+    var sumItems   = $('#summary-items');
+    var subEl      = $('#sub');
+    var shipTextEl = $('#shipText');
+    var totEl      = $('#tot');
+    var shipWrap   = $('#ship-methods');
+    var shipBtn    = $('#btn-recalc');
+    var shipNote   = $('#ship-note');
+
+    var selectedShip = null;     // {id, name, fee}
+    var selectedPay  = 'AUTO';   // biarkan Snap menampilkan semua metode
+
+    /* ========= Helpers ========= */
+    function subtotal(){
+      return cart.reduce(function(s,i){ return s + Number(i.price)*Number(i.qty); }, 0);
+    }
+
+    function calcDiscount(sub, fee){
+      if (!appliedVoucher) return 0;
+      var rule = VOUCHERS[appliedVoucher.code];
+      if (!rule) return 0;
+
+      if (rule.type === 'flat') {
+        if (rule.minSubtotal && sub < rule.minSubtotal) return 0;
+        return Math.min(rule.amount, sub);
+      }
+      if (rule.type === 'percent') {
+        var cut = Math.floor(sub * (rule.amount/100));
+        return Math.min(rule.max || cut, cut);
+      }
+      if (rule.type === 'set-total') {
+        var target  = Math.max(1000, rule.amount|0);
+        var current = sub + (selectedShip ? Number(selectedShip.fee||0) : 0);
+        return current > target ? (current - target) : 0;
+      }
+      return 0;
+    }
+
+    // Normalisasi alamat ID (Jakarta/DIY)
+    function clean(s){ return (s||'').toString().trim(); }
+    function normalizeAddressID(addr){
+      var out = { country:(addr.country||'ID'), city:clean(addr.city), province:clean(addr.province), zip:clean(addr.zip) };
+      if (/(jakarta)/i.test(out.city) || /(jakarta)/i.test(out.province)) {
+        out.province = 'DKI Jakarta';
+        var s = (out.city + ' ' + out.province).toLowerCase();
+        if (/barat/.test(s))   out.city = 'Jakarta Barat';
+        else if (/timur/.test(s))   out.city = 'Jakarta Timur';
+        else if (/selatan/.test(s)) out.city = 'Jakarta Selatan';
+        else if (/utara/.test(s))   out.city = 'Jakarta Utara';
+        else if (/pusat/.test(s))   out.city = 'Jakarta Pusat';
+      }
+      if (/yogya|yogyakarta|jogja/i.test(out.city) || /yogya|yogyakarta|jogja/i.test(out.province)){
+        out.province = 'DI Yogyakarta';
+      }
+      return out;
+    }
+    function getAddress(){
+      var raw = {
+        country: ($('#country') && $('#country').value) || 'ID',
+        city:    ($('#city') && $('#city').value || '').trim(),
+        province:($('#province') && $('#province').value || '').trim(),
+        zip:     ($('#zip') && $('#zip').value || '').trim()
+      };
+      return (raw.country && raw.country.toUpperCase()==='ID') ? normalizeAddressID(raw) : raw;
+    }
+
+    function ensureDiscountRow(){
+      var sumBox = shipTextEl && shipTextEl.closest('.space-y-2');
+      if (sumBox && !$('#discRow', sumBox)) {
+        var row = document.createElement('div');
+        row.id = 'discRow';
+        row.className = 'flex justify-between text-gray-600';
+        row.innerHTML = '<span>Discount</span><span id="discText">IDR 0</span>';
+        sumBox.appendChild(row);
+      }
+    }
+
     function renderSummary(){
       if (!Array.isArray(cart)) return;
-    
+
       sumItems.innerHTML = cart.length
-        ? cart.map(i => `
-            <div class="flex items-center gap-3">
-              <img src="${toAbs(i.image || i.img || i.image_url)}" class="w-14 h-14 rounded-md object-cover bg-gray-50" />
-              <div class="flex-1">
-                <div class="text-sm">${i.title ?? '-'}</div>
-                <div class="text-xs text-gray-500">Qty ${i.qty ?? 0}</div>
-              </div>
-              <div class="text-sm font-medium">IDR ${fIDR(Number(i.price)*Number(i.qty))}</div>
-            </div>
-          `).join('')
+        ? cart.map(function(i){
+            return (
+              '<div class="flex items-center gap-3">' +
+                '<img src="'+ toAbs(i.image || i.img || i.image_url) +'" class="w-14 h-14 rounded-md object-cover bg-gray-50" />' +
+                '<div class="flex-1">' +
+                  '<div class="text-sm">'+ (i.title || '-') +'</div>' +
+                  '<div class="text-xs text-gray-500">Qty '+ (i.qty || 0) +'</div>' +
+                '</div>' +
+                '<div class="text-sm font-medium">IDR '+ fIDR(Number(i.price)*Number(i.qty)) +'</div>' +
+              '</div>'
+            );
+          }).join('')
         : '<div class="text-sm text-gray-500">Keranjang kosong.</div>';
-    
-      const sub = subtotal();
-      const fee = selectedShip ? selectedShip.fee : 0;
-    
-      // gratis ongkir otomatis untuk REG kalau melewati threshold
-      if (selectedShip && selectedShip.id === 'REG' && sub >= FREE_SHIP_MIN) {
-        shipTextEl.textContent = `IDR 0 (Gratis ongkir)`;
-        totEl.textContent      = fIDR(sub);
-      } else {
-        shipTextEl.textContent = selectedShip ? `IDR ${fIDR(fee)}` : 'Enter shipping address';
-        totEl.textContent      = fIDR(sub + (selectedShip ? fee : 0));
-      }
-    
-      subEl.textContent = `IDR ${fIDR(sub)}`;
+
+      var sub = subtotal();
+      var fee = selectedShip ? Number(selectedShip.fee||0) : 0;
+
+      discountValue = calcDiscount(sub, fee);
+      var rawTotal = sub + (selectedShip ? fee : 0) - discountValue;
+      var safeTotal = Math.max(0, rawTotal);
+
+      shipTextEl.textContent = selectedShip ? ('IDR ' + fIDR(fee)) : 'Enter shipping address';
+      totEl.textContent      = fIDR(safeTotal);
+
+      subEl.textContent = 'IDR ' + fIDR(sub);
+
+      ensureDiscountRow();
+      var dEl = $('#discText');
+      if (dEl) dEl.textContent = 'IDR ' + fIDR(discountValue);
     }
-    
-    /** Render pilihan shipping setelah alamat cukup diisi */
-    function renderShipping() {
+
+    /* ========= SHIPPING DINAMIS via backend ========= */
+    let loadingShip = false;
+    let shipDebounce;
+
+    async function renderShipping(){
       selectedShip = null;
+      shipWrap.classList.add('hidden');
+      shipBtn.classList.add('hidden');
+      shipNote.textContent = 'Mengambil tarif pengiriman...';
+
       const addr = getAddress();
-      const sub = subtotal();
-    
-      // filter by eligibility
-      const options = SHIPPING_RULES.filter(r => r.eligible(addr));
-      if (!options.length) {
+      const countryAlpha2 = ($('#country') && $('#country').value) || 'ID';
+      const isDomestic = String(countryAlpha2).toUpperCase() === 'ID';
+
+      const weight = isDomestic ? chargeableDomesticGram() : chargeableIntlGram();
+
+      if (!addr.city || !addr.province){
         shipWrap.classList.add('hidden');
         shipBtn.classList.remove('hidden');
-        shipNote.textContent = 'Masukkan kota/negara untuk melihat opsi pengiriman.';
+        shipNote.textContent = 'Masukkan kota & provinsi untuk melihat opsi pengiriman.';
+        renderSummary();
         return;
       }
-    
-      shipWrap.innerHTML = options.map((opt, idx) => {
-        // gratis ongkir jika REG & subtotal over threshold
-        const fee = (opt.id === 'REG' && sub >= FREE_SHIP_MIN) ? 0 : opt.fee;
-        const checked = (selectedShip ? selectedShip.id === opt.id : idx===0) ? 'checked' : '';
-        return `
-          <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer">
-            <input type="radio" name="ship" value="${opt.id}" data-fee="${fee}" ${checked} />
-            <div>
-              <div class="font-medium">${opt.name}</div>
-              <div class="text-xs text-gray-500">IDR ${fIDR(fee)}</div>
-            </div>
+
+      if (loadingShip) return;
+      loadingShip = true;
+
+      try {
+        const r = await fetch(SHIP_URL, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            city: addr.city,
+            province: addr.province,
+            country: countryAlpha2,
+            weight_gram: Math.max(1, weight)
+          })
+        });
+        const data = await r.json();
+
+        let options = Array.isArray(data.methods) ? data.methods : [];
+
+        // === APPLY SUBSIDI ALL INDONESIA ===
+        options = options.map(function(opt){
+          const out = Object.assign({}, opt);
+          if (isDomestic) {
+            out.original_fee = Number(out.fee || 0);
+            const cut = Math.min(ID_SUBSIDY_MAX, out.original_fee);
+            out.fee = Math.max(0, out.original_fee - cut);
+            out.subsidy = cut;
+          }
+          return out;
+        });
+
+        // sort by fee (backend juga urut, ini sekadar jaga)
+        options.sort((a,b)=> a.fee - b.fee);
+
+        if (!options.length) {
+          options = [{id:'PICKUP', name:'Ambil di Toko', fee:0}];
+        }
+
+        shipWrap.innerHTML = options.map(function(opt, idx){
+          const checked = idx===0 ? 'checked' : '';
+          const priceHtml = (isDomestic && opt.original_fee != null && opt.original_fee !== opt.fee)
+            ? `
+              <div class="text-xs text-gray-500 line-through">IDR ${fIDR(opt.original_fee)}</div>
+              <div class="text-xs text-gray-700">IDR ${fIDR(opt.fee)} (subsidi IDR ${fIDR(opt.subsidy)})</div>
+            `
+            : `<div class="text-xs text-gray-500">IDR ${fIDR(opt.fee)}</div>`;
+          return `
+            <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer">
+              <input type="radio" name="ship" value="${opt.id}" data-fee="${opt.fee}" data-name="${opt.name}" ${checked}/>
+              <div>
+                <div class="font-medium">${opt.name}</div>
+                ${priceHtml}
+              </div>
+            </label>
+          `;
+        }).join('');
+
+        const first = shipWrap.querySelector('input[name="ship"]:checked');
+        if (first){
+          selectedShip = {
+            id: first.value,
+            name: first.getAttribute('data-name') || first.value,
+            fee: Number(first.getAttribute('data-fee')||0)
+          };
+        }
+
+        shipWrap.classList.remove('hidden');
+        shipBtn.classList.add('hidden');
+
+        shipNote.textContent = isDomestic
+          ? ('Subsidi ongkir Indonesia: potongan sampai IDR ' + fIDR(ID_SUBSIDY_MAX) + ' / pengiriman.')
+          : (options[0]?.etd ? ('Estimasi: ' + options[0].etd + ' hari') : '');
+
+        const showW = isDomestic ? chargeableDomesticGram() : chargeableIntlGram();
+        shipNote.textContent += (shipNote.textContent ? ' ' : '') +
+          '(Berat tertagih: ' + humanWeight(showW) + (isDomestic ? ', dibulatkan ke 1 kg' : ', dibulatkan ke 0.5 kg') + ')';
+
+        $$('input[name="ship"]', shipWrap).forEach(function(radio){
+          radio.addEventListener('change', function(){
+            selectedShip = {
+              id: radio.value,
+              name: radio.getAttribute('data-name') || radio.value,
+              fee: Number(radio.getAttribute('data-fee') || 0)
+            };
+            renderSummary();
+          });
+        });
+
+        renderSummary();
+      } catch (e){
+        // fallback
+        shipWrap.innerHTML = `
+          <label class="flex items-center gap-3 p-3 border rounded-lg">
+            <input type="radio" name="ship" value="PICKUP" data-fee="0" checked/>
+            <div><div class="font-medium">Ambil di Toko</div><div class="text-xs text-gray-500">IDR 0</div></div>
           </label>
         `;
-      }).join('');
-    
-      // set selectedShip pertama kali
-      const r = shipWrap.querySelector('input[name="ship"]:checked');
-      if (r) selectedShip = {
-        id: r.value, name: options.find(o=>o.id===r.value)?.name || r.value,
-        fee: Number(r.dataset.fee||0)
-      };
-    
-      shipWrap.classList.remove('hidden');
-      shipBtn.classList.add('hidden');
-      shipNote.textContent = sub >= FREE_SHIP_MIN
-        ? `Gratis ongkir untuk Reguler karena total belanja ≥ IDR ${fIDR(FREE_SHIP_MIN)}.`
-        : '';
-    
-      // listen perubahan radio
-      $$('input[name="ship"]', shipWrap).forEach(radio=>{
-        radio.addEventListener('change', ()=>{
-          selectedShip = {
-            id: radio.value,
-            name: options.find(o=>o.id===radio.value)?.name || radio.value,
-            fee: Number(radio.dataset.fee||0)
-          };
-          renderSummary();
+        selectedShip = { id:'PICKUP', name:'Ambil di Toko', fee:0 };
+        shipWrap.classList.remove('hidden');
+        shipBtn.classList.add('hidden');
+        shipNote.textContent = 'Tidak dapat memuat tarif kurir. Menampilkan opsi Pickup.';
+        renderSummary();
+      } finally {
+        loadingShip = false;
+      }
+    }
+
+    /* ========= Init ========= */
+    renderSummary();
+
+    // tombol manual recalc
+    shipBtn.addEventListener('click', renderShipping);
+
+    // debounce untuk input alamat
+    ['country','city','province','zip'].forEach(function(id){
+      var el = $('#'+id);
+      if (!el) return;
+      ['change','blur','input'].forEach(function(evt){
+        el.addEventListener(evt, function(){
+          clearTimeout(shipDebounce);
+          shipDebounce = setTimeout(renderShipping, 400);
         });
       });
-    
-      renderSummary();
-    }
-    
-    /** Render payment methods */
-    function renderPayments() {
-      payWrap.innerHTML = PAY_CHANNELS.map((p, idx)=>`
-        <label class="flex items-center justify-between p-3 border rounded-lg cursor-pointer">
-          <span class="flex items-center gap-2">
-            <input type="radio" name="pay" value="${p.id}" ${idx===0?'checked':''}/>
-            <span class="font-medium">${p.label}</span>
-          </span>
-        </label>
-      `).join('');
-    
-      // default
-      selectedPay = PAY_CHANNELS[0].id;
-    
-      $$('input[name="pay"]', payWrap).forEach(r=>{
-        r.addEventListener('change', ()=>{ selectedPay = r.value; });
+    });
+
+    // Apply voucher
+    var btnApply = $('#btn-apply');
+    if (btnApply) {
+      btnApply.addEventListener('click', function(e){
+        e.preventDefault();
+        var codeEl = $('#disc');
+        var code = (codeEl && codeEl.value ? codeEl.value : '').trim().toUpperCase();
+        if (!code || !VOUCHERS[code]) {
+          appliedVoucher = null; discountValue = 0;
+          alert('Kode tidak valid');
+        } else {
+          appliedVoucher = { code: code };
+        }
+        renderSummary();
       });
     }
-    
-    /* ========= Init UI ========= */
-    renderSummary();
-    renderPayments();
-    
-    // klik tombol "Enter your shipping address"
-    shipBtn.addEventListener('click', renderShipping);
-    
-    // auto-recalc ketika alamat berubah
-    ['country','city','province','zip'].forEach(id=>{
-      $('#'+id)?.addEventListener('change', ()=>renderShipping());
-      $('#'+id)?.addEventListener('blur',   ()=>renderShipping());
-    });
-    
-    // jika user ganti metode kirim via keyboard, tetap update total
-    $$('input[name="ship"]').forEach(r=>r.addEventListener('change', ()=>{
-      selectedShip = { id:r.value, name:r.value, fee:Number(r.dataset.fee||0) };
-      renderSummary();
-    }));
-    
-    /* ========= Submit / Place Order ========= */
-    $('#btn-place-order').addEventListener('click', async () => {
-      const errEl = $('#err');
-      errEl.textContent = '';
-    
-      // 1) Keranjang harus ada isinya
+
+    /* ========= Submit ========= */
+    $('#btn-place-order').addEventListener('click', async function(){
+      var errEl = $('#err'); errEl.textContent = '';
+
       if (!cart.length) { errEl.textContent = 'Keranjang kosong.'; return; }
-    
-      // 2) Validasi fields
-      const requiredFields = [
+
+      var reqs = [
         { el: $('#email'),     name: 'Email' },
         { el: $('#firstName'), name: 'First name' },
         { el: $('#lastName'),  name: 'Last name' },
@@ -427,108 +609,166 @@
         { el: $('#city'),      name: 'City' },
         { el: $('#province'),  name: 'State/Province' },
         { el: $('#zip'),       name: 'ZIP code' },
-        { el: $('#phone'),     name: 'Phone' },
+        { el: $('#phone'),     name: 'Phone' }
       ];
-      requiredFields.forEach(f => f.el?.classList.remove('border-red-500'));
-      for (const f of requiredFields) {
-        if (!f.el || !f.el.value.trim()) {
-          errEl.textContent = `${f.name} wajib diisi.`; f.el?.classList.add('border-red-500'); f.el?.focus(); return;
+      reqs.forEach(function(f){ if (f.el) f.el.classList.remove('border-red-500'); });
+
+      for (var i=0;i<reqs.length;i++){
+        var f = reqs[i];
+        if (!f.el || !f.el.value || !f.el.value.trim()){
+          errEl.textContent = f.name + ' wajib diisi.'; 
+          if (f.el){ f.el.classList.add('border-red-500'); f.el.focus(); }
+          return;
         }
       }
-      // email
-      const emailVal = $('#email').value.trim();
+      var emailVal = ($('#email') && $('#email').value || '').trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-        errEl.textContent = 'Format email tidak valid.'; $('#email').classList.add('border-red-500'); $('#email').focus(); return;
+        errEl.textContent = 'Format email tidak valid.'; 
+        if ($('#email')){ $('#email').classList.add('border-red-500'); $('#email').focus(); }
+        return;
       }
-      // phone
-      const phoneDigits = ($('#phone').value || '').replace(/\D/g, '');
+      var phoneDigits = ($('#phone') && $('#phone').value || '').replace(/\D/g,'');
       if (phoneDigits.length < 8) {
-        errEl.textContent = 'Nomor telepon terlalu pendek.'; $('#phone').classList.add('border-red-500'); $('#phone').focus(); return;
+        errEl.textContent = 'Nomor telepon terlalu pendek.'; 
+        if ($('#phone')){ $('#phone').classList.add('border-red-500'); $('#phone').focus(); }
+        return;
       }
-      // shipping harus dipilih (render dulu jika belum)
       if (!selectedShip) { renderShipping(); errEl.textContent = 'Silakan pilih metode pengiriman.'; return; }
-    
-      const items = cart.map(i => ({
-        id: i.id, title: i.title, price: Number(i.price), qty: Number(i.qty),
-        image: toAbs(i.image || i.img || i.image_url)
-      }));
-    
-      const sub = subtotal();
-      const finalShipFee = (selectedShip.id==='REG' && sub>=FREE_SHIP_MIN) ? 0 : Number(selectedShip.fee||0);
-    
-      const customer = {
-        name: `${$('#firstName').value || ''} ${$('#lastName').value || ''}`.trim() || 'Guest',
-        email: $('#email').value || 'guest@example.com',
-        phone: $('#phone').value || '',
-        address: {
-          line1: $('#address').value || '',
-          line2: $('#address2').value || '',
-          city: $('#city').value || '',
-          province: $('#province').value || '',
-          zip: $('#zip').value || '',
-          country: $('#country').value || 'ID',
+
+      // Build payload
+      var sub = subtotal();
+      var finalShipFee = Number(selectedShip ? selectedShip.fee||0 : 0); // sudah termasuk subsidi
+
+      var items = cart.map(function(i){
+        return { id:i.id, name:i.title, price:Number(i.price), quantity:Number(i.qty) };
+      });
+      if (discountValue > 0) {
+        items.push({
+          id: 'DISCOUNT',
+          name: 'Voucher ' + (appliedVoucher ? appliedVoucher.code : ''),
+          price: -Math.min(discountValue, sub + finalShipFee),
+          quantity: 1
+        });
+      }
+
+      var firstName = ($('#firstName') && $('#firstName').value) || 'Guest';
+      var lastName  = ($('#lastName')  && $('#lastName').value)  || '';
+      var email     = ($('#email')     && $('#email').value)     || 'guest@example.com';
+      var phone     = ($('#phone')     && $('#phone').value)     || '';
+      var orderId   = 'CC-' + Date.now();
+
+      var basePayload = {
+        order_id: orderId,
+        items: items,
+        shipping_fee: finalShipFee,
+        customer_details: {
+          first_name: firstName,
+          last_name:  lastName,
+          email: email,
+          phone: phone,
+          shipping_address: {
+            first_name: firstName,
+            last_name:  lastName,
+            phone: phone,
+            address:    [($('#address')&&$('#address').value)||'', (($('#address2')&&$('#address2').value)||'')].filter(Boolean).join(', '),
+            city:       ($('#city')&&$('#city').value) || '',
+            postal_code:($('#zip')&&$('#zip').value)  || '',
+            country_code: getCountryAlpha3()
+          }
         },
-        shipping: {
-          code: selectedShip.id,
-          name: selectedShip.name,
-          fee: finalShipFee
-        }
+        callbacks: { finish: location.origin + '/thank-you.html?order_id=' + orderId },
+        expiry: { unit:'days', duration:1 },
+        voucher: appliedVoucher ? appliedVoucher.code : null
       };
-    
-      // Preferensi channel pembayaran → backend bisa mapping ke Midtrans:
-      // - kirim 'channel' untuk satu pilihan spesifik,
-      // - atau jadikan 'enabled_payments' kalau ingin Snap menampilkan satu channel itu saja.
-      const payment = { channel: selectedPay };
-    
-      const btn = $('#btn-place-order');
-      if (btn.disabled) return;                // 1️⃣ stop kalau user klik 2x
+
+      var payload = basePayload;
+
+      // Hit API
+      var btn = $('#btn-place-order');
+      if (btn.disabled) return;
       btn.disabled = true;
-      btn.textContent = 'Processing...';
+      var orig = btn.textContent; btn.textContent = 'Processing...';
 
       try {
-        const r = await fetch(`${API}/api/checkout`, {
+        var r = await fetch(CREATE_URL, {
           method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ items, customer, payment })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
 
-        // 2️⃣ cek dulu content-type
-        let data;
-        const ct = r.headers.get('content-type') || '';
-        if (ct.includes('application/json')) {
-          data = await r.json();
+        var data = null;
+        var ct = r.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') !== -1) data = await r.json();
+        else {
+          var text = await r.text();
+          try { data = JSON.parse(text); } catch(e){ data = { error: text }; }
+        }
+
+        if (!r.ok || !data || !data.token) {
+          throw new Error((data && data.error) || ('Gagal membuat transaksi (HTTP '+r.status+')'));
+        }
+
+        // Snapshot untuk thank-you.html
+        var snapshotItems = cart.map(function(i){ 
+          return { title:i.title, price:Number(i.price), qty:Number(i.qty), image: toAbs(i.image || i.img || i.image_url) }; 
+        });
+        if (discountValue > 0) {
+          snapshotItems.push({ title:'Voucher ' + (appliedVoucher?appliedVoucher.code:''), price:-Math.min(discountValue, sub+finalShipFee), qty:1, image:'' });
+        }
+        var customerSnap = {
+          name: (firstName + ' ' + lastName).trim(),
+          email: email,
+          phone: phone,
+          address: {
+            line1: ($('#address')&&$('#address').value) || '',
+            line2: ($('#address2')&&$('#address2').value) || '',
+            city: ($('#city')&&$('#city').value) || '',
+            province: ($('#province')&&$('#province').value) || '',
+            zip: ($('#zip')&&$('#zip').value) || '',
+            country: ($('#country')&&$('#country').value) || 'ID'
+          }
+        };
+        var snapshot = {
+          order_id: orderId,
+          items: snapshotItems,
+          subtotal: sub,
+          shippingFee: finalShipFee,
+          discount: discountValue,
+          total: Math.max(0, sub + finalShipFee - discountValue),
+          customer: customerSnap,
+          status: 'PENDING'
+        };
+        try { sessionStorage.setItem('last_checkout_snapshot', JSON.stringify(snapshot)); } catch(e){}
+        try { localStorage.setItem('last_order_id', orderId); } catch(e){}
+
+        // Redirect ke Snap
+        if (data.redirect_url) {
+          location.href = data.redirect_url;
+        } else if (window.__MID_ENV__ === 'production') {
+          location.href = 'https://app.midtrans.com/snap/v4/redirection/' + data.token;
         } else {
-          const text = await r.text();
-          try { data = JSON.parse(text); } catch { data = { error: text }; }
+          location.href = 'https://app.sandbox.midtrans.com/snap/v4/redirection/' + data.token;
         }
-
-        if (!r.ok || !data?.redirect_url) {
-          throw new Error(data?.error || `Gagal membuat transaksi (HTTP ${r.status})`);
-        }
-
-        if (data.order_id) {
-          sessionStorage.setItem('last_order_id', data.order_id);
-          localStorage.setItem('last_order_id', data.order_id);
-        }
-        if (data.user_id) {
-          sessionStorage.setItem('cc_user_id', data.user_id);
-          localStorage.setItem('cc_user_id', data.user_id);
-        }
-
-        window.location.href = data.redirect_url;
-
       } catch (e) {
-        errEl.textContent = e.message || 'Terjadi kesalahan.';
-        btn.disabled = false;                   // 3️⃣ aktifkan lagi tombol
-        btn.textContent = 'Pay now';
+        errEl.textContent = e && e.message ? e.message : 'Terjadi kesalahan.';
+        btn.disabled = false;
+        btn.textContent = orig;
       }
-
     });
+
+    /* ========= Load Snap sesuai Client Key ========= */
+    // GANTI ini dengan Client Key kamu:
+    var MIDTRANS_CLIENT_KEY = 'Mid-client-MimywU4eu8Ro1e8b'; // gunakan SB-... untuk sandbox
+    window.__MID_ENV__ = MIDTRANS_CLIENT_KEY.indexOf('SB-') === 0 ? 'sandbox' : 'production';
+    (function injectSnap(){
+      var s = document.createElement('script');
+      s.src = (window.__MID_ENV__ === 'production')
+        ? 'https://app.midtrans.com/snap/snap.js'
+        : 'https://app.sandbox.midtrans.com/snap/snap.js';
+      s.type = 'text/javascript';
+      s.setAttribute('data-client-key', MIDTRANS_CLIENT_KEY);
+      document.body.appendChild(s);
+    })();
   </script>
-    
-  
-    
-  
-      
 </body>
 </html>

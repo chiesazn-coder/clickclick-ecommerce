@@ -1,0 +1,26 @@
+<IfModule mod_headers.c>
+  # HTML & PHP selalu fresh
+  <FilesMatch "\.(html?|php)$">
+    FileETag None
+    Header unset ETag
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+    Header set X-LiteSpeed-Cache-Control "no-cache"
+  </FilesMatch>
+
+  # version.js JANGAN di-cache (biar angka versinya selalu kebaca)
+  <Files "version.js">
+    FileETag None
+    Header unset ETag
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+    Header set X-LiteSpeed-Cache-Control "no-cache"
+  </Files>
+
+  # Asset statis boleh cache lama (kita bust pakai ?v=)
+  <FilesMatch "\.(css|js|png|jpe?g|svg|webp|gif|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

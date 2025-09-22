@@ -1733,7 +1733,57 @@
         #prod3{ left:50% !important; bottom:28% !important; transform:translate(-50%,0) !important; }
         #prod4{ left:82% !important; bottom:18% !important; transform:translate(-50%,0) rotate(6deg) !important; }
         .promo-panels{ bottom:3% !important; max-width:min(94vw,380px) !important; }
-      </style>
+      }
+      /* Pastikan section tidak memangkas overlay besar */
+      #m4{ overflow: visible !important; }
+
+      /* Gambar: sedikit rapikan supaya komposisi pas */
+      #m4-top{
+        width: 180vw !important;
+        max-width: none !important;
+        transform: translateX(-10vw) !important; /* lebih tengah */
+        margin-top: 6vw;
+      }
+      #m4-bottom{
+        width: 170vw !important;
+        max-width: none !important;
+        transform: translateX(-44vw) translateY(-10vw) !important;
+        margin-bottom: 12vw;
+      }
+
+      /* === Teks "SLIM / Stylish" ===
+        Geser lebih ke kanan & sedikit naik, kecilkan ukuran agar tidak kepotong */
+      #m4-mobile-words{
+        position: absolute; z-index: 9;
+        left: 20vw !important;     /* 12vw → 20vw (S tidak kepotong) */
+        top: 50% !important;       /* 47% → 50% (sedikit turun agar proporsional) */
+        width: auto;               /* biar tidak dibatasi */
+        transform: none !important;
+        text-align: left;
+        pointer-events: none;
+      }
+      #m4-mobile-words > div:first-child{   /* SLIM */
+        font-size: clamp(50px, 24vw, 100px) !important;  /* lebih kecil */
+        line-height: .9; font-weight: 300;
+        color: rgba(17,24,39,.18);
+        letter-spacing: .01em;
+      }
+      #m4-mobile-words > div:last-child{    /* Stylish */
+        font-size: clamp(34px, 13.8vw, 60px) !important; /* lebih kecil */
+        line-height: .9;
+        margin-top: -2.2vw !important;                    /* dirapatkan */
+        font-weight: 300;
+        color: rgba(17,24,39,.18);
+        letter-spacing: .01em;
+      }
+      /* Layar mungil banget (≤360px) – geser & kecilkan sedikit lagi */
+      @media (max-width: 360px){
+      #m4-mobile-words{ left: 22vw !important; top: 51% !important; }
+      #m4-mobile-words > div:first-child{ font-size: clamp(46px, 23vw, 92px) !important; }
+      #m4-mobile-words > div:last-child{  font-size: clamp(30px, 13vw, 56px) !important; }
+      }
+
+    </style>
       
   </body>
 </html>

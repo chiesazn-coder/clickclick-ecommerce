@@ -1770,73 +1770,80 @@
           bottom: 3% !important;
           max-width: min(94vw, 380px) !important;
         }
-        /* posisikan label & watermark "M4" di kiri-atas, jadi overlay */
+        /* ===== M4: Mobile layout (≤640px) ===== */
+        @media (max-width: 640px){
+
+        /* jadikan #m4 sebagai anchor absolut */
+        #m4{ position: relative; }
+
+        /* kolom kiri (yang berisi #m4-left-copy & gambar bawah) jangan relative,
+          supaya #m4-left-copy nempel ke #m4, bukan ke kolom kiri */
+        #m4 .order-2{ position: static !important; }
+
+        /* padding section biar tidak ada gap besar */
         #m4 > .mx-auto{
           padding-top: 4vw !important;
           padding-bottom: 10vw !important;
         }
 
-        /* Posisi label kiri-atas */
+        /* label kiri-atas */
         #m4-left-copy{
           position: absolute; z-index: 10;
-          top: 6vw; left: 6vw;
+          top: 6vw; left: 6vw;          /* geser di sini kalau mau */
         }
-        #m4-left-copy p{ /* "New Arrival" */
-          font-size: clamp(16px, 4.2vw, 20px);
+        #m4-left-copy p{ /* New Arrival */
+          font-size: clamp(16px,4.2vw,20px);
           color:#111;
         }
-        #m4-left-copy h2{ /* watermark "M4" */
-          font-size: clamp(72px, 30vw, 130px);
-          font-weight: 300;
-          line-height: .9;
+        #m4-left-copy h2{ /* watermark M4 */
+          font-size: clamp(72px,30vw,130px);
+          font-weight:300; line-height:.9;
           color: rgba(17,24,39,.18);
           margin-top: 1.2vw;
         }
 
-        /* Besarkan & atur posisi gambar */
-        /* — gambar atas lebih masuk ke tengah (kurangi shift ke kanan) */
+        /* gambar atas lebih ke tengah */
         #m4-top{
-          width: 170vw !important;
+          width: 178vw !important;       /* 170 → 178 biar lebih penuh */
           max-width: none !important;
-          transform: translateX(4vw) translateY(0) !important; /* tweak: 0–8vw */
+          transform: translateX(-8vw) !important;  /* dari 4vw → -8vw */
           margin-top: 6vw;
         }
 
-        /* — gambar bawah agak ke kiri & sedikit naik */
+        /* gambar bawah ke kiri & sedikit naik */
         #m4-bottom{
-          width: 165vw !important;
+          width: 168vw !important;
           max-width: none !important;
-          transform: translateX(-40vw) translateY(-8vw) !important; /* tweak: -36…-44vw */
+          transform: translateX(-42vw) translateY(-10vw) !important;
           margin-bottom: 12vw;
         }
 
-        /* Overlay “SLIM / Stylish” di tengah-bawah, rata kiri */
+        /* overlay SLIM / Stylish */
         #m4-mobile-words{
           position: absolute; z-index: 9;
-          left: 6vw; top: 56%;
+          left: 6vw; top: 54%;           /* 56% → 54% agar naik dikit */
           transform: none !important;
           text-align: left;
+          pointer-events: none;
         }
         #m4-mobile-words > div:first-child{ /* SLIM */
-          font-size: clamp(60px, 30vw, 120px);
-          line-height: .9;
-          font-weight: 300;
+          font-size: clamp(60px,30vw,120px);
+          line-height:.9; font-weight:300;
           color: rgba(17,24,39,.18);
         }
         #m4-mobile-words > div:last-child{  /* Stylish */
-          font-size: clamp(40px, 18vw, 84px);
-          line-height: .9;
-          margin-top: -2vw;
-          font-weight: 300;
+          font-size: clamp(40px,18vw,84px);
+          line-height:.9; margin-top:-2vw; font-weight:300;
           color: rgba(17,24,39,.18);
         }
-      }
-      /* Sedikit penyesuaian untuk layar mungil (≤360px, iPhone SE lawas, dll) */
-      @media (max-width: 360px){
-        #m4-top{  width: 180vw !important; transform: translateX(0) !important; }
-        #m4-bottom{ width: 175vw !important; transform: translateX(-44vw) translateY(-10vw) !important; }
-        #m4-mobile-words{ top: 58%; }
-      }
+        }
+
+        /* layar mungil banget (≤360px), sentuhan tambahan */
+        @media (max-width: 360px){
+        #m4-top{    width: 185vw !important; transform: translateX(-10vw) !important; }
+        #m4-bottom{ width: 175vw !important; transform: translateX(-46vw) translateY(-12vw) !important; }
+        #m4-mobile-words{ top: 56%; }
+        }
     </style>
   </body>
 </html>

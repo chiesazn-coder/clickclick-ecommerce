@@ -1770,41 +1770,72 @@
           bottom: 3% !important;
           max-width: min(94vw, 380px) !important;
         }
-          /* posisikan label & watermark "M4" di kiri-atas, jadi overlay */
-        #m4 { position: relative; }
+        /* posisikan label & watermark "M4" di kiri-atas, jadi overlay */
+        #m4 > .mx-auto{
+          padding-top: 4vw !important;
+          padding-bottom: 10vw !important;
+        }
+
+        /* Posisi label kiri-atas */
         #m4-left-copy{
           position: absolute; z-index: 10;
           top: 6vw; left: 6vw;
         }
-        #m4-left-copy p{ font-size: clamp(16px,5vw,22px); color:#111; }
-        #m4-left-copy h2{
-          /* watermark besar & tipis */
-          font-size: clamp(68px,28vw,120px);
-          font-weight: 300; line-height: .9;
-          color: rgba(17,24,39,.16);   /* = gray-900/16 */
-          margin-top: 1.5vw;
+        #m4-left-copy p{ /* "New Arrival" */
+          font-size: clamp(16px, 4.2vw, 20px);
+          color:#111;
+        }
+        #m4-left-copy h2{ /* watermark "M4" */
+          font-size: clamp(72px, 30vw, 130px);
+          font-weight: 300;
+          line-height: .9;
+          color: rgba(17,24,39,.18);
+          margin-top: 1.2vw;
         }
 
-        /* perbesar & geser gambar agar ter-crop manis seperti desain */
-        #m4-top,
-        #m4-bottom{ width: 160vw !important; max-width: none; }
-
-        /* gambar atas: geser ke kanan */
+        /* Besarkan & atur posisi gambar */
+        /* — gambar atas lebih masuk ke tengah (kurangi shift ke kanan) */
         #m4-top{
-          transform: translateX(18vw) !important;
+          width: 170vw !important;
+          max-width: none !important;
+          transform: translateX(4vw) translateY(0) !important; /* tweak: 0–8vw */
           margin-top: 6vw;
         }
 
-        /* gambar bawah: geser ke kiri, agak naik sedikit */
+        /* — gambar bawah agak ke kiri & sedikit naik */
         #m4-bottom{
-          transform: translateX(-34vw) translateY(-10vw) !important;
+          width: 165vw !important;
+          max-width: none !important;
+          transform: translateX(-40vw) translateY(-8vw) !important; /* tweak: -36…-44vw */
           margin-bottom: 12vw;
         }
 
-        /* posisi overlay "SLIM / Stylish" (sudah ada elemennya di HTML) */
+        /* Overlay “SLIM / Stylish” di tengah-bawah, rata kiri */
         #m4-mobile-words{
-          top: 58%;
+          position: absolute; z-index: 9;
+          left: 6vw; top: 56%;
+          transform: none !important;
+          text-align: left;
         }
+        #m4-mobile-words > div:first-child{ /* SLIM */
+          font-size: clamp(60px, 30vw, 120px);
+          line-height: .9;
+          font-weight: 300;
+          color: rgba(17,24,39,.18);
+        }
+        #m4-mobile-words > div:last-child{  /* Stylish */
+          font-size: clamp(40px, 18vw, 84px);
+          line-height: .9;
+          margin-top: -2vw;
+          font-weight: 300;
+          color: rgba(17,24,39,.18);
+        }
+      }
+      /* Sedikit penyesuaian untuk layar mungil (≤360px, iPhone SE lawas, dll) */
+      @media (max-width: 360px){
+        #m4-top{  width: 180vw !important; transform: translateX(0) !important; }
+        #m4-bottom{ width: 175vw !important; transform: translateX(-44vw) translateY(-10vw) !important; }
+        #m4-mobile-words{ top: 58%; }
       }
     </style>
   </body>

@@ -63,6 +63,160 @@
       .w-prod-3{width:clamp(260px,38vw,300px)}
       .w-prod-4{width:clamp(270px,35vw,320px)}
     </style>
+
+    <style id="clickclick-styles">
+      /* =========================
+        CLICKCLICK – STYLE BUNDLE
+        (drop-in overrides; purge-safe)
+        ========================= */
+      
+      /* --- Anim basics & reduce motion --- */
+      @keyframes riseFade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes pop{0%{transform:scale(.9);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}
+      @keyframes floatY{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-8px)}}
+      @keyframes glowPulse{0%,100%{box-shadow:0 16px 48px rgba(214,81,131,.22)}50%{box-shadow:0 20px 56px rgba(214,81,131,.32)}}
+      @keyframes shine{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+      @media (prefers-reduced-motion:reduce){
+        *{animation:none!important;transition:none!important}
+      }
+      
+      /* --- Hero safe height & BG --- */
+      #hero{min-height:100svh}
+      @supports(-webkit-touch-callout:none){#hero{min-height:100dvh}}
+      @media (max-width:640px){
+        #hero{
+          background-image:url("./assets/promo/Artboard-1-mobile.png")!important;
+          background-position:center top!important;
+          background-size:cover!important;
+          overflow:visible!important;
+          padding-bottom:clamp(140px,36vw,200px)!important; /* ruang utk panel */
+        }
+      }
+      
+      /* --- Hero title colors & pill gradient --- */
+      #hero-title{animation:riseFade .8s ease-out .05s both}
+      #hero-title h1{color:#9E1010!important}
+      #hero-title span{
+        display:inline-block;
+        color:#fff!important;
+        background:linear-gradient(90deg,#f43f5e 0%,#f59e0b 100%)!important; /* from-rose-500 to-amber-500 */
+        border-radius:9999px;
+        box-shadow:0 6px 16px rgba(0,0,0,.12);
+        animation:pop .9s cubic-bezier(.2,.8,.2,1) .2s both;
+      }
+      
+      /* --- Floating products (only the bobbing) --- */
+      #prod1,#prod2,#prod3,#prod4{animation:floatY 6s ease-in-out infinite}
+      
+      /* --- WhatsApp FAB safe spot --- */
+      .whats-fixed{position:fixed;right:16px;bottom:16px;z-index:99999}
+      
+      /* =========================
+        PROMO PANELS (3 kartu)
+        ========================= */
+      .promo-panels{
+        position:absolute; left:50%; transform:translateX(-50%);
+        bottom:clamp(18px,6vh,70px); width:min(95vw,1100px); z-index:30;
+        display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:center;
+        gap:clamp(10px,2.5vw,22px);
+      }
+      
+      /* base card */
+      .promo-panels>div{
+        position:relative; overflow:hidden;
+        border-radius:28px;
+        background:rgba(255,255,255,.82);
+        -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);
+        border:1px solid rgba(214,81,131,.20); /* ring-rose-200/50-ish */
+        box-shadow:0 8px 30px rgba(214,81,131,.16);
+      }
+      
+      /* inner text defaults */
+      .promo-panels>div p{
+        color:#9E1010; font-weight:800; letter-spacing:.01em;
+      }
+      
+      /* center (gold) card */
+      .promo-panels>div:nth-child(2){
+        background:rgba(255,255,255,.95);
+        -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+        border-color:rgba(244,114,182,.30); /* subtle rose ring */
+        animation:glowPulse 3.6s ease-in-out infinite;
+      }
+      .promo-panels>div:nth-child(2)::before{
+        content:""; position:absolute; inset:0; border-radius:28px;
+        border:2px solid rgba(215,194,106,.70); /* #d7c26a */
+        pointer-events:none;
+      }
+      /* soft golden wash */
+      .promo-panels>div:nth-child(2)::after{
+        content:""; position:absolute; top:-8%; left:-10%;
+        width:min(50%,260px); aspect-ratio:1/1; border-radius:999px; opacity:.8;
+        background:radial-gradient(closest-side, rgba(255,234,180,.95), rgba(255,234,180,0) 70%);
+        pointer-events:none;
+      }
+      
+      /* optional moving shine strip if ada <span> di dalam card */
+      .promo-panels>div .shine{
+        position:absolute; inset:0 0 0 -33%;
+        width:33%; transform:skewX(-12deg);
+        background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 100%);
+        animation:shine 3s linear infinite;
+      }
+      
+      /* --- MOBILE <=640px: stack & compact --- */
+      @media (max-width:640px){
+        .promo-panels{
+          left:0; right:0; transform:none; margin:0 auto;
+          max-width:420px; width:100%;
+          flex-direction:column; gap:10px;
+          bottom:calc(env(safe-area-inset-bottom,0px) + 76px);
+          padding:0 12px; box-sizing:border-box;
+        }
+        .promo-panels>div{
+          width:100%!important; min-height:52px!important; padding:10px 14px!important;
+        }
+        .promo-panels>div p{font-size:clamp(12px,3.6vw,15px)!important; line-height:1.1!important; text-align:center!important}
+        .promo-panels>div:nth-child(2){min-height:78px!important; padding:12px 16px!important}
+        .promo-panels>div:nth-child(2) h3{font-size:clamp(11px,3.2vw,14px)!important; letter-spacing:.02em!important; text-align:center!important}
+        .promo-panels>div:nth-child(2) p{font-size:clamp(28px,9vw,42px)!important; line-height:1!important; text-align:center!important}
+        .whats-fixed{right:16px!important; bottom:16px!important}
+      }
+      
+      /* --- MICRO <=360px (SE lawas) --- */
+      @media (max-width:360px){
+        .promo-panels{max-width:360px; bottom:calc(env(safe-area-inset-bottom,0px) + 72px)}
+        .promo-panels>div{min-height:48px!important; padding:9px 12px!important}
+        .promo-panels>div:nth-child(2){min-height:70px!important}
+      }
+      
+      /* =========================
+        SECTION M4 (mobile layout)
+        ========================= */
+      #m4{position:relative; overflow:visible!important}
+      #m4 .order-2{position:static!important}
+      #m4>.mx-auto{padding-top:4vw!important; padding-bottom:10vw!important}
+      
+      #m4-left-copy{position:absolute; z-index:10; top:6vw; left:6vw}
+      #m4-left-copy p{font-size:clamp(16px,4.2vw,20px); color:#111}
+      #m4-left-copy h2{font-size:clamp(68px,28vw,120px); font-weight:300; line-height:.9; margin-top:1vw; color:rgba(17,24,39,.18)}
+      
+      @media (max-width:640px){
+        #m4-top{width:180vw!important; max-width:none!important; transform:translateX(-10vw)!important; margin-top:6vw}
+        #m4-bottom{width:170vw!important; max-width:none!important; transform:translateX(-44vw) translateY(-10vw)!important; margin-bottom:12vw}
+        #m4-mobile-words{position:absolute; z-index:9; left:20vw; top:50%; text-align:left}
+        #m4-mobile-words>div:first-child{font-size:clamp(50px,24vw,100px); line-height:.9; font-weight:300; color:rgba(17,24,39,.18); letter-spacing:.01em}
+        #m4-mobile-words>div:last-child{font-size:clamp(34px,13.8vw,60px); line-height:.9; margin-top:-2.2vw; font-weight:300; color:rgba(17,24,39,.18); letter-spacing:.01em}
+      }
+      @media (max-width:360px){
+        #m4-top{width:186vw!important; transform:translateX(-12vw)!important}
+        #m4-bottom{width:178vw!important; transform:translateX(-48vw) translateY(-12vw)!important}
+        #m4-mobile-words{left:22vw; top:51%}
+        #m4-mobile-words>div:first-child{font-size:clamp(46px,23vw,92px)}
+        #m4-mobile-words>div:last-child{font-size:clamp(30px,13vw,56px)}
+      }
+    </style>
+  
   </head>
 
   <body class="font-sans bg-gray-50">

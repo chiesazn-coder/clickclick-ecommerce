@@ -1754,71 +1754,53 @@
         #prod3{ left:50% !important; bottom:28% !important; transform:translate(-50%,0) !important; }
         #prod4{ left:82% !important; bottom:18% !important; transform:translate(-50%,0) rotate(6deg) !important; }
 
-        /* ===== Promo panels: vertikal, center, tidak menjorok/kepotong ===== */
+        /* ===== Promo panels versi kecil untuk HP ===== */
         .promo-panels{
           position: absolute !important;
-
-          /* KUNCI: center tanpa translate */
           left: 0 !important;
           right: 0 !important;
           transform: none !important;
-
-          /* naik sedikit biar aman dari tombol WA */
-          bottom: calc(env(safe-area-inset-bottom, 0px) + 80px) !important;
+          bottom: calc(env(safe-area-inset-bottom, 0px) + 70px) !important;
           z-index: 30 !important;
 
           display: flex !important;
           flex-direction: column !important;
           align-items: stretch !important;
-          gap: 12px !important;
+          gap: 10px !important;
 
-          /* padding sisi + box-sizing agar tidak overflow 100vw */
-          box-sizing: border-box !important;
-          padding-left: clamp(16px, 4vw, 24px) !important;
-          padding-right: clamp(16px, 4vw, 24px) !important;
-
-          /* batasi lebar agar rapi di HP besar */
-          max-width: 560px !important;
+          max-width: 420px !important;  /* <= batasi lebar total */
           margin: 0 auto !important;
+          padding: 0 12px !important;
+          box-sizing: border-box !important;
         }
 
-        /* setiap kartu panel full-width dan nyaman disentuh */
+        /* setiap kartu diperkecil */
         .promo-panels > div{
           width: 100% !important;
-          height: auto !important;
-          min-height: 64px !important;
-          padding: 14px 18px !important;
-          border-radius: 20px !important;
+          min-height: 52px !important;  /* lebih pendek */
+          padding: 10px 14px !important;
+          border-radius: 16px !important;
         }
 
-        /* tipografi panel kiri/kanan */
+        /* teks panel kiri/kanan */
         .promo-panels > div p{
-          font-size: clamp(14px, 4.2vw, 18px) !important;
-          line-height: 1.15 !important;
-          text-align: center !important;
+          font-size: clamp(12px, 3.6vw, 15px) !important;
+          line-height: 1.1 !important;
         }
 
-        /* panel tengah (gold) sedikit lebih tinggi + scale angka */
+        /* panel tengah (gold) lebih compact */
         .promo-panels > div:nth-child(2){
-          min-height: 96px !important;
-          padding: 16px 20px !important;
+          min-height: 78px !important;
+          padding: 12px 16px !important;
         }
         .promo-panels > div:nth-child(2) h3{
-          font-size: clamp(12px, 3.4vw, 16px) !important;
-          letter-spacing: .02em !important;
-          text-align: center !important;
+          font-size: clamp(11px, 3.2vw, 14px) !important;
         }
         .promo-panels > div:nth-child(2) p{
-          font-size: clamp(36px, 12vw, 56px) !important;
-          line-height: .95 !important;
-          text-align: center !important;
+          font-size: clamp(28px, 9vw, 42px) !important; /* angka % lebih kecil */
+          line-height: 1 !important;
         }
-
-        /* hilangkan elemen dekoratif "shine" agar tidak bikin overflow aneh */
-        .promo-panels .pointer-events-none{
-          display: none !important;
-        }
-
+        
         /* tombol WhatsApp – sedikit offset dari tepi */
         .whats-fixed{
           bottom: 16px !important;

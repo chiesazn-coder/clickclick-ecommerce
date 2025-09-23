@@ -92,10 +92,11 @@
       .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
       .no-scrollbar::-webkit-scrollbar { display:none; }
 
-      @media (max-width:640px){
+      /* spacing & safe-area ketika vertikal di HP */
+      @media (max-width: 640px){
         .promo-panels{ 
-          bottom: max(12px, env(safe-area-inset-bottom) + 12px);
-          gap: 10px;
+          margin-top: 16px;            /* beri napas dari konten hero */
+          margin-bottom: max(12px, env(safe-area-inset-bottom));
         }
         .promo-panels .panel { border-radius: 22px; }
         .promo-panels .panel--mid { border-radius: 24px; }
@@ -186,56 +187,83 @@
       </div>
 
       <!-- Promo panels (FIXED) -->
+      <!-- ===== Promo Panels (mobile: vertical, desktop: floating bottom) ===== -->
       <div
-        class="promo-panels absolute left-1/2 -translate-x-1/2 bottom-[6%] z-30
-               flex flex-nowrap items-end justify-center gap-3 max-w-[min(95vw,1100px)]
-               overflow-x-auto no-scrollbar"
+        class="promo-panels
+              relative md:absolute md:left-1/2 md:bottom-[6%] md:-translate-x-1/2
+              z-30
+              flex flex-col md:flex-row
+              items-stretch md:items-end justify-center
+              gap-3 md:gap-[clamp(10px,2.5vw,22px)]
+              max-w-[min(95vw,1100px)]
+              mx-auto px-4 md:px-0"
         aria-label="Promo panels"
-      >
+        >
         <!-- LEFT -->
-        <div class="panel panel--left flex-none relative overflow-hidden rounded-[28px]
-                    h-[clamp(64px,12vw,120px)] w-[clamp(160px,30vw,300px)]
-                    bg-white/75 backdrop-blur-[2px] ring-1 ring-rose-200/50
-                    shadow-[0_8px_30px_rgba(214,81,131,0.16)]
-                    grid place-items-center px-[clamp(10px,2vw,20px)]
-                    transition-transform duration-300 hover:-translate-y-1">
+        <div
+          class="panel panel--left flex-none md:flex-initial
+                relative overflow-hidden rounded-[28px]
+                h-[clamp(64px,12vw,120px)] md:h-[clamp(72px,11vw,120px)]
+                w-full md:w-[clamp(180px,26vw,300px)]
+                bg-white/75 backdrop-blur-[2px] ring-1 ring-rose-200/50
+                shadow-[0_8px_30px_rgba(214,81,131,0.16)]
+                grid place-items-center
+                px-[clamp(10px,2vw,20px)]
+                transition-transform duration-300 hover:-translate-y-1"
+        >
           <span class="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white/0 via-white/35 to-white/0 -skew-x-12 animate-[shine_3s_linear_infinite]"></span>
-          <p class="panel-text text-[clamp(12px,3.4vw,26px)] leading-[1.05] font-extrabold tracking-tight text-[#9E1010] text-center">
+          <p class="panel-text text-[clamp(12px,3.4vw,26px)] md:text-[clamp(14px,2.2vw,26px)] leading-[1.05] font-extrabold tracking-tight text-[#9E1010] text-center">
             PRICE<br/>DISCOUNT
           </p>
         </div>
 
         <!-- MID -->
-        <div class="panel panel--mid flex-none relative overflow-hidden rounded-[28px]
-                    h-[clamp(82px,18vw,160px)] w-[clamp(220px,46vw,440px)]
-                    bg-white/95 backdrop-blur-[4px] ring-1 ring-rose-300 grid place-items-center
-                    px-[clamp(12px,2vw,24px)] animate-[glowPulse_3.6s_ease-in-out_infinite]
-                    transition-transform duration-300 hover:-translate-y-1">
+        <div
+          class="panel panel--mid flex-none md:flex-initial
+                relative overflow-hidden rounded-[28px]
+                h-[clamp(88px,22vw,160px)] md:h-[clamp(92px,15vw,160px)]
+                w-full md:w-[clamp(240px,36vw,440px)]
+                bg-white/95 backdrop-blur-[4px] ring-1 ring-rose-300 grid place-items-center
+                px-[clamp(12px,2vw,24px)]
+                animate-[glowPulse_3.6s_ease-in-out_infinite]
+                transition-transform duration-300 hover:-translate-y-1"
+        >
           <div class="pointer-events-none absolute inset-0 rounded-[28px] ring-2 ring-[#d7c26a]/70"></div>
           <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-amber-200/55 via-white/80 to-rose-100/45"></div>
-          <div class="pointer-events-none absolute -top-[clamp(12px,3vw,28px)] -left-[clamp(16px,4vw,36px)] w-[clamp(100px,20vw,220px)] h-[clamp(100px,20vw,220px)] rounded-full opacity-80"
+          <div class="pointer-events-none absolute -top-[clamp(12px,3vw,28px)] -left-[clamp(16px,4vw,36px)]
+                      w-[clamp(100px,28vw,220px)] h-[clamp(100px,28vw,220px)] rounded-full opacity-80"
               style="background: radial-gradient(closest-side, rgba(255,234,180,.95), rgba(255,234,180,0) 70%);"></div>
+
           <div class="relative text-center">
-            <h3 class="text-[clamp(10px,2.8vw,18px)] font-extrabold tracking-wide text-[#9E1010]">DISCOUNT ALL ITEM</h3>
-            <p class="mt-[clamp(0px,.6vw,6px)] text-[clamp(34px,10vw,88px)] leading-none font-extrabold text-[#9E1010] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)]">
+            <h3 class="text-[clamp(10px,3.5vw,18px)] md:text-[clamp(11px,1.6vw,18px)] font-extrabold tracking-wide text-[#9E1010]">
+              DISCOUNT ALL ITEM
+            </h3>
+            <p class="mt-[clamp(0px,.6vw,6px)] text-[clamp(36px,12vw,88px)] md:text-[clamp(42px,7.5vw,88px)]
+                      leading-none font-extrabold text-[#9E1010] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)]">
               55%
             </p>
           </div>
         </div>
 
         <!-- RIGHT -->
-        <div class="panel panel--right flex-none relative overflow-hidden rounded-[28px]
-                    h-[clamp(64px,12vw,120px)] w-[clamp(160px,30vw,300px)]
-                    bg-white/75 backdrop-blur-[2px] ring-1 ring-rose-200/50
-                    shadow-[0_8px_30px_rgba(214,81,131,0.16)]
-                    grid place-items-center px-[clamp(10px,2vw,20px)]
-                    transition-transform duration-300 hover:-translate-y-1">
+        <div
+          class="panel panel--right flex-none md:flex-initial
+                relative overflow-hidden rounded-[28px]
+                h-[clamp(64px,12vw,120px)] md:h-[clamp(72px,11vw,120px)]
+                w-full md:w-[clamp(180px,26vw,300px)]
+                bg-white/75 backdrop-blur-[2px] ring-1 ring-rose-200/50
+                shadow-[0_8px_30px_rgba(214,81,131,0.16)]
+                grid place-items-center
+                px-[clamp(10px,2vw,20px)]
+                transition-transform duration-300 hover:-translate-y-1"
+        >
           <span class="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white/0 via-white/35 to-white/0 -skew-x-12 animate-[shine_3.2s_linear_infinite]"></span>
-          <p class="panel-text text-[clamp(12px,3.4vw,26px)] leading-[1.05] font-extrabold tracking-tight text-[#9E1010] text-center">
+          <p class="panel-text text-[clamp(12px,3.4vw,26px)] md:text-[clamp(14px,2.2vw,26px)] leading-[1.05] font-extrabold tracking-tight text-[#9E1010] text-center">
             FREE<br/>SHIPPING
           </p>
         </div>
       </div>
+
 
       <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/30 to-transparent"></div>
     </section>

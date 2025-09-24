@@ -499,5 +499,51 @@
       <path d="M20 3.94A11.92 11.92 0 0 0 12 .06C5.37.06.06 5.37.06 12a11.92 11.92 0 0 0 3.94 8.94L2 24l3.2-1.94A11.92 11.92 0 0 0 12 23.94c6.63 0 11.94-5.31 11.94-11.94A11.92 11.92 0 0 0 20 3.94ZM12 22a9.94 9.94 0 0 1-5.36-1.55l-.38-.24-2.28 1.38 1-2.51-.26-.4A9.94 9.94 0 1 1 12 22Zm5.49-7.39c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.5-.5-.67-.51h-.57c-.2 0-.52.07-.8.37s-1.05 1.03-1.05 2.52 1.08 2.93 1.23 3.13c.15.2 2.13 3.26 5.16 4.57.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.73 2.02-1.44.25-.7.25-1.3.17-1.44-.08-.13-.27-.2-.57-.35Z" />
     </svg>
   </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn  = document.getElementById('navToggle');
+      const menu = document.getElementById('mobileMenu');
+      const html = document.documentElement;
+  
+      if (!btn || !menu) return;
+  
+      const openMenu = () => {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        // kunci scroll saat menu terbuka (opsional)
+        html.classList.add('overflow-hidden');
+      };
+  
+      const closeMenu = () => {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        html.classList.remove('overflow-hidden');
+      };
+  
+      btn.setAttribute('aria-controls', 'mobileMenu');
+      btn.setAttribute('aria-expanded', 'false');
+  
+      btn.addEventListener('click', () => {
+        const isOpen = !menu.classList.contains('hidden');
+        isOpen ? closeMenu() : openMenu();
+      });
+  
+      // Tutup saat klik link di menu
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', closeMenu);
+      });
+  
+      // Tutup saat tekan Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+  
+      // Tutup otomatis saat layar > md (768px)
+      const mm = window.matchMedia('(min-width: 768px)');
+      mm.addEventListener('change', e => { if (e.matches) closeMenu(); });
+    });
+  </script>
+  
 </body>
 </html>

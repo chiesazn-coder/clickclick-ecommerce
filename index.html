@@ -488,13 +488,6 @@
       padding-bottom: 10vw !important
     }
 
-    #m4-left-copy {
-      position: absolute;
-      z-index: 10;
-      top: 6vw;
-      left: 6vw
-    }
-
     #m4-left-copy p {
       font-size: clamp(16px, 4.2vw, 20px);
       color: #111
@@ -710,6 +703,44 @@
         min-height: 70px !important
       }
     }
+
+    /* M4 slide-ins */
+    .m4-anim {
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(10vw)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-10vw)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .m4-anim-right.inview {
+      animation: slideInRight .9s cubic-bezier(.2, .7, .2, 1) .4s both;
+    }
+
+    .m4-anim-left.inview {
+      animation: slideInLeft .9s cubic-bezier(.2, .7, .2, 1) .6s both;
+    }
   </style>
 </head>
 
@@ -795,12 +826,12 @@
             <p class="text-gray-700 text-sm sm:text-base lg:text-lg">New Arrival</p>
             <h2 class="font-light text-gray-900 leading-none" style="font-size:clamp(36px,8vw,104px);letter-spacing:.5px;">M4</h2>
           </div>
-          <div class="relative overflow-visible lg:mt-[-10vh]">
+          <div class="relative overflow-visible lg:mt-[-10vh] m4-anim m4-anim-left">
             <img id="m4-bottom" src="./assets/m4-bottom.png" alt="M4 bottom" class="w-full h-full object-contain lg:translate-x-[-15%]" loading="eager" />
           </div>
         </div>
         <div class="relative order-1 lg:order-2 overflow-visible px-4 sm:px-6 lg:pr-10">
-          <div class="relative overflow-visible lg:mt-[-10vh]">
+          <div class="relative overflow-visible lg:mt-[-10vh] m4-anim m4-anim-right">
             <img id="m4-top" src="./assets/m4-top.png" alt="M4 top" class="w-full h-full object-contain lg:translate-x-[15%]" loading="eager" />
           </div>
           <div class="absolute bottom-0 right-0 text-right text-gray-900 pr-4 sm:pr-6 lg:pr-0 hidden lg:block">
@@ -1326,6 +1357,21 @@
 
       render();
     });
+  </script>
+  <script>
+    // M4 Inview Animation
+    const obsM4 = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("inview"); // memicu .m4-anim-*.inview
+          obsM4.unobserve(e.target);
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    document.querySelectorAll(".m4-anim").forEach((el) => obsM4.observe(el));
   </script>
   <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-zm_c7npVzn49Jo5F"></script>
 </body>
